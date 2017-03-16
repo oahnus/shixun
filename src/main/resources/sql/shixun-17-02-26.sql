@@ -1,19 +1,4 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : MySQL
-Source Server Version : 50711
-Source Host           : localhost:3306
-Source Database       : shixun-17-02-26
-
-Target Server Type    : MYSQL
-Target Server Version : 50711
-File Encoding         : 65001
-
-Date: 2017-03-16 01:11:55
-*/
-
-SET FOREIGN_KEY_CHECKS=0;
+CREATE DATABASE IF NOT EXISTS shixun_17_02_26;
 
 -- ----------------------------
 -- Table structure for admin
