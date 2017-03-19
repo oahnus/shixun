@@ -26,6 +26,11 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
+    /**
+     * 根据用户的username和auth type生成token，保存在redis中
+     * @param userAuthDto userAuthDto
+     * @return Token
+     */
     @PostMapping("/auth")
     public TokenDto login(@Validated @RequestBody UserAuthDto userAuthDto){
         UserAuth userAuth = userAuthService.getUserAuth(userAuthDto);

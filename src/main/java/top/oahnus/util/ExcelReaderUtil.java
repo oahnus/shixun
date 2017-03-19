@@ -108,37 +108,37 @@ public class ExcelReaderUtil {
 
                 for (int i = 1; i <= rowNum; i++) {
                     row = sheet.getRow(i);
-                    companyList.add(new Company(
-                            getCellFormatValue(row.getCell(1)),//企业名称
-                            getCellFormatValue(row.getCell(2)),//企业联系人
-                            getCellFormatValue(row.getCell(3)) //企业地址
-                    ));
+//                    companyList.add(new Company(
+//                            getCellFormatValue(row.getCell(1)),//企业名称
+//                            getCellFormatValue(row.getCell(2)),//企业联系人
+//                            getCellFormatValue(row.getCell(3)) //企业地址
+//                    ));
                 }
                 return companyList;
             case 2:
                 List<Teacher> teacherList = new ArrayList<>();
                 for (int i = 1; i <= rowNum; i++) {
                     row = sheet.getRow(i);
-                    Teacher teacher = new Teacher(
-                            getCellFormatValue(row.getCell(1)),//工号
-                            getCellFormatValue(row.getCell(2)),//姓名
-                            getCellFormatValue(row.getCell(3)),//专业
-                            getCellFormatValue(row.getCell(4)) //学院
-                            );
-                    teacherList.add(teacher);
+//                    Teacher teacher = new Teacher(
+//                            getCellFormatValue(row.getCell(1)),//工号
+//                            getCellFormatValue(row.getCell(2)),//姓名
+//                            getCellFormatValue(row.getCell(3)),//专业
+//                            getCellFormatValue(row.getCell(4)) //学院
+//                            );
+//                    teacherList.add(teacher);
                 }
                 return teacherList;
             case 3:
                 List<Student> studentList = new ArrayList<>();
                 for(int i = 1; i <= rowNum; i++){
                     row = sheet.getRow(i);
-                    Student student = new Student(
-                            getCellFormatValue(row.getCell(1)),//学号
-                            getCellFormatValue(row.getCell(2)),//姓名
-                            getCellFormatValue(row.getCell(3)),//专业
-                            getCellFormatValue(row.getCell(4)) //学院
-                    );
-                    studentList.add(student);
+//                    Student student = new Student(
+//                            getCellFormatValue(row.getCell(1)),//学号
+//                            getCellFormatValue(row.getCell(2)),//姓名
+//                            getCellFormatValue(row.getCell(3)),//专业
+//                            getCellFormatValue(row.getCell(4)) //学院
+//                    );
+//                    studentList.add(student);
                 }
                 return studentList;
         }

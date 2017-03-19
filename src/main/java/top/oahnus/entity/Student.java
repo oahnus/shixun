@@ -9,27 +9,30 @@ import top.oahnus.dto.StudentDto;
  */
 @Data
 public class Student {
-    private Long id;
-
+    private String id;
+    // 学号
     private String studentNum;
-
+    // 姓名
     private String name;
-
+    // 性别
+    private String sex;
+    // 专业
     private String profession;
-
+    // 学院
     private String depart;
 
     public Student() {}
 
-    public Student(String studentNum, String name, String profession, String depart) {
+    public Student(String studentNum, String name, String profession, String depart, String sex) {
         this.studentNum = studentNum;
         this.name = name;
         this.profession = profession;
         this.depart = depart;
+        this.sex = sex;
     }
 
     public Student(StudentDto studentDto) {
-        this.id = studentDto.getId() == null ? null : studentDto.getId();
+        this.id = studentDto.getId() == null ? "" : studentDto.getId();
         this.studentNum = studentDto.getStudentNum();
         this.name = studentDto.getName();
         this.depart = studentDto.getDepart();

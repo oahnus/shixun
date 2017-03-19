@@ -7,11 +7,15 @@ import java.util.Date;
 
 /**
  * Created by oahnus on 2017/2/26.
+ * Token Dto
  */
 @Data
 public class TokenDto {
+    // token
     private String token;
+    // 创建时间
     private Date createAt;
+    // 持续时间
     private Date expire;
 
     public TokenDto(){}

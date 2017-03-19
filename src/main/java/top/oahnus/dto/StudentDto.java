@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Data
 public class StudentDto {
-    private Long id;
+    private String id;
     @NotEmpty(message = "学生学号不能为空")
     private String studentNum;
     @NotEmpty(message = "学生姓名不能为空")
@@ -18,6 +18,7 @@ public class StudentDto {
     private String profession;
     @NotEmpty(message = "学生学院不能为空")
     private String depart;
+    private String sex;
 
     StudentDto() {}
 }

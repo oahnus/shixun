@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import top.oahnus.entity.UserAuth;
+import top.oahnus.util.MD5Util;
 
 import static org.junit.Assert.*;
 
@@ -23,7 +24,7 @@ public class UserAuthMapperTest {
 
     @Test
     public void login() throws Exception {
-        UserAuth userAuth = userAuthMapper.login("1341901120","ee97401d19107838eb978f461e354afd",3);
-        System.out.println(userAuth.getType());
+        UserAuth userAuth = userAuthMapper.login("1341901120", MD5Util.getMD5("1341901120"),3);
+        System.out.println(userAuth);
     }
 }
