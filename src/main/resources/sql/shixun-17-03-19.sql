@@ -34,6 +34,7 @@ CREATE TABLE company (
   contact VARCHAR(100) NOT NULL COMMENT '公司联系人，姓名',
   contact_phone VARCHAR(100) NULL COMMENT '公司联系人手机号',
   address VARCHAR(255) NOT NULL COMMENT '公司地址',
+  email VARCHAR(255) NOT NULL COMMENT '找回密码验证邮箱地址',
   PRIMARY KEY (id),
   KEY idx_name (name)
 ) ENGINE =InnoDB DEFAULT CHARSET = utf8 COMMENT '公司表';
@@ -60,6 +61,7 @@ CREATE TABLE teacher (
   job_title VARCHAR(100) NOT NULL COMMENT '教师职称',
   profession VARCHAR(100) NOT NULL COMMENT '专业',
   depart VARCHAR(100) NOT NULL COMMENT '学院',
+  email VARCHAR(255) NOT NULL COMMENT '找回密码验证邮箱地址',
   PRIMARY KEY (id),
   UNIQUE KEY idx_worker_id (worker_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '教师表';
@@ -85,6 +87,7 @@ CREATE TABLE student (
   sex ENUM('男', '女', '未知') DEFAULT '未知' COMMENT '学生性别',
   profession VARCHAR(100) NOT NULL COMMENT '学生专业',
   depart VARCHAR(100) NOT NULL COMMENT '学生学院',
+  email VARCHAR(255) NOT NULL COMMENT '找回密码验证邮箱地址',
   PRIMARY KEY (id),
   UNIQUE KEY idx_student_num (student_num)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '学生表';
