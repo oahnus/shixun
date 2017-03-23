@@ -34,9 +34,9 @@ CREATE TABLE company (
   contact VARCHAR(100) NOT NULL COMMENT '公司联系人，姓名',
   contact_phone VARCHAR(100) NULL COMMENT '公司联系人手机号',
   address VARCHAR(255) NOT NULL COMMENT '公司地址',
-  email VARCHAR(255) NOT NULL COMMENT '找回密码验证邮箱地址',
+  email VARCHAR(255) NULL COMMENT '找回密码验证邮箱地址',
   PRIMARY KEY (id),
-  KEY idx_name (name)
+  UNIQUE KEY idx_name (name)
 ) ENGINE =InnoDB DEFAULT CHARSET = utf8 COMMENT '公司表';
 
 DELIMITER ;;
@@ -61,7 +61,7 @@ CREATE TABLE teacher (
   job_title VARCHAR(100) NOT NULL COMMENT '教师职称',
   profession VARCHAR(100) NOT NULL COMMENT '专业',
   depart VARCHAR(100) NOT NULL COMMENT '学院',
-  email VARCHAR(255) NOT NULL COMMENT '找回密码验证邮箱地址',
+  email VARCHAR(255) NULL COMMENT '找回密码验证邮箱地址',
   PRIMARY KEY (id),
   UNIQUE KEY idx_worker_id (worker_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '教师表';
@@ -87,7 +87,7 @@ CREATE TABLE student (
   sex ENUM('男', '女', '未知') DEFAULT '未知' COMMENT '学生性别',
   profession VARCHAR(100) NOT NULL COMMENT '学生专业',
   depart VARCHAR(100) NOT NULL COMMENT '学生学院',
-  email VARCHAR(255) NOT NULL COMMENT '找回密码验证邮箱地址',
+  email VARCHAR(255) NULL COMMENT '找回密码验证邮箱地址',
   PRIMARY KEY (id),
   UNIQUE KEY idx_student_num (student_num)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '学生表';
@@ -213,7 +213,7 @@ CREATE TABLE score (
   teacher_score FLOAT(11) DEFAULT 0 COMMENT '教师评分',
   company_score FLOAT(11) DEFAULT 0 COMMENT '公司评分',
   PRIMARY KEY (id),
-  KEY idx_course_id_student_id (course_id, student_id)
+  UNIQUE KEY idx_course_id_student_id (course_id, student_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '学生分数表';
 
 DELIMITER ;;
@@ -255,3 +255,18 @@ VALUES
   (NULL, '1341901123', '金鹏飞', '计算机科学与技术', '计算机科学与工程'),
   (NULL, '1341901124', '屈冉', '计算机科学与技术', '计算机科学与工程'),
   (NULL, '1341901125', '阮仕宏', '计算机科学与技术', '计算机科学与工程');
+
+INSERT INTO company (id, name, contact, contact_phone, address)
+VALUES
+  (NULL, '测试企业一', '测试联系人一', '测试电话一', '测试地址一'),
+  (NULL, '测试企业二', '测试联系人二', '测试电话二', '测试地址二'),
+  (NULL, '测试企业三', '测试联系人三', '测试电话三', '测试地址三'),
+  (NULL, '测试企业四', '测试联系人四', '测试电话四', '测试地址四');
+
+INSERT INTO teacher (id, worker_id, name, sex, job_title, profession, depart)
+VALUES
+  (NULL, '10012', '张三', '男', '教师', '通信工程', '计算机科学与工程'),
+  (NULL, '10011', '王五', '男', '教授', '通信工程', '计算机科学与工程'),
+  (NULL, '10013', '李翠华', '女', '助理教师', '经济管理', '经济管理'),
+  (NULL, '10014', '李四', '男', '教师', '应用物理', '数理'),
+  (NULL, '10015', '找刘', '女', '教师', '计算机', '计算机科学与工程');

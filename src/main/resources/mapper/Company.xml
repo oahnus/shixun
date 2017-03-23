@@ -1,0 +1,41 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "top.oahnus.mapper.CompanyMapper">
+
+    <resultMap id="company_map" type="Company">
+        <result column="id" property="id" javaType="String"/>
+        <result column="name" property="name" javaType="String"/>
+        <result column="contact" property="name" javaType="String"/>
+        <result column="contact_phone" property="contactPhone" javaType="String"/>
+        <result column="address" property="address" javaType="String"/>
+        <result column="email" property="email" javaType="String"/>
+    </resultMap>
+
+    <select id="selectAllCompany" resultMap="company_map">
+        SELECT id, name, contact, contact_phone, address, email
+        FROM company LIMIT #{offset},#{limit}
+    </select>
+
+    <insert id="insertIntoCompany" parameterType="Company">
+        INSERT IGNORE INTO company
+        (id, name, contact, contact_phone, address, email)
+        VALUE
+        (#{id}, #{name}, #{contact}, #{contactPhone}, #{address}, #{email})
+    </insert>
+
+    <update id="updateCompany">
+        UPDATE company SET
+        name = #{name},
+        contact = #{contact},
+        contact_phone = #{contactPhone},
+        address = #{address},
+        email = #{email}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteCompanyById" parameterType="String">
+        DELETE FROM company WHERE id = #{id}
+    </delete>
+</mapper>

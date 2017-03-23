@@ -17,15 +17,17 @@ public class Teacher {
     private String sex;
     // 职称
     private String jobTitle;
+    private String email;
 
     public Teacher() {}
 
-    public Teacher(String workerId, String name, String profession, String depart,String sex, String jobTitle) {
+    public Teacher(String workerId, String name, String profession, String depart,String sex, String jobTitle, String email) {
         this.workerId = workerId;
         this.name = name;
         this.profession = profession;
         this.depart = depart;
         this.sex = sex;
         this.jobTitle = jobTitle;
+        this.email = email;
     }
 }

@@ -1,9 +1,10 @@
 package top.oahnus.mapper;
 
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import top.oahnus.entity.Company;
+
+import java.util.List;
 
 /**
  * Created by oahnus on 2017/3/16.
@@ -11,7 +12,11 @@ import top.oahnus.entity.Company;
  */
 @Mapper
 public interface CompanyMapper {
-    @Insert("INSERT INGORE into company (name, contact, address) VALUES (#{name}, #{contact}, #{address})")
-    @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
-    Integer insertCompany(Company company);
+    List<Company> selectAllCompany(@Param("offset")Integer offset, @Param("limit")Integer limit);
+
+    Integer insertIntoCompany(Company company);
+
+    Integer updateCompany(Company company);
+
+    Integer deleteCompanyById(@Param("id") String id);
 }

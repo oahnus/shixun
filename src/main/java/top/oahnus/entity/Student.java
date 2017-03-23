@@ -20,15 +20,17 @@ public class Student {
     private String profession;
     // 学院
     private String depart;
+    private String email;
 
     public Student() {}
 
-    public Student(String studentNum, String name, String profession, String depart, String sex) {
+    public Student(String studentNum, String name, String profession, String depart, String sex, String email) {
         this.studentNum = studentNum;
         this.name = name;
         this.profession = profession;
         this.depart = depart;
         this.sex = sex;
+        this.email = email;
     }
 
     public Student(StudentDto studentDto) {

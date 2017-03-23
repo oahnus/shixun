@@ -4,6 +4,8 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Pattern;
+
 /**
  * Created by oahnus on 2017/3/11.
  * 21:35
@@ -22,4 +24,6 @@ public class TeacherDto {
     private String sex;
     // 职称
     private String jobTitle;
+    @Pattern(regexp = "^([a-z0-9A-Z]+[-|\\\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\\\.)+[a-zA-Z]{2,}$")
+    private String email;
 }
