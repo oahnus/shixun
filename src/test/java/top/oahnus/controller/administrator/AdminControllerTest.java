@@ -32,35 +32,40 @@ public class AdminControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void insertCompanyByAdminUploadExcel() throws Exception {
-        File excel = new File(System.getProperty("user.dir")+"/src/test/resources", "company.xlsx");
+    public void test(){
 
-        mockMvc.perform(
-                fileUpload("/admin/companies")
-                        .file(new MockMultipartFile(
-                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
-        ).andDo(print());
     }
 
-    @Test
-    public void insertTeacherByAdminUploadExcel() throws Exception {
-        File excel = new File(System.getProperty("user.dir")+"/src/test/resources", "teacher.xlsx");
-
-        mockMvc.perform(
-                fileUpload("/admin/teachers")
-                        .file(new MockMultipartFile(
-                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
-        ).andDo(print());
-    }
-
-    @Test
-    public void insertStudentByAdminUploadExcel() throws Exception {
-        File excel = new File(System.getProperty("user.dir")+"/src/test/resources", "student.xlsx");
-
-        mockMvc.perform(
-                fileUpload("/admin/students")
-                        .file(new MockMultipartFile(
-                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
-        ).andDo(print());
-    }
+//    @Test
+//    public void insertCompanyByAdminUploadExcel() throws Exception {
+//        File excel = new File(System.getProperty("user.dir")+"/src/test/resources", "company.xlsx");
+//
+//        mockMvc.perform(
+//                fileUpload("/admin/companies")
+//                        .file(new MockMultipartFile(
+//                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
+//        ).andDo(print());
+//    }
+//
+//    @Test
+//    public void insertTeacherByAdminUploadExcel() throws Exception {
+//        File excel = new File(System.getProperty("user.dir")+"/src/test/resources", "teacher.xlsx");
+//
+//        mockMvc.perform(
+//                fileUpload("/admin/teachers")
+//                        .file(new MockMultipartFile(
+//                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
+//        ).andDo(print());
+//    }
+//
+//    @Test
+//    public void insertStudentByAdminUploadExcel() throws Exception {
+//        File excel = new File(System.getProperty("user.dir")+"/src/test/resources", "student.xlsx");
+//
+//        mockMvc.perform(
+//                fileUpload("/admin/students")
+//                        .file(new MockMultipartFile(
+//                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
+//        ).andDo(print());
+//    }
 }
