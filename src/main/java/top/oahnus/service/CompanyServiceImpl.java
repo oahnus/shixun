@@ -7,6 +7,7 @@ import top.oahnus.entity.Company;
 import top.oahnus.exception.BadRequestParamException;
 import top.oahnus.exception.SQLExecuteExceeption;
 import top.oahnus.mapper.CompanyMapper;
+import top.oahnus.util.StringUtil;
 
 import java.util.List;
 
@@ -35,12 +36,44 @@ public class CompanyServiceImpl implements CompanyService {
                 companyDto.getAddress(),
                 companyDto.getEmail()
         );
+        System.out.println(company);
         Integer count = companyMapper.insertIntoCompany(company);
-        System.out.println(company.getId());
-        if (count > 0) {
-            return company;
+        if (count < 0) {
+            throw new SQLExecuteExceeption("插入数据库失败");
         } else {
-            throw new SQLExecuteExceeption("数据库存储失败");
+            company = companyMapper.selectCompanyByName(companyDto.getName());
+            return company;
+        }
+    }
+
+    // TODO 更新操作返回Bean？此处返回的company id为null
+    @Override
+    public Company updateCompany(CompanyDto companyDto) {
+        Company company = new Company(
+                companyDto.getName(),
+                companyDto.getContact(),
+                companyDto.getContactPhone(),
+                companyDto.getAddress(),
+                companyDto.getEmail()
+        );
+        Integer count = companyMapper.updateCompany(company);
+        if (count < 0) {
+            throw new SQLExecuteExceeption("更新数据库失败");
+        } else {
+            return company;
+        }
+    }
+
+    @Override
+    public Integer deleteCompany(String companyId) {
+        if (StringUtil.isEmpty(companyId)) {
+            throw new BadRequestParamException("请求参数错误");
+        }
+        Integer count = companyMapper.deleteCompanyById(companyId);
+        if (count > 0) {
+            return count;
+        } else {
+            throw new SQLExecuteExceeption("删除数据库失败");
         }
     }
 }

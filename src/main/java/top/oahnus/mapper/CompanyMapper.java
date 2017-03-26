@@ -13,6 +13,7 @@ import java.util.List;
 @Mapper
 public interface CompanyMapper {
     List<Company> selectAllCompany(@Param("offset")Integer offset, @Param("limit")Integer limit);
+    Company selectCompanyByName(@Param("name") String name);
 
     Integer insertIntoCompany(Company company);
 

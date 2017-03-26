@@ -7,17 +7,24 @@
     <resultMap id="company_map" type="Company">
         <result column="id" property="id" javaType="String"/>
         <result column="name" property="name" javaType="String"/>
-        <result column="contact" property="name" javaType="String"/>
+        <result column="contact" property="contact" javaType="String"/>
         <result column="contact_phone" property="contactPhone" javaType="String"/>
         <result column="address" property="address" javaType="String"/>
         <result column="email" property="email" javaType="String"/>
     </resultMap>
 
+    <!--Query-->
     <select id="selectAllCompany" resultMap="company_map">
         SELECT id, name, contact, contact_phone, address, email
         FROM company LIMIT #{offset},#{limit}
     </select>
 
+    <select id="selectCompanyByName" resultMap="company_map">
+        SELECT id, name, contact, contact_phone, address, email
+        FROM company WHERE name = #{name}
+    </select>
+
+    <!--Insert-->
     <insert id="insertIntoCompany" parameterType="Company">
         INSERT IGNORE INTO company
         (id, name, contact, contact_phone, address, email)
@@ -25,6 +32,7 @@
         (#{id}, #{name}, #{contact}, #{contactPhone}, #{address}, #{email})
     </insert>
 
+    <!--Update-->
     <update id="updateCompany">
         UPDATE company SET
         name = #{name},
@@ -35,6 +43,7 @@
         WHERE id = #{id}
     </update>
 
+    <!--Delete-->
     <delete id="deleteCompanyById" parameterType="String">
         DELETE FROM company WHERE id = #{id}
     </delete>

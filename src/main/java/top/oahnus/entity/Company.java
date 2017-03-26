@@ -18,7 +18,7 @@ public class Company {
 
     public Company(){}
 
-    public Company(String name, String contact, String address, String contactPhone, String email) {
+    public Company(String name, String contact, String contactPhone, String address, String email) {
         this.name = name;
         this.contact = contact;
         this.contactPhone = contactPhone;
