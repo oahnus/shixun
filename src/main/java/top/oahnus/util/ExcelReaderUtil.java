@@ -1,5 +1,6 @@
 package top.oahnus.util;
 
+import javafx.application.Application;
 import lombok.extern.log4j.Log4j2;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -9,6 +10,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import top.oahnus.config.ExcelReaderConfig;
 import top.oahnus.entity.Company;
 import top.oahnus.entity.Student;
 import top.oahnus.entity.Teacher;
@@ -20,13 +25,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Excel解析工具类,可以根据Excel中的标题导入数据
  */
+@Component
 public class ExcelReaderUtil {
     private static final String EXCEL_2003_EXTENSION = ".xls";
     private static final String EXCEL_2007_EXTENSION = ".xlsx";
+
+    @Autowired
+    private ExcelReaderConfig config;
 
     /**
      * 从Cell中获取对应类型的值的字符串

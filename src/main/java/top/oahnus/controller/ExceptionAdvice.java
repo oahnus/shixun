@@ -5,10 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import top.oahnus.dto.ResponseData;
-import top.oahnus.exception.ClientException;
-import top.oahnus.exception.DataExistedException;
-import top.oahnus.exception.NoAuthException;
-import top.oahnus.exception.NotFoundException;
+import top.oahnus.exception.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -47,6 +44,10 @@ public class ExceptionAdvice {
             return new ResponseData(ServerState.DATA_NOT_FOUND_ERROR, e.getMessage());
         } else if (e instanceof DataExistedException) {
             return new ResponseData(ServerState.DATA_EXISTED_ERROR, e.getMessage());
+        } else if (e instanceof SQLExecuteFailedExceeption) {
+            return new ResponseData(ServerState.SQL_EXECUTE_FAILED, e.getMessage());
+        } else if (e instanceof ReadDataFailedException) {
+            return new ResponseData(ServerState.READ_DATA_FAILED, e.getMessage());
         } else {
             return new ResponseData(ServerState.FAILED, e.getMessage());
         }

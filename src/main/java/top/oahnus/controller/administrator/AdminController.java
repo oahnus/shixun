@@ -3,6 +3,7 @@ package top.oahnus.controller.administrator;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ import top.oahnus.entity.Student;
 import top.oahnus.entity.Teacher;
 import top.oahnus.enums.AuthType;
 import top.oahnus.exception.DataFormatException;
+import top.oahnus.service.CompanyService;
 import top.oahnus.util.ExcelReaderUtil;
 
 import java.io.File;
@@ -31,21 +33,23 @@ import java.util.List;
 @CrossOrigin
 public class AdminController {
 
-    @RequestMapping("/students")
-    public ResponseData<List<Student>> insertStudentByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException {
+    @Autowired
+    private CompanyService companyService;
+
+    @PostMapping("/students")
+    public ResponseData<List<Company>> insertCompanyByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException {
         String tempPath = mhsr.getSession().getServletContext().getRealPath("/WEB-INF/temp/");
         MultipartFile file = mhsr.getFile(Constants.UPLOAD_FILE_PARAM_NAME);
         File excel = new File(tempPath, file.getOriginalFilename());
 
         FileUtils.copyInputStreamToFile(file.getInputStream(), excel);
 
-        List<Student> students = ExcelReaderUtil.readExcelFile(excel, AuthType.STUDENT);
+        List<Company> companies = ExcelReaderUtil.readExcelFile(excel, AuthType.COMPANY);
 
-        if(students == null) throw new DataFormatException("无法从文件中获取公司信息");
+        if(companies == null) throw new DataFormatException("无法从文件中获取公司信息");
 
-        List<Student> studentList = null;
-//        List<Student> studentList = studentService.insertStudents(students);
+        List<Company> companyList = companyService.insertCompanies(companies);
 
-        return new ResponseData<>(ServerState.SUCCESS, studentList, "");
+        return new ResponseData<>(ServerState.SUCCESS, companyList, "");
     }
 }

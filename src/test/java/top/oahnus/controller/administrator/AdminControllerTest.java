@@ -36,16 +36,16 @@ public class AdminControllerTest {
 
     }
 
-//    @Test
-//    public void insertCompanyByAdminUploadExcel() throws Exception {
-//        File excel = new File(System.getProperty("user.dir")+"/src/test/resources", "company.xlsx");
-//
-//        mockMvc.perform(
-//                fileUpload("/admin/companies")
-//                        .file(new MockMultipartFile(
-//                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
-//        ).andDo(print());
-//    }
+    @Test
+    public void insertCompanyByAdminUploadExcel() throws Exception {
+        File excel = new File(System.getProperty("user.dir")+"/src/test/excel", "company.xlsx");
+
+        mockMvc.perform(
+                fileUpload("/admin/companies")
+                        .file(new MockMultipartFile(
+                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
+        ).andDo(print());
+    }
 //
 //    @Test
 //    public void insertTeacherByAdminUploadExcel() throws Exception {

@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import top.oahnus.dto.CompanyDto;
 import top.oahnus.entity.Company;
 import top.oahnus.exception.BadRequestParamException;
-import top.oahnus.exception.SQLExecuteExceeption;
+import top.oahnus.exception.ReadDataFailedException;
+import top.oahnus.exception.SQLExecuteFailedExceeption;
 import top.oahnus.mapper.CompanyMapper;
 import top.oahnus.util.StringUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +41,7 @@ public class CompanyServiceImpl implements CompanyService {
         System.out.println(company);
         Integer count = companyMapper.insertIntoCompany(company);
         if (count < 0) {
-            throw new SQLExecuteExceeption("插入数据库失败");
+            throw new SQLExecuteFailedExceeption("插入数据库失败");
         } else {
             company = companyMapper.selectCompanyByName(companyDto.getName());
             return company;
@@ -58,7 +60,7 @@ public class CompanyServiceImpl implements CompanyService {
         );
         Integer count = companyMapper.updateCompany(company);
         if (count < 0) {
-            throw new SQLExecuteExceeption("更新数据库失败");
+            throw new SQLExecuteFailedExceeption("更新数据库失败");
         } else {
             return company;
         }
@@ -73,7 +75,25 @@ public class CompanyServiceImpl implements CompanyService {
         if (count > 0) {
             return count;
         } else {
-            throw new SQLExecuteExceeption("删除数据库失败");
+            throw new SQLExecuteFailedExceeption("删除数据库失败");
         }
+    }
+
+    @Override
+    public List<Company> insertCompanies(List<Company> companies) {
+        if (companies == null) {
+            throw new ReadDataFailedException("从Excel中读取数据失败");
+        }
+        List<Company> companyList = new ArrayList<>();
+        // java8 for each
+        companies.forEach(company -> {
+            Integer count = companyMapper.insertIntoCompany(company);
+            if (count < 0) {
+                throw new SQLExecuteFailedExceeption("插入数据库失败");
+            } else {
+                companyList.add(companyMapper.selectCompanyByName(company.getName()));
+            }
+        });
+        return companyList;
     }
 }
