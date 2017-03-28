@@ -15,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * Created by oahnus on 2017/2/27.
+ *
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,26 +46,26 @@ public class AdminControllerTest {
                                 "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
         ).andDo(print());
     }
-//
-//    @Test
-//    public void insertTeacherByAdminUploadExcel() throws Exception {
-//        File excel = new File(System.getProperty("user.dir")+"/src/test/resources", "teacher.xlsx");
-//
-//        mockMvc.perform(
-//                fileUpload("/admin/teachers")
-//                        .file(new MockMultipartFile(
-//                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
-//        ).andDo(print());
-//    }
-//
-//    @Test
-//    public void insertStudentByAdminUploadExcel() throws Exception {
-//        File excel = new File(System.getProperty("user.dir")+"/src/test/resources", "student.xlsx");
-//
-//        mockMvc.perform(
-//                fileUpload("/admin/students")
-//                        .file(new MockMultipartFile(
-//                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
-//        ).andDo(print());
-//    }
+
+    @Test
+    public void insertTeacherByAdminUploadExcel() throws Exception {
+        File excel = new File(System.getProperty("user.dir")+"/src/test/excel", "teacher.xlsx");
+
+        mockMvc.perform(
+                fileUpload("/admin/teachers")
+                        .file(new MockMultipartFile(
+                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
+        ).andDo(print());
+    }
+
+    @Test
+    public void insertStudentByAdminUploadExcel() throws Exception {
+        File excel = new File(System.getProperty("user.dir")+"/src/test/excel", "student.xlsx");
+
+        mockMvc.perform(
+                fileUpload("/admin/students")
+                        .file(new MockMultipartFile(
+                                "upload_file", excel.getName(), "xlsx", new FileInputStream(excel)))
+        ).andDo(print());
+    }
 }

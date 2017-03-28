@@ -16,6 +16,7 @@ public interface CompanyMapper {
     Company selectCompanyByName(@Param("name") String name);
 
     Integer insertIntoCompany(Company company);
+    Integer insertCompanies(List<Company> companies);
 
     Integer updateCompany(Company company);
 

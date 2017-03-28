@@ -18,6 +18,7 @@ import top.oahnus.entity.Teacher;
 import top.oahnus.enums.AuthType;
 import top.oahnus.exception.DataFormatException;
 import top.oahnus.service.CompanyService;
+import top.oahnus.service.TeacherService;
 import top.oahnus.util.ExcelReaderUtil;
 
 import java.io.File;
@@ -36,7 +37,10 @@ public class AdminController {
     @Autowired
     private CompanyService companyService;
 
-    @PostMapping("/students")
+    @Autowired
+    private TeacherService teacherService;
+
+    @PostMapping("/companies")
     public ResponseData<List<Company>> insertCompanyByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException {
         String tempPath = mhsr.getSession().getServletContext().getRealPath("/WEB-INF/temp/");
         MultipartFile file = mhsr.getFile(Constants.UPLOAD_FILE_PARAM_NAME);
@@ -51,5 +55,22 @@ public class AdminController {
         List<Company> companyList = companyService.insertCompanies(companies);
 
         return new ResponseData<>(ServerState.SUCCESS, companyList, "");
+    }
+
+    @PostMapping("/teachers")
+    public ResponseData<List<Teacher>> insertTeacherByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException{
+        String tempPath = mhsr.getSession().getServletContext().getRealPath("/WEB-INF/temp/");
+        MultipartFile file = mhsr.getFile(Constants.UPLOAD_FILE_PARAM_NAME);
+        File excel = new File(tempPath, file.getOriginalFilename());
+
+        FileUtils.copyInputStreamToFile(file.getInputStream(), excel);
+
+        List<Teacher> teachers = ExcelReaderUtil.readExcelFile(excel, AuthType.TEACHER);
+
+        if (teachers == null) throw new DataFormatException("无法从文件种获取教师信息");
+
+        List<Teacher> teacherList = teacherService.insertTeachers(teachers);
+
+        return new ResponseData<>(ServerState.SUCCESS, teacherList, "");
     }
 }

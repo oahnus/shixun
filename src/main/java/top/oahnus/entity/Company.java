@@ -1,6 +1,7 @@
 package top.oahnus.entity;
 
 import lombok.Data;
+import top.oahnus.dto.CompanyDto;
 
 
 /**
@@ -24,5 +25,13 @@ public class Company {
         this.contactPhone = contactPhone;
         this.address = address;
         this.email = email;
+    }
+
+    public Company(CompanyDto companyDto) {
+        this.name = companyDto.getName();
+        this.contact = companyDto.getContact();
+        this.contactPhone = companyDto.getContactPhone();
+        this.address = companyDto.getAddress();
+        this.email = companyDto.getEmail();
     }
 }

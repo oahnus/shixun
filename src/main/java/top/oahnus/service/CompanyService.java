@@ -7,7 +7,8 @@ import top.oahnus.entity.Student;
 import java.util.List;
 
 /**
- * Created by oahnus on 2017/3/23 20:40.
+ * Created by oahnus on 2017/3/23
+ * 20:40.
  */
 public interface CompanyService {
     List<Company> getAllCompany(Integer page, Integer limit);

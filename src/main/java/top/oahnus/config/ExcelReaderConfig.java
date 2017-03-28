@@ -9,7 +9,8 @@ import top.oahnus.entity.Student;
 import top.oahnus.entity.Teacher;
 
 /**
- * Created by oahnus on 2017/3/26 21:01.
+ * Created by oahnus on 2017/3/26
+ * 21:01.
  */
 @Data
 @Configuration

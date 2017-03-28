@@ -1,19 +1,13 @@
 package top.oahnus.controller.core;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import top.oahnus.Constants;
 import top.oahnus.controller.ServerState;
 import top.oahnus.dto.CompanyDto;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.entity.Company;
 import top.oahnus.service.CompanyService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**

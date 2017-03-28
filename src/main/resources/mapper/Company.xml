@@ -32,6 +32,15 @@
         (#{id}, #{name}, #{contact}, #{contactPhone}, #{address}, #{email})
     </insert>
 
+    <insert id="insertCompanies" parameterType="List">
+        INSERT IGNORE INTO company
+        (name, contact, contact_phone, address, email)
+        VALUES
+        <foreach collection="list" item="item" separator="," index="index">
+            (#{item.name}, #{item.contact}, #{item.contactPhone}, #{item.address}, #{item.email})
+        </foreach>
+    </insert>
+
     <!--Update-->
     <update id="updateCompany">
         UPDATE company SET

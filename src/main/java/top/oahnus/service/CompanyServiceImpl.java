@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by oahnus on 2017/3/23 20:41.
+ * Created by oahnus on 2017/3/23 
+ * 20:41.
  */
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -31,13 +32,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company addCompany(CompanyDto companyDto) {
-        Company company = new Company(
-                companyDto.getName(),
-                companyDto.getContact(),
-                companyDto.getContactPhone(),
-                companyDto.getAddress(),
-                companyDto.getEmail()
-        );
+        Company company = new Company(companyDto);
         System.out.println(company);
         Integer count = companyMapper.insertIntoCompany(company);
         if (count < 0) {
@@ -51,13 +46,7 @@ public class CompanyServiceImpl implements CompanyService {
     // TODO 更新操作返回Bean？此处返回的company id为null
     @Override
     public Company updateCompany(CompanyDto companyDto) {
-        Company company = new Company(
-                companyDto.getName(),
-                companyDto.getContact(),
-                companyDto.getContactPhone(),
-                companyDto.getAddress(),
-                companyDto.getEmail()
-        );
+        Company company = new Company(companyDto);
         Integer count = companyMapper.updateCompany(company);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("更新数据库失败");
@@ -86,14 +75,15 @@ public class CompanyServiceImpl implements CompanyService {
         }
         List<Company> companyList = new ArrayList<>();
         // java8 for each
-        companies.forEach(company -> {
-            Integer count = companyMapper.insertIntoCompany(company);
-            if (count < 0) {
-                throw new SQLExecuteFailedExceeption("插入数据库失败");
-            } else {
+        Integer count = companyMapper.insertCompanies(companies);
+        if (count < 0) {
+            throw new SQLExecuteFailedExceeption("插入数据库失败");
+        } else {
+            // TODO 把循环放到SQL中执行？
+            companies.forEach(company -> {
                 companyList.add(companyMapper.selectCompanyByName(company.getName()));
-            }
-        });
+            });
+        }
         return companyList;
     }
 }
