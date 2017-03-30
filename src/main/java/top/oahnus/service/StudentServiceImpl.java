@@ -1,6 +1,18 @@
 package top.oahnus.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.oahnus.dto.StudentDto;
+import top.oahnus.entity.Student;
+import top.oahnus.entity.Teacher;
+import top.oahnus.exception.BadRequestParamException;
+import top.oahnus.exception.ReadDataFailedException;
+import top.oahnus.exception.SQLExecuteFailedExceeption;
+import top.oahnus.mapper.StudentMapper;
+import top.oahnus.util.StringUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by oahnus on 2017/3/28
@@ -8,4 +20,64 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class StudentServiceImpl implements StudentService {
+
+    @Autowired
+    private StudentMapper studentMapper;
+
+    @Override
+    public List<Student> selectStudentByProfession(String profession, Integer page, Integer limit) {
+        if (StringUtil.isEmpty(profession) || page == null || limit == null) {
+            throw new BadRequestParamException("请求参数错误");
+        }
+        List<Student> studentList = studentMapper.selectStudentByProfession(profession, (page-1)*limit, limit);
+        return studentList;
+    }
+
+    @Override
+    public List<Student> selectStudentByDepart(String depart, Integer page, Integer limit) {
+        if (StringUtil.isEmpty(depart) || page == null || limit == null) {
+            throw new BadRequestParamException("请求参数错误");
+        }
+        List<Student> studentList = studentMapper.selectStudentByProfession(depart, (page-1)*limit, limit);
+        return studentList;
+    }
+
+    @Override
+    public List<Student> insertStudents(List<Student> students) {
+        if (students == null) throw new ReadDataFailedException("读取Excel文件失败");
+
+        List<Student> studentList = new ArrayList<>();
+
+        Integer count = studentMapper.insertIntoStudent(students);
+        if (count < 0) {
+            throw new SQLExecuteFailedExceeption("插入数据库失败");
+        } else {
+            students.forEach(student -> {
+                studentList.add(studentMapper.selectStudentByStudentNum(student.getStudentNum()));
+            });
+        }
+        return studentList;
+    }
+
+    @Override
+    public Integer deleteStudentById(String studentId) {
+        if (StringUtil.isEmpty(studentId)) throw new BadRequestParamException("学生ID为空,请求参数错误");
+        Integer count = studentMapper.deleteStudentById(studentId);
+        if (count < 0) {
+            throw new SQLExecuteFailedExceeption("删除学生信息失败");
+        } else {
+            return count;
+        }
+    }
+
+    @Override
+    public Student updateStudent(StudentDto studentDto) {
+        Student student = new Student(studentDto);
+        Integer count = studentMapper.updateStudent(student);
+        if (count < 0) {
+            throw new SQLExecuteFailedExceeption("更新学生数据失败");
+        } else {
+            return student;
+        }
+    }
 }

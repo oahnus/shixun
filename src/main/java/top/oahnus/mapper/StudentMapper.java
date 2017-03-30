@@ -2,7 +2,6 @@ package top.oahnus.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import top.oahnus.entity.Company;
 import top.oahnus.entity.Student;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
  */
 @Mapper
 public interface StudentMapper {
-    Company selectCompanyByStudentNum(@Param("studentNum")String studentNum);
+    Student selectStudentByStudentNum(@Param("studentNum")String studentNum);
     List<Student> selectStudentByProfession(@Param("profession")String profession, @Param("offset")Integer offset, @Param("limit")Integer limit);
     List<Student> selectStudentByDepart(@Param("depart")String depart, @Param("offset")Integer offset, @Param("limit")Integer limit);
 

@@ -17,7 +17,9 @@ import top.oahnus.entity.Student;
 import top.oahnus.entity.Teacher;
 import top.oahnus.enums.AuthType;
 import top.oahnus.exception.DataFormatException;
+import top.oahnus.exception.ReadDataFailedException;
 import top.oahnus.service.CompanyService;
+import top.oahnus.service.StudentService;
 import top.oahnus.service.TeacherService;
 import top.oahnus.util.ExcelReaderUtil;
 
@@ -40,6 +42,9 @@ public class AdminController {
     @Autowired
     private TeacherService teacherService;
 
+    @Autowired
+    private StudentService studentService;
+
     @PostMapping("/companies")
     public ResponseData<List<Company>> insertCompanyByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException {
         String tempPath = mhsr.getSession().getServletContext().getRealPath("/WEB-INF/temp/");
@@ -50,7 +55,7 @@ public class AdminController {
 
         List<Company> companies = ExcelReaderUtil.readExcelFile(excel, AuthType.COMPANY);
 
-        if(companies == null) throw new DataFormatException("无法从文件中获取公司信息");
+        if(companies == null) throw new ReadDataFailedException("无法从文件中获取公司信息");
 
         List<Company> companyList = companyService.insertCompanies(companies);
 
@@ -67,10 +72,27 @@ public class AdminController {
 
         List<Teacher> teachers = ExcelReaderUtil.readExcelFile(excel, AuthType.TEACHER);
 
-        if (teachers == null) throw new DataFormatException("无法从文件种获取教师信息");
+        if (teachers == null) throw new ReadDataFailedException("无法从文件中获取教师信息");
 
         List<Teacher> teacherList = teacherService.insertTeachers(teachers);
 
         return new ResponseData<>(ServerState.SUCCESS, teacherList, "");
+    }
+
+    @PostMapping("/students")
+    public ResponseData<List<Student>> insertStudentByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException {
+        String tempPath = mhsr.getSession().getServletContext().getRealPath("/WEB-INF/temp/");
+        MultipartFile file = mhsr.getFile(Constants.UPLOAD_FILE_PARAM_NAME);
+        File excel = new File(tempPath, file.getOriginalFilename());
+
+        FileUtils.copyInputStreamToFile(file.getInputStream(), excel);
+
+        List<Student> students = ExcelReaderUtil.readExcelFile(excel, AuthType.STUDENT);
+
+        if (students == null) throw new ReadDataFailedException("无法从文件中获取学生信息");
+
+        List<Student> studentList = studentService.insertStudents(students);
+
+        return new ResponseData<>(ServerState.SUCCESS, studentList, "");
     }
 }
