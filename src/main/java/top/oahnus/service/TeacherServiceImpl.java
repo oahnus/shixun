@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import top.oahnus.dto.TeacherDto;
 import top.oahnus.entity.Teacher;
 import top.oahnus.exception.BadRequestParamException;
+import top.oahnus.exception.DataExistedException;
 import top.oahnus.exception.ReadDataFailedException;
 import top.oahnus.exception.SQLExecuteFailedExceeption;
 import top.oahnus.mapper.TeacherMapper;
@@ -44,7 +45,7 @@ public class TeacherServiceImpl implements TeacherService {
 
         List<Teacher> teacherList = new ArrayList<>();
 
-        Integer count = teacherMapper.insertIntoTeacher(teachers);
+        Integer count = teacherMapper.insertTeachers(teachers);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("插入数据库失败");
         } else {
@@ -53,6 +54,22 @@ public class TeacherServiceImpl implements TeacherService {
             });
         }
         return teacherList;
+    }
+
+    @Override
+    public Teacher insertOneTeacher(TeacherDto teacherDto) {
+        if (teacherDto == null) throw new BadRequestParamException("请求参数错误");
+
+        Teacher teacher = new Teacher(teacherDto);
+        Integer count = teacherMapper.insertOneTeacher(teacher);
+        if (count < 0) {
+            throw new SQLExecuteFailedExceeption("插入数据库失败");
+        } else if (count == 0) {
+            throw new DataExistedException("数据已存在");
+        } else {
+            teacher = teacherMapper.selectTeacherByWorkerId(teacher.getWorkerId());
+            return teacher;
+        }
     }
 
     @Override

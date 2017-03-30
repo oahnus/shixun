@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.oahnus.dto.StudentDto;
 import top.oahnus.entity.Student;
-import top.oahnus.entity.Teacher;
 import top.oahnus.exception.BadRequestParamException;
+import top.oahnus.exception.DataExistedException;
 import top.oahnus.exception.ReadDataFailedException;
 import top.oahnus.exception.SQLExecuteFailedExceeption;
 import top.oahnus.mapper.StudentMapper;
@@ -48,7 +48,7 @@ public class StudentServiceImpl implements StudentService {
 
         List<Student> studentList = new ArrayList<>();
 
-        Integer count = studentMapper.insertIntoStudent(students);
+        Integer count = studentMapper.insertStudents(students);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("插入数据库失败");
         } else {
@@ -57,6 +57,22 @@ public class StudentServiceImpl implements StudentService {
             });
         }
         return studentList;
+    }
+
+    @Override
+    public Student insertOneStudent(StudentDto studentDto) {
+        if (studentDto == null) throw new BadRequestParamException("请求参数错误");
+
+        Student student = new Student(studentDto);
+        Integer count = studentMapper.insertOneStudent(student);
+        if (count < 0) {
+            throw new SQLExecuteFailedExceeption("插入数据库失败");
+        } else if (count == 0) {
+            throw new DataExistedException("数据已存在");
+        } else {
+            student = studentMapper.selectStudentByStudentNum(student.getStudentNum());
+            return student;
+        }
     }
 
     @Override

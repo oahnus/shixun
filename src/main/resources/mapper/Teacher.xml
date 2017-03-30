@@ -39,13 +39,20 @@
     </select>
 
     <!--insert-->
-    <insert id="insertIntoTeacher" parameterType="List">
+    <insert id="insertTeachers" parameterType="List">
         INSERT IGNORE INTO teacher
         (worker_id, name, sex, job_title, profession, depart, email)
         VALUES
         <foreach collection="list" separator="," item="item" index="index">
             (#{item.workerId}, #{item.name}, #{item.sex}, #{item.jobTitle}, #{item.profession}, #{item.depart}, #{item.email})
         </foreach>
+    </insert>
+
+    <insert id="insertOneTeacher" parameterType="Teacher">
+        INSERT IGNORE into teacher
+        (worker_id, name, sex, job_title, profession, depart, email)
+        VALUE
+        (#{workerId}, #{iname}, #{sex}, #{jobTitle}, #{profession}, #{depart}, #{email})
     </insert>
 
     <!--update-->

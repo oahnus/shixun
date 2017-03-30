@@ -2,16 +2,15 @@ package top.oahnus.controller.administrator;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import top.oahnus.Constants;
 import top.oahnus.controller.ServerState;
+import top.oahnus.dto.CompanyDto;
 import top.oahnus.dto.ResponseData;
+import top.oahnus.dto.StudentDto;
 import top.oahnus.entity.Company;
 import top.oahnus.entity.Student;
 import top.oahnus.entity.Teacher;
@@ -45,6 +44,9 @@ public class AdminController {
     @Autowired
     private StudentService studentService;
 
+    /**
+     * 从Excel批量插入公司信息
+     */
     @PostMapping("/companies")
     public ResponseData<List<Company>> insertCompanyByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException {
         String tempPath = mhsr.getSession().getServletContext().getRealPath("/WEB-INF/temp/");
@@ -62,6 +64,9 @@ public class AdminController {
         return new ResponseData<>(ServerState.SUCCESS, companyList, "");
     }
 
+    /**
+     * 从Excel批量插入教师信息
+     */
     @PostMapping("/teachers")
     public ResponseData<List<Teacher>> insertTeacherByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException{
         String tempPath = mhsr.getSession().getServletContext().getRealPath("/WEB-INF/temp/");
@@ -79,6 +84,9 @@ public class AdminController {
         return new ResponseData<>(ServerState.SUCCESS, teacherList, "");
     }
 
+    /**
+     * 从Excel批量插入学生信息
+     */
     @PostMapping("/students")
     public ResponseData<List<Student>> insertStudentByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException {
         String tempPath = mhsr.getSession().getServletContext().getRealPath("/WEB-INF/temp/");
@@ -95,4 +103,5 @@ public class AdminController {
 
         return new ResponseData<>(ServerState.SUCCESS, studentList, "");
     }
+
 }

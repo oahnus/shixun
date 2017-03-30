@@ -19,13 +19,17 @@
         FROM company LIMIT #{offset},#{limit}
     </select>
 
+    <select id="selectCountOfCompany" resultType="Integer">
+        SELECT count(name) FROM company
+    </select>
+
     <select id="selectCompanyByName" resultMap="company_map">
         SELECT id, name, contact, contact_phone, address, email
         FROM company WHERE name = #{name}
     </select>
 
     <!--Insert-->
-    <insert id="insertIntoCompany" parameterType="Company">
+    <insert id="insertOneCompany" parameterType="Company">
         INSERT IGNORE INTO company
         (id, name, contact, contact_phone, address, email)
         VALUE

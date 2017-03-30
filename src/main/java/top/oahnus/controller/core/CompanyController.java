@@ -21,12 +21,6 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    @PostMapping
-    public ResponseData<Company> insertNewCompany(@RequestBody CompanyDto companyDto) {
-        Company company = companyService.addCompany(companyDto);
-        return new ResponseData<>(ServerState.SUCCESS, company, "success");
-    }
-
     @GetMapping
     public ResponseData<List<Company>> getAllCompany(@RequestParam("page")Integer page, @RequestParam("limit")Integer limit) {
         List<Company> companies = companyService.getAllCompany(page, limit);
@@ -43,5 +37,14 @@ public class CompanyController {
     public ResponseData<String> deleteCompanyById(@PathVariable String companyId) {
         companyService.deleteCompany(companyId);
         return new ResponseData<>(ServerState.SUCCESS, "success");
+    }
+
+    /**
+     * 单条插入公司信息
+     */
+    @PostMapping
+    public ResponseData<Company> insertNewCompany(@RequestBody CompanyDto companyDto) {
+        Company company = companyService.addCompany(companyDto);
+        return new ResponseData<>(ServerState.SUCCESS, company, "success");
     }
 }

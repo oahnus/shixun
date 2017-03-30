@@ -14,6 +14,7 @@ public interface TeacherService {
     List<Teacher> selectTeacherByDepart(String depart, Integer page, Integer limit);
 
     List<Teacher> insertTeachers(List<Teacher> teacherList);
+    Teacher insertOneTeacher(TeacherDto teacherDto);
     Integer deleteTeacherById(String teacherId);
     Teacher updateTeacher(TeacherDto teacherDto);
 }

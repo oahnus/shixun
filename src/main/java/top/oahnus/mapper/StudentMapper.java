@@ -16,7 +16,9 @@ public interface StudentMapper {
     List<Student> selectStudentByProfession(@Param("profession")String profession, @Param("offset")Integer offset, @Param("limit")Integer limit);
     List<Student> selectStudentByDepart(@Param("depart")String depart, @Param("offset")Integer offset, @Param("limit")Integer limit);
 
-    Integer insertIntoStudent(List<Student> studentList);
+    Integer insertStudents(List<Student> studentList);
+    Integer insertOneStudent(Student student);
+
     Integer deleteStudentById(@Param("id")String studentId);
     Integer updateStudent(Student student);
 }
