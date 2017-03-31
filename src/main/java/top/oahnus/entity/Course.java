@@ -1,6 +1,8 @@
 package top.oahnus.entity;
 
 import lombok.Data;
+import top.oahnus.dto.CourseDto;
+import top.oahnus.enums.CourseState;
 
 import java.util.Date;
 
@@ -21,22 +23,26 @@ public class Course {
     // 课程开课时间
     private Date startTime;
     // 课程授课时长
-    private Date duration;
+    private Date endTime;
     // 课程附件在服务器上的URL
     private String addition;
     // 课程信息更新时间
     private Date updateTime;
+    // 开课状态
+    private CourseState state;
 
     public Course() {}
 
-    public Course(String name, String teacherId, String companyId, String professions, String memo, Date startTime, Date duration, String addition) {
-        this.name = name;
-        this.teacherId = teacherId;
-        this.companyId = companyId;
-        this.professions = professions;
-        this.memo = memo;
-        this.startTime = startTime;
-        this.duration = duration;
-        this.addition = addition;
+    public Course(CourseDto courseDto) {
+        this.name = courseDto.getName();
+        this.teacherId = courseDto.getTeacherId();
+        this.companyId = courseDto.getCompanyId();
+        this.professions = courseDto.getProfessions();
+        this.memo = courseDto.getMemo();
+        this.startTime = courseDto.getStartTime();
+        this.endTime = courseDto.getEndTime();
+        this.addition = courseDto.getAddition();
+        this.updateTime = new Date();
+        this.state = CourseState.valueOf(courseDto.getState());
     }
 }

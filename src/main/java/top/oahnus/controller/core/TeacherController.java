@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.oahnus.controller.ServerState;
+import top.oahnus.dto.Page;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.dto.TeacherDto;
 import top.oahnus.entity.Teacher;
@@ -25,23 +26,23 @@ public class TeacherController {
     private TeacherService teacherService;
 
     @GetMapping("/professions")
-    public ResponseData<List<Teacher>> getTeacherByProfession(
+    public ResponseData<Page> getTeacherByProfession(
             @RequestParam("profession")String profession,
             @RequestParam("page")Integer page,
             @RequestParam("limit")Integer limit) {
-        List<Teacher> teachers = new ArrayList<>();
-        teachers = teacherService.selectTeacherByProfession(profession, page, limit);
-        return new ResponseData<>(ServerState.SUCCESS, teachers, "success");
+        Page<List<Teacher>> p = new Page<>();
+        p = teacherService.selectTeacherByProfession(profession, page, limit);
+        return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
     @GetMapping("/departs")
-    public ResponseData<List<Teacher>> getTeacherByDepart(
+    public ResponseData<Page> getTeacherByDepart(
             @RequestParam("depart")String depart,
             @RequestParam("page")Integer page,
             @RequestParam("limit")Integer limit) {
-        List<Teacher> teachers = new ArrayList<>();
-        teachers = teacherService.selectTeacherByDepart(depart, page, limit);
-        return new ResponseData<>(ServerState.SUCCESS, teachers, "success");
+        Page<List<Teacher>> p = new Page<>();
+        p = teacherService.selectTeacherByDepart(depart, page, limit);
+        return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
     @PostMapping

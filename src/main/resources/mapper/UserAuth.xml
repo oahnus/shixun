@@ -3,16 +3,16 @@
         "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace = "top.oahnus.mapper.UserAuthMapper">
-    <resultMap id = "userAuthMap" type = "top.oahnus.entity.UserAuth">
+    <resultMap id = "userAuthMap" type= "top.oahnus.entity.UserAuth">
         <result property = "id" column = "id"/>
         <result property = "username" column = "username"/>
-        <result property = "type" column = "type" typeHandler="top.oahnus.handler.AuthTypeHandler"/>
+        <result property = "state" column = "state" typeHandler="top.oahnus.handler.AuthTypeHandler"/>
     </resultMap>
     <select id = "login" resultMap = "userAuthMap">
-        SELECT id,username,type
+        SELECT id,username,state
         FROM user_auth
         WHERE username = #{username}
         AND password = #{password}
-        AND type = #{type}
+        AND state = #{state}
     </select>
 </mapper>

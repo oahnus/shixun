@@ -3,6 +3,7 @@ package top.oahnus.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.oahnus.dto.CompanyDto;
+import top.oahnus.dto.Page;
 import top.oahnus.entity.Company;
 import top.oahnus.exception.BadRequestParamException;
 import top.oahnus.exception.ReadDataFailedException;
@@ -23,11 +24,13 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyMapper companyMapper;
 
     @Override
-    public List<Company> getAllCompany(Integer page, Integer limit) {
+    public Page<List<Company>> getAllCompany(Integer page, Integer limit) {
         if(page == null || limit == null) {
             throw new BadRequestParamException("请求参数错误");
         }
-        return companyMapper.selectAllCompany((page - 1) * limit, limit);
+        List<Company> companies = companyMapper.selectAllCompany((page - 1) * limit, limit);
+        Integer totalRecord = companyMapper.selectCountOfCompany();
+        return new Page<>(companies, totalRecord, page, limit);
     }
 
     @Override

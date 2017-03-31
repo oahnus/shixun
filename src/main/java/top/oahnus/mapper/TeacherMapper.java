@@ -15,6 +15,9 @@ public interface TeacherMapper {
     Teacher selectTeacherByWorkerId(@Param("worker_id")String workerId);
     List<Teacher> selectTeacherByProfession(@Param("profession")String profession, @Param("offset")Integer offset, @Param("limit")Integer limit);
     List<Teacher> selectTeacherByDepart(@Param("depart")String depart, @Param("offset")Integer offset, @Param("limit")Integer limit);
+    Integer selectCountTeacherByProfession(@Param("profession")String profession);
+    Integer selectCountTeacherByDepart(@Param("depart")String depart);
+
 
     Integer insertTeachers(List<Teacher> teacherList);
     Integer insertOneTeacher(Teacher teacher);

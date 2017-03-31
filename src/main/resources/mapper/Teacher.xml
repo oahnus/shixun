@@ -38,6 +38,14 @@
         FROM teacher WHERE depart = #{depart} LIMIT #{offset},#{limit}
     </select>
 
+    <select id="selectCountTeacherByDepart" parameterType="String" resultType="Integer">
+        SELECT count(id) FROM teacher WHERE depart = #{depart}
+    </select>
+
+    <select id="selectCountTeacherByProfession" resultType="Integer" parameterType="String">
+        SELECT count(id) FROM teacher WHERE profession = #{profession}
+    </select>
+
     <!--insert-->
     <insert id="insertTeachers" parameterType="List">
         INSERT IGNORE INTO teacher

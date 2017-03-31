@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.oahnus.controller.ServerState;
 import top.oahnus.dto.CompanyDto;
+import top.oahnus.dto.Page;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.entity.Company;
 import top.oahnus.service.CompanyService;
@@ -22,9 +23,9 @@ public class CompanyController {
     private CompanyService companyService;
 
     @GetMapping
-    public ResponseData<List<Company>> getAllCompany(@RequestParam("page")Integer page, @RequestParam("limit")Integer limit) {
-        List<Company> companies = companyService.getAllCompany(page, limit);
-        return new ResponseData<>(ServerState.SUCCESS, companies, "success");
+    public ResponseData<Page> getAllCompany(@RequestParam("page")Integer page, @RequestParam("limit")Integer limit) {
+        Page<List<Company>> p = companyService.getAllCompany(page, limit);
+        return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
     @PutMapping

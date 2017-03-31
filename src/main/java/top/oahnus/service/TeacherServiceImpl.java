@@ -2,6 +2,7 @@ package top.oahnus.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.oahnus.dto.Page;
 import top.oahnus.dto.TeacherDto;
 import top.oahnus.entity.Teacher;
 import top.oahnus.exception.BadRequestParamException;
@@ -24,19 +25,23 @@ public class TeacherServiceImpl implements TeacherService {
     private TeacherMapper teacherMapper;
 
     @Override
-    public List<Teacher> selectTeacherByProfession(String profession, Integer page, Integer limit) {
+    public Page<List<Teacher>> selectTeacherByProfession(String profession, Integer page, Integer limit) {
         if(page == null || limit == null || StringUtil.isEmpty(profession)) {
             throw new BadRequestParamException("请求参数错误");
         }
-        return teacherMapper.selectTeacherByProfession(profession, (page-1)*limit, limit);
+        List<Teacher> teachers = teacherMapper.selectTeacherByProfession(profession, (page-1)*limit, limit);
+        Integer totalRecord = teacherMapper.selectCountTeacherByProfession(profession);
+        return new Page<>(teachers, totalRecord, page, limit);
     }
 
     @Override
-    public List<Teacher> selectTeacherByDepart(String depart, Integer page, Integer limit) {
+    public Page<List<Teacher>> selectTeacherByDepart(String depart, Integer page, Integer limit) {
         if(page == null || limit == null || StringUtil.isEmpty(depart)) {
             throw new BadRequestParamException("请求参数错误");
         }
-        return teacherMapper.selectTeacherByDepart(depart, (page-1)*limit, limit);
+        List<Teacher> teachers = teacherMapper.selectTeacherByDepart(depart, (page-1)*limit, limit);
+        Integer totalRecord = teacherMapper.selectCountTeacherByDepart(depart);
+        return new Page<>(teachers, totalRecord, page, limit);
     }
 
     @Override

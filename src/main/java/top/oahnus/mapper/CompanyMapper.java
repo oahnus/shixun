@@ -15,6 +15,7 @@ public interface CompanyMapper {
     List<Company> selectAllCompany(@Param("offset")Integer offset, @Param("limit")Integer limit);
     Company selectCompanyByName(@Param("name") String name);
     //TODO 分页查询，同事返回数据总数
+    Integer selectCountOfCompany();
 
     Integer insertOneCompany(Company company);
     Integer insertCompanies(List<Company> companies);

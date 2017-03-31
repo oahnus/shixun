@@ -2,6 +2,7 @@ package top.oahnus.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.oahnus.dto.Page;
 import top.oahnus.dto.StudentDto;
 import top.oahnus.entity.Student;
 import top.oahnus.exception.BadRequestParamException;
@@ -25,21 +26,23 @@ public class StudentServiceImpl implements StudentService {
     private StudentMapper studentMapper;
 
     @Override
-    public List<Student> selectStudentByProfession(String profession, Integer page, Integer limit) {
+    public Page<List<Student>> selectStudentByProfession(String profession, Integer page, Integer limit) {
         if (StringUtil.isEmpty(profession) || page == null || limit == null) {
             throw new BadRequestParamException("请求参数错误");
         }
         List<Student> studentList = studentMapper.selectStudentByProfession(profession, (page-1)*limit, limit);
-        return studentList;
+        Integer totalRecord = studentMapper.selectCountStudentByProfession(profession);
+        return new Page<>(studentList, totalRecord, page, limit);
     }
 
     @Override
-    public List<Student> selectStudentByDepart(String depart, Integer page, Integer limit) {
+    public Page<List<Student>> selectStudentByDepart(String depart, Integer page, Integer limit) {
         if (StringUtil.isEmpty(depart) || page == null || limit == null) {
             throw new BadRequestParamException("请求参数错误");
         }
-        List<Student> studentList = studentMapper.selectStudentByProfession(depart, (page-1)*limit, limit);
-        return studentList;
+        List<Student> studentList = studentMapper.selectStudentByDepart(depart, (page-1)*limit, limit);
+        Integer totalRecord = studentMapper.selectCountStudentByDepart(depart);
+        return new Page<>(studentList, totalRecord, page, limit);
     }
 
     @Override

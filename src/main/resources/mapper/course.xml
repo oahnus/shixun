@@ -1,0 +1,19 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "top.oahnus.mapper.CourseMapper">
+    <resultMap id="course_map" type="Course">
+        <result column="id" property="id" javaType="String"/>
+        <result column="name" property="name" javaType="String"/>
+        <result column="teacher_id" property="teacherId" javaType="String"/>
+        <result column="company_id" property="companyId" javaType="Stirng"/>
+        <result column="professions" property="professions" javaType="String"/>
+        <result column="memo" property="memo" javaType="String"/>
+        <result column="start_time" property="startTime" javaType="Date"/>
+        <result column="end_time" property="endTime" javaType="Date"/>
+        <result column="addition" property="addition" javaType="String"/>
+        <result column="update_time" property="updateTime" javaType="String"/>
+        <result column="state" property="state" javaType="CourseState" typeHandler="top.oahnus.handler.CourseStateHandler"/>
+    </resultMap>
+</mapper>

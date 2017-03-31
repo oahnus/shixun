@@ -15,6 +15,8 @@ public interface StudentMapper {
     Student selectStudentByStudentNum(@Param("studentNum")String studentNum);
     List<Student> selectStudentByProfession(@Param("profession")String profession, @Param("offset")Integer offset, @Param("limit")Integer limit);
     List<Student> selectStudentByDepart(@Param("depart")String depart, @Param("offset")Integer offset, @Param("limit")Integer limit);
+    Integer selectCountStudentByDepart(@Param("depart")String depart);
+    Integer selectCountStudentByProfession(@Param("profession")String profession);
 
     Integer insertStudents(List<Student> studentList);
     Integer insertOneStudent(Student student);

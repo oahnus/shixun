@@ -232,7 +232,7 @@ CREATE TABLE user_auth (
   id VARCHAR(255) NOT NULL COMMENT '用户权限表的ID',
   username varchar(255) NOT NULL COMMENT '用户名，管理员为username,教师为worker_id,公司为name,学生为student_num',
   password varchar(255) NOT NULL COMMENT '密码',
-  type int(255) NOT NULL COMMENT '用户的角色',
+  state int(255) NOT NULL COMMENT '用户的角色',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

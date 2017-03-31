@@ -1,8 +1,8 @@
 package top.oahnus.service;
 
 import top.oahnus.dto.CompanyDto;
+import top.oahnus.dto.Page;
 import top.oahnus.entity.Company;
-import top.oahnus.entity.Student;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * 20:40.
  */
 public interface CompanyService {
-    List<Company> getAllCompany(Integer page, Integer limit);
+    Page<List<Company>> getAllCompany(Integer page, Integer limit);
     Company addCompany(CompanyDto companyDto);
     Company updateCompany(CompanyDto companyDto);
     Integer deleteCompany(String companyId);

@@ -37,6 +37,14 @@
         FROM student WHERE depart = #{depart} LIMIT #{offset},#{limit}
     </select>
 
+    <select id="selectCountStudentByDepart" parameterType="String" resultType="Integer">
+        SELECT count(id) FROM student WHERE depart = #{depart}
+    </select>
+
+    <select id="selectCountStudentByProfession" resultType="Integer" parameterType="String">
+        SELECT count(id) FROM student WHERE profession = #{profession}
+    </select>
+
     <!--insert-->
     <insert id="insertStudents" parameterType="List">
         INSERT IGNORE INTO student

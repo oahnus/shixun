@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.oahnus.controller.ServerState;
+import top.oahnus.dto.Page;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.dto.StudentDto;
 import top.oahnus.entity.Student;
@@ -36,18 +37,18 @@ public class StudentController {
      * 分页获取学院学生
      */
     @GetMapping("/depart")
-    public ResponseData<List<Student>> selectStudentsByDepart(String depart, int page, int size){
-        List<Student> students = studentService.selectStudentByDepart(depart, page, size);
-        return new ResponseData<>(ServerState.SUCCESS, students, "success");
+    public ResponseData<Page> selectStudentsByDepart(String depart, int page, int size){
+        Page<List<Student>> p = studentService.selectStudentByDepart(depart, page, size);
+        return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
     /**
      * 分页获取专业学生
      */
     @GetMapping("/profession")
-    public ResponseData<List<Student>> selectStudentsByProfession(String profession, int page, int size){
-        List<Student> students = studentService.selectStudentByProfession(profession, page, size);
-        return new ResponseData<>(ServerState.SUCCESS, students, "success");
+    public ResponseData<Page> selectStudentsByProfession(String profession, int page, int size){
+        Page<List<Student>> p = studentService.selectStudentByProfession(profession, page, size);
+        return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
     /**

@@ -39,8 +39,8 @@ public class CompanyControllerTest {
     public void getAll() throws Exception {
 //        String json = "{\"name\":\"观海楼大酒店\",\"contact\":\"周长生\",\"contactPhone\":\"13945689569\",\"address\":\"江苏省镇江市梦溪路2号\"}";
         mockMvc.perform(get("/companies")
-                .param("page","1")
-                .param("limit","2")
+                .param("page","2")
+                .param("limit","3")
                 .characterEncoding("utf-8")
         ).andDo(print());
     }
