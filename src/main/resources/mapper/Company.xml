@@ -28,6 +28,11 @@
         FROM company WHERE name = #{name}
     </select>
 
+    <select id="selectCompanyById" resultMap="company_map">
+        SELECT id, name, contact, contact_phone, address, email
+        FROM company WHERE id = #{id}
+    </select>
+
     <!--Insert-->
     <insert id="insertOneCompany" parameterType="Company">
         INSERT IGNORE INTO company

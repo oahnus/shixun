@@ -54,6 +54,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("更新数据库失败");
         } else {
+            company = companyMapper.selectCompanyById(companyDto.getId());
             return company;
         }
     }

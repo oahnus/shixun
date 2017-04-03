@@ -6,14 +6,136 @@
     <resultMap id="course_map" type="Course">
         <result column="id" property="id" javaType="String"/>
         <result column="name" property="name" javaType="String"/>
-        <result column="teacher_id" property="teacherId" javaType="String"/>
-        <result column="company_id" property="companyId" javaType="Stirng"/>
         <result column="professions" property="professions" javaType="String"/>
         <result column="memo" property="memo" javaType="String"/>
         <result column="start_time" property="startTime" javaType="Date"/>
         <result column="end_time" property="endTime" javaType="Date"/>
         <result column="addition" property="addition" javaType="String"/>
-        <result column="update_time" property="updateTime" javaType="String"/>
-        <result column="state" property="state" javaType="CourseState" typeHandler="top.oahnus.handler.CourseStateHandler"/>
+        <result column="update_time" property="updateTime" javaType="Date"/>
+        <result column="state" property="state" javaType="top.oahnus.enums.CourseState" typeHandler="top.oahnus.handler.CourseStateHandler"/>
+        <result column="teacher.id" property="teacher.id" javaType="String"/>
+        <result column="teacher.name" property="teacher.name" javaType="String"/>
+        <result column="teacher.worker_id" property="teacher.workerId" javaType="String"/>
+        <result column="teacher.profession" property="teacher.profession" javaType="String"/>
+        <result column="teacher.depart" property="teacher.depart" javaType="String"/>
+        <result column="teacher.job_title" property="teacher.jobTitle" javaType="String"/>
+        <result column="teacher.sex" property="teacher.sex" javaType="String"/>
+        <result column="teacher.email" property="teacher.email" javaType="String"/>
+        <result column="company.id" property="company.id" javaType="String"/>
+        <result column="company.name" property="company.name" javaType="String"/>
+        <result column="company.contact" property="company.contact" javaType="String"/>
+        <result column="company.contact_phone" property="company.contactPhone" javaType="String"/>
+        <result column="company.address" property="company.address" javaType="String"/>
+        <result column="company.email" property="company.email" javaType="String"/>
     </resultMap>
+
+    <sql id="base_sql">
+        course.id id,
+        course.name name,
+        course.professions professions,
+        course.addition addition,
+        course.memo memo,
+        course.start_time start_time,
+        course.end_time end_time,
+        course.state state,
+        course.update_time update_time,
+        teacher.id 'teacher.id',
+        teacher.name 'teacher.name',
+        teacher.depart 'teacher.depart',
+        teacher.profession 'teacher.profession',
+        teacher.job_title 'teacher.job_title',
+        teacher.sex 'teacher.sex',
+        teacher.worker_id 'teacher.worker_id',
+        teacher.email 'teacher.email',
+        company.id 'company.id',
+        company.name 'company.name',
+        company.contact 'company.contact',
+        company.contact_phone 'company.contact_phone',
+        company.address 'company.address',
+        company.email 'company.email'
+    </sql>
+
+    <!-- query -->
+    <select id="selectAllCourse" resultMap="course_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN company ON course.company_id = company.id
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectCourseByProfessionsLikeProfession" resultMap="course_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN company ON course.company_id = company.id
+        WHERE course.professions LIKE concat('%', #{profession}, '%')
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectCourseByTeacherId" resultMap="course_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN company ON course.company_id = company.id
+        WHERE course.teacher_id = #{teacherId}
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectCourseByCompanyId" resultMap="course_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN company ON course.company_id = company.id
+        WHERE course.company_id = #{companyId}
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectCourseByNameAndTeacherIdAndCompanyId" parameterType="Course">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN company ON course.company_id = company.id
+        WHERE course.name = #{name}
+        AND course.teacher_id = #{teacherId}
+        AND course.company_id = #{companyId}
+    </select>
+
+    <select id="selectCountCourseByCondition" resultType="Integer">
+        SELECT count(id) FROM course
+        WHERE 1 = 1
+        <if test="companyId != null and !&quot;&quot;.equals(companyId)">
+            AND company_id = #{companyId}
+        </if>
+        <if test="teacherId != null and !&quot;&quot;.equals(teacherId)">
+            AND teacher_id = #{teacherId}
+        </if>
+        <if test="profession != null and !&quot;&quot;.equals(profession)">
+            AND professions LIKE concat('%', #{profession}, '%')
+        </if>
+    </select>
+
+    <!-- insert -->
+    <insert id="insertNewCourse" parameterType="Course">
+        INSERT INTO course (name, teacher_id, company_id, professions, memo, start_time, end_time, addition, state)
+        VALUE (#{name}, #{teacher.id}, #{company.id}, #{professions}, #{memo}, #{startTime}, #{endTime}, #{addition}, #{state, typeHandler=top.oahnus.handler.CourseStateHandler})
+    </insert>
+
+    <!-- update -->
+    <!--<update id="updateCourse" parameterType="Course">-->
+        <!--UPDATE course SET -->
+        <!--course.name = #{name},-->
+        <!--course.company_id = #{company.id},-->
+        <!---->
+    <!--</update>-->
+
+    <!-- delete -->
+    <delete id="deleteCourseById" parameterType="String">
+        DELETE FROM course WHERE id = #{id}
+    </delete>
 </mapper>

@@ -14,8 +14,8 @@ import java.util.Date;
 public class Course {
     private String id;
     private String name;
-    private String teacherId;
-    private String companyId;
+    private Teacher teacher;
+    private Company company;
     // 开设该课程的专业集合,以;间隔
     private String professions;
     // 课程描述
@@ -34,9 +34,10 @@ public class Course {
     public Course() {}
 
     public Course(CourseDto courseDto) {
+        this.id = courseDto.getId();
         this.name = courseDto.getName();
-        this.teacherId = courseDto.getTeacherId();
-        this.companyId = courseDto.getCompanyId();
+        this.teacher.setId(courseDto.getTeacherId());
+        this.company.setId(courseDto.getCompanyId());
         this.professions = courseDto.getProfessions();
         this.memo = courseDto.getMemo();
         this.startTime = courseDto.getStartTime();

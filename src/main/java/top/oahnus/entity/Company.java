@@ -28,6 +28,7 @@ public class Company {
     }
 
     public Company(CompanyDto companyDto) {
+        this.id = companyDto.getId();
         this.name = companyDto.getName();
         this.contact = companyDto.getContact();
         this.contactPhone = companyDto.getContactPhone();

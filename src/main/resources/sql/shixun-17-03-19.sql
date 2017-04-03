@@ -114,11 +114,11 @@ CREATE TABLE course (
   professions VARCHAR(255) DEFAULT '' COMMENT '课程所属的专业,多个专业以;间隔',
   memo VARCHAR(255) NULL COMMENT '课程描述',
   start_time TIMESTAMP DEFAULT current_timestamp COMMENT '开课时间',
-  duration TIMESTAMP NULL COMMENT '课程持续时长',
+  end_time TIMESTAMP NULL COMMENT '结课时间',
   addition VARCHAR(255) NULL COMMENT '课程附件在服务器上的url地址',
-  update_time TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp COMMENT '课程信息跟新时间',
+  update_time TIMESTAMP DEFAULT current_timestamp ON UPDATE current_timestamp COMMENT '课程信息跟新时间',
   PRIMARY KEY (id),
-  KEY idx_teacher_company (name, teacher_id, company_id),
+  UNIQUE KEY idx_teacher_company (name, teacher_id, company_id),
   KEY idx_start_time (start_time),
   KEY idx_profession (professions)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '课程表';

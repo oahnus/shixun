@@ -47,7 +47,7 @@ public class CompanyControllerTest {
 
     @Test
     public void update() throws Exception {
-        String json = "{\"id\":\"7247af1f11ca11e7adce80fa5b3ea16e\",\"name\":\"观海楼大酒店\",\"contact\":\"郭宇轩\",\"contactPhone\":\"13945689569\",\"address\":\"江苏省镇江市梦溪路2号\"}";
+        String json = "{\"id\":\"7702fa0b181311e7bdc280fa5b3ea16e\",\"name\":\"观海楼大酒店\",\"contact\":\"郭宇轩\",\"contactPhone\":\"13945689569\",\"address\":\"江苏省镇江市梦溪路2号\"}";
         mockMvc.perform(put("/companies")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(json)
@@ -56,7 +56,7 @@ public class CompanyControllerTest {
 
     @Test
     public void deleteName() throws Exception {
-        mockMvc.perform(delete("/companies/7247af1f11ca11e7adce80fa5b3ea16e")
+        mockMvc.perform(delete("/companies/7702fa0b181311e7bdc280fa5b3ea16e")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andDo(print());
     }

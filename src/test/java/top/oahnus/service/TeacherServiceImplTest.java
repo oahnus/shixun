@@ -22,8 +22,7 @@ public class TeacherServiceImplTest {
 
     @Test
     public void selectTeacherByProfession() throws Exception {
-        teacherService.selectTeacherByProfession("通信工程",1, 10)
-                .forEach(System.out::println);
+        teacherService.selectTeacherByProfession("通信工程",1, 10);
     }
 
     @Test

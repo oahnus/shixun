@@ -6,13 +6,13 @@
     <resultMap id = "userAuthMap" type= "top.oahnus.entity.UserAuth">
         <result property = "id" column = "id"/>
         <result property = "username" column = "username"/>
-        <result property = "state" column = "state" typeHandler="top.oahnus.handler.AuthTypeHandler"/>
+        <result property = "type" column = "type" typeHandler="top.oahnus.handler.AuthTypeHandler"/>
     </resultMap>
     <select id = "login" resultMap = "userAuthMap">
-        SELECT id,username,state
+        SELECT id,username,type
         FROM user_auth
         WHERE username = #{username}
         AND password = #{password}
-        AND state = #{state}
+        AND type = #{type}
     </select>
 </mapper>

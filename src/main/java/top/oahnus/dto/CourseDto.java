@@ -15,6 +15,7 @@ import java.util.Date;
  */
 @Data
 public class CourseDto {
+    private String id;
     @NotEmpty(message = "课程名不能为空")
     private String name;
     @NotEmpty(message = "教师Id不能为空")

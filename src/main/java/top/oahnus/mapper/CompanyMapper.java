@@ -14,6 +14,7 @@ import java.util.List;
 public interface CompanyMapper {
     List<Company> selectAllCompany(@Param("offset")Integer offset, @Param("limit")Integer limit);
     Company selectCompanyByName(@Param("name") String name);
+    Company selectCompanyById(@Param("id")String id);
     //TODO 分页查询，同事返回数据总数
     Integer selectCountOfCompany();
 
