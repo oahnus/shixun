@@ -34,9 +34,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
         if(handler instanceof HandlerMethod){
             // TODO 真实部署下删除此处
-            if (mode.equals("DEV")) {
-                return true;
-            }
+//            if (mode.equals("DEV")) {
+//                return true;
+//            }
             HandlerMethod method = (HandlerMethod) handler;
             // filter auth package
             if(authPackage.equals(method.getBean().getClass().getPackage().getName())){

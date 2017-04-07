@@ -7,7 +7,7 @@ USE shixun_17_02_26;
 # 管理员表
 DROP TABLE IF EXISTS admin;
 CREATE TABLE admin (
-  id VARCHAR(255) NOT NULL COMMENT '管理员ID',
+  id VARCHAR(40) NOT NULL COMMENT '管理员ID',
   username VARCHAR(255) NOT NULL COMMENT '管理员用户名',
   nickname VARCHAR(255) COMMENT '管理员昵称',
   PRIMARY KEY (id)
@@ -29,7 +29,7 @@ FOR EACH ROW
 # 公司表
 DROP TABLE IF EXISTS company;
 CREATE TABLE company (
-  id VARCHAR(255) NOT NULL COMMENT '公司ID',
+  id VARCHAR(40) NOT NULL COMMENT '公司ID',
   name VARCHAR(100) NOT NULL COMMENT '公司名称',
   contact VARCHAR(100) NOT NULL COMMENT '公司联系人，姓名',
   contact_phone VARCHAR(100) NULL COMMENT '公司联系人手机号',
@@ -54,7 +54,7 @@ FOR EACH ROW
 # 教师表
 DROP TABLE IF EXISTS teacher;
 CREATE TABLE teacher (
-  id VARCHAR(255) NOT NULL COMMENT '教师ID',
+  id VARCHAR(40) NOT NULL COMMENT '教师ID',
   worker_id VARCHAR(100) NOT NULL COMMENT '教师工号',
   name VARCHAR(100) NOT NULL COMMENT '教师姓名',
   sex ENUM('男', '女', '未知') DEFAULT '未知' NOT NULL COMMENT '性别',
@@ -81,7 +81,7 @@ FOR EACH ROW
 # 学生表
 DROP TABLE IF EXISTS student;
 CREATE TABLE student (
-  id VARCHAR(255) NOT NULL COMMENT '学生id',
+  id VARCHAR(40) NOT NULL COMMENT '学生id',
   student_num VARCHAR(100) NOT NULL COMMENT '学生学号',
   name VARCHAR(100) NOT NULL COMMENT '学生姓名',
   sex ENUM('男', '女', '未知') DEFAULT '未知' COMMENT '学生性别',
@@ -107,16 +107,16 @@ FOR EACH ROW
 # 课程表
 DROP TABLE IF EXISTS course;
 CREATE TABLE course (
-  id VARCHAR(255) NOT NULL COMMENT '课程id',
+  id VARCHAR(40) NOT NULL COMMENT '课程id',
   name VARCHAR(255) NOT NULL COMMENT '课程名称',
-  teacher_id VARCHAR(255) NOT NULL COMMENT '授课教师id',
-  company_id VARCHAR(255) NOT NULL COMMENT '授课公司id',
+  teacher_id VARCHAR(40) NOT NULL COMMENT '授课教师id',
+  company_id VARCHAR(40) NOT NULL COMMENT '授课公司id',
   professions VARCHAR(255) DEFAULT '' COMMENT '课程所属的专业,多个专业以;间隔',
   memo VARCHAR(255) NULL COMMENT '课程描述',
-  start_time TIMESTAMP DEFAULT current_timestamp COMMENT '开课时间',
+  start_time TIMESTAMP NULL COMMENT '开课时间',
   end_time TIMESTAMP NULL COMMENT '结课时间',
   addition VARCHAR(255) NULL COMMENT '课程附件在服务器上的url地址',
-  update_time TIMESTAMP DEFAULT current_timestamp ON UPDATE current_timestamp COMMENT '课程信息跟新时间',
+  update_time TIMESTAMP ON UPDATE current_timestamp COMMENT '课程信息跟新时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_teacher_company (name, teacher_id, company_id),
   KEY idx_start_time (start_time),
@@ -136,12 +136,12 @@ CREATE TRIGGER before_insert_course
 # 选课表
 DROP TABLE IF EXISTS course_selection;
 CREATE TABLE course_selection (
-  id VARCHAR(255) NOT NULL COMMENT '选课表id',
-  course_id VARCHAR(255) NOT NULL COMMENT '课程id',
-  student_id VARCHAR(255) NOT NULL COMMENT '学生id',
-  course_update_time TIMESTAMP NOT NULL COMMENT '课程更新时间,用于区分不同学期的课程',
-  create_time TIMESTAMP DEFAULT current_timestamp COMMENT '选课时间',
-  edit_time TIMESTAMP DEFAULT current_timestamp ON UPDATE current_timestamp COMMENT '修改时间',
+  id VARCHAR(40) NOT NULL COMMENT '选课表id',
+  course_id VARCHAR(40) NOT NULL COMMENT '课程id',
+  student_id VARCHAR(40) NOT NULL COMMENT '学生id',
+  course_update_time TIMESTAMP NULL COMMENT '课程更新时间,用于区分不同学期的课程',
+  create_time TIMESTAMP NULL COMMENT '选课时间',
+  edit_time TIMESTAMP ON UPDATE current_timestamp COMMENT '修改时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_c_id_s_id_c_update (course_id, student_id, course_update_time)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '学生选课表';
@@ -159,12 +159,12 @@ FOR EACH ROW
 # 课程任务表
 DROP TABLE IF EXISTS course_task;
 CREATE TABLE course_task (
-  id VARCHAR(255) NOT NULL COMMENT '任务id',
-  course_id VARCHAR(255) NOT NULL COMMENT '任务所属课程的id',
+  id VARCHAR(40) NOT NULL COMMENT '任务id',
+  course_id VARCHAR(40) NOT NULL COMMENT '任务所属课程的id',
   name VARCHAR(255) NOT NULL COMMENT '任务名称',
   content VARCHAR(255) NOT NULL COMMENT '任务内容，保存上传的任务内容文件的url地址',
-  start_time TIMESTAMP DEFAULT current_timestamp COMMENT '任务开始时间',
-  end_time TIMESTAMP DEFAULT current_timestamp COMMENT '任务结束时间',
+  start_time TIMESTAMP NULL COMMENT '任务开始时间',
+  end_time TIMESTAMP NULL COMMENT '任务结束时间',
   memo VARCHAR(255) NULL COMMENT '任务描述',
   PRIMARY KEY (id),
   KEY idx_course_id_name (course_id, name),
@@ -185,9 +185,9 @@ FOR EACH ROW
 # 任务成果表
 DROP TABLE IF EXISTS task_result;
 CREATE TABLE task_result (
-  id VARCHAR(255) NOT NULL COMMENT '任务成果表',
-  task_id VARCHAR(255) NOT NULL COMMENT '任务id',
-  student_id VARCHAR(255) NOT NULL COMMENT '学生id',
+  id VARCHAR(40) NOT NULL COMMENT '任务成果表',
+  task_id VARCHAR(40) NOT NULL COMMENT '任务id',
+  student_id VARCHAR(40) NOT NULL COMMENT '学生id',
   content VARCHAR(255) NOT NULL COMMENT '上传的成果文件url',
   memo VARCHAR(255) NULL COMMENT '任务成果描述(备注)',
   PRIMARY KEY (id),
@@ -207,9 +207,9 @@ FOR EACH ROW
 # 分数表
 DROP TABLE IF EXISTS score;
 CREATE TABLE score (
-  id VARCHAR(255) NOT NULL COMMENT '分数id',
-  course_id VARCHAR(255) NOT NULL COMMENT '课程id',
-  student_id VARCHAR(255) NOT NULL COMMENT '学生id',
+  id VARCHAR(40) NOT NULL COMMENT '分数id',
+  course_id VARCHAR(40) NOT NULL COMMENT '课程id',
+  student_id VARCHAR(40) NOT NULL COMMENT '学生id',
   teacher_score FLOAT(11) DEFAULT 0 COMMENT '教师评分',
   company_score FLOAT(11) DEFAULT 0 COMMENT '公司评分',
   PRIMARY KEY (id),
@@ -229,10 +229,10 @@ FOR EACH ROW
 # 用户权限表
 DROP TABLE IF EXISTS user_auth;
 CREATE TABLE user_auth (
-  id VARCHAR(255) NOT NULL COMMENT '用户权限表的ID',
-  username varchar(255) NOT NULL COMMENT '用户名，管理员为username,教师为worker_id,公司为name,学生为student_num',
-  password varchar(255) NOT NULL COMMENT '密码',
-  state int(255) NOT NULL COMMENT '用户的角色',
+  id VARCHAR(40) NOT NULL COMMENT '用户权限表的ID',
+  username VARCHAR(255) NOT NULL COMMENT '用户名，管理员为username,教师为worker_id,公司为name,学生为student_num',
+  password VARCHAR(255) NOT NULL COMMENT '密码',
+  type INT(1) NOT NULL COMMENT '用户的角色',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -273,3 +273,52 @@ VALUES
 
 # 17-03-29
 ALTER TABLE course ADD COLUMN state TINYINT NOT NULL COMMENT '开课状态,0 开放选课中,1 关闭选课,2 开课中,3 已结课';
+
+# TODO 选课人数
+
+CREATE TABLE user_menu (
+  id INT(10) AUTO_INCREMENT NOT NULL COMMENT '权限菜单ID',
+  key_name VARCHAR(255) NOT NULL COMMENT '菜单key',
+  name VARCHAR(255) NOT NULL COMMENT '权限菜单名',
+  icon VARCHAR(255) NOT NULL COMMENT '权限菜单图标',
+  href VARCHAR(255) NOT NULL COMMENT '权限菜单跳转路径',
+  parent_id VARCHAR(40) NOT NULL COMMENT '父级菜单ID,顶级菜单为0',
+  auth_type INT(1) NOT NULL COMMENT '菜单所属的角色类型',
+  PRIMARY KEY (id),
+  KEY idx_parent_id(parent_id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+# 用户菜单表
+# 在初始化时，读取用户菜单表到redis
+# auth_type 0 管理员;1 公司;2 教师;3 学生;
+INSERT INTO user_menu (id, key_name, name, icon, href, parent_id, auth_type)
+VALUES
+  (1, 'studentCourseManagement', '课程管理', 'book', '', 0, 3),
+  (2, 'selectCourse', '选择课程', '', 'home/selectCourse', 1, 3),
+  (3, 'cancelCourse', '查看课程', '', 'home/cancelCourse', 1, 3),
+  (4, 'accomplishCourse', '已修课程', '', 'home/accomplishCourse', 1, 3),
+  (5, 'studyCourse', '学习课程', '', 'home/studyCourse', 1, 3),
+
+  (6, 'teacherCourseManagement', '课程管理', 'book', '', 0, 2),
+  (7, 'selectCourseInfo', '选课信息', '', 'home/selectCourseInfo', 6, 2),
+  (8, 'teacherTaughtCourse', '已授课程', '', 'home/teacherTaughtCourse', 6, 2),
+  (9, 'teacherTeachingCourse', '在授课程', '', 'home/teacherTeachingCourse', 6, 2),
+  (10, 'teacherCountManagement', '统计管理', 'area-chart', '', 0, 2),
+  (11, 'teacherCountTaughtCourse', '统计授课', '', 'home/teacherCountTaughtCourse', 10, 2),
+
+  (12, 'companyCourseManagement', '课程管理', 'book', '', 0, 1),
+  (13, 'companyTaughtCourse', '已授课程', '', 'home/companyTaughtCourse', 10, 1),
+  (14, 'companyTeachingCourse', '在授课程', '', 'home/companyTeachingCourse', 10, 1),
+  (15, 'companyCountManagement', '统计管理', 'area-chart', '', 0, 1),
+  (16, 'companyCountTaughtCourse', '统计授课', '', 'home/companyCountTaughtCourse', 15, 1),
+
+  (17, 'infoManagement', '信息管理', 'list', '', 0, 0),
+  (18, 'courseManagement', '课程管理', '', 'home/courseManagement', 17, 0),
+  (19, 'courseSelectionManagement', '选课管理', '', 'home/courseSelectionManagement', 17, 0),
+  (20, 'studentManagement', '学生管理', '', 'home/studentManagement', 17, 0),
+  (21, 'teacherManagement', '教师管理', '', 'home/teacherManagement', 17, 0),
+  (22, 'companyManagement', '企业管理', '', 'home/companyManagement', 17, 0),
+  (23, 'countManagement', '统计管理', '', 'home/countManagement', 0, 0),
+  (24, 'countCourseSelection', '统计选课', '', 'home/countCourseSelection', 23, 0),
+  (25, 'countTaughtCourse', '统计授课', '', 'home/countTaughtCourse', 23, 0),
+  (26, 'countScore', '统计分数', '', 'home/countScore', 23, 0);

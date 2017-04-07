@@ -12,6 +12,9 @@ import top.oahnus.entity.UserAuth;
 import top.oahnus.service.TokenService;
 import top.oahnus.service.UserAuthService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by oahnus on 2017/2/26.
  * 22:46
@@ -32,10 +35,13 @@ public class AuthController {
      * @return Token
      */
     @PostMapping("/auth")
-    public TokenDto login(@Validated @RequestBody UserAuthDto userAuthDto){
+    public Map login(@Validated @RequestBody UserAuthDto userAuthDto){
         UserAuth userAuth = userAuthService.getUserAuth(userAuthDto);
         String token = tokenService.setToken(userAuth.getUsername(), userAuth.getType());
-        return new TokenDto(token);
+        Map map = new HashMap();
+        map.put("tokenDto", new TokenDto(token));
+        map.put("userAuth", userAuth);
+        return map;
     }
 
     // TODO 根据用户留下的邮箱发送验证邮件来修改密码
