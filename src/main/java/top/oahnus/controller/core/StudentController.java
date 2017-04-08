@@ -27,17 +27,18 @@ public class StudentController {
      * 单条插入学生信息
      */
     @PostMapping
-    public ResponseData<Student> insertNewStudent(@RequestBody StudentDto studentDto) {
+    public ResponseData<Student> insertNewStudent(@Validated @RequestBody StudentDto studentDto) {
         Student student = studentService.insertOneStudent(studentDto);
         return new ResponseData<>(ServerState.SUCCESS, student, "success");
     }
-
 
     /**
      * 分页获取学院学生
      */
     @GetMapping("/depart")
-    public ResponseData<Page> selectStudentsByDepart(String depart, int page, int size){
+    public ResponseData<Page> selectStudentsByDepart(@RequestParam("depart")String depart,
+                                                     @RequestParam("page")Integer page,
+                                                     @RequestParam("limit") Integer size){
         Page<List<Student>> p = studentService.selectStudentByDepart(depart, page, size);
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
@@ -46,7 +47,9 @@ public class StudentController {
      * 分页获取专业学生
      */
     @GetMapping("/profession")
-    public ResponseData<Page> selectStudentsByProfession(String profession, int page, int size){
+    public ResponseData<Page> selectStudentsByProfession(@RequestParam("profession")String profession,
+                                                         @RequestParam("page")Integer page,
+                                                         @RequestParam("limit")Integer size){
         Page<List<Student>> p = studentService.selectStudentByProfession(profession, page, size);
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }

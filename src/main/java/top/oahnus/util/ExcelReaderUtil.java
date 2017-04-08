@@ -160,6 +160,7 @@ public class ExcelReaderUtil {
                 case 2:
                     List<Teacher> teacherList = new ArrayList<>();
 
+                    // TODO 修改读取方式，通过获取Teacher类中的属性名来选取
                     while (index < rowHeader.getPhysicalNumberOfCells()) {
                         Cell cell = rowHeader.getCell(index);
                         if (getCellFormatValue(cell).equals(config.getTeacher().getName())) {

@@ -20,6 +20,13 @@
     </sql>
     
     <!--Query-->
+
+    <select id="selectAllTeacher" resultMap="teacher_map">
+        SELECT
+        <include refid="base_columns"/>
+        FROM teacher LIMIT #{offset},#{limit}
+    </select>
+
     <select id="selectTeacherByProfession" resultMap="teacher_map">
         SELECT
         <include refid="base_columns"/>
@@ -38,12 +45,14 @@
         FROM teacher WHERE depart = #{depart} LIMIT #{offset},#{limit}
     </select>
 
-    <select id="selectCountTeacherByDepart" parameterType="String" resultType="Integer">
-        SELECT count(id) FROM teacher WHERE depart = #{depart}
-    </select>
-
-    <select id="selectCountTeacherByProfession" resultType="Integer" parameterType="String">
-        SELECT count(id) FROM teacher WHERE profession = #{profession}
+    <select id="selectRecordCount" resultType="Integer" parameterType="Map">
+        SELECT count(id) FROM teacher WHERE 1 = 1
+        <if test="profession != null and !&quot;&quot;.equals(profession)">
+            AND profession = #{profession}
+        </if>
+        <if test="depart != null and !&quot;&quot;.equals(depart)">
+            AND depart = #{depart}
+        </if>
     </select>
 
     <!--insert-->
@@ -60,7 +69,7 @@
         INSERT IGNORE into teacher
         (worker_id, name, sex, job_title, profession, depart, email)
         VALUE
-        (#{workerId}, #{iname}, #{sex}, #{jobTitle}, #{profession}, #{depart}, #{email})
+        (#{workerId}, #{name}, #{sex}, #{jobTitle}, #{profession}, #{depart}, #{email})
     </insert>
 
     <!--update-->

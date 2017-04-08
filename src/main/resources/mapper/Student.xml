@@ -37,12 +37,14 @@
         FROM student WHERE depart = #{depart} LIMIT #{offset},#{limit}
     </select>
 
-    <select id="selectCountStudentByDepart" parameterType="String" resultType="Integer">
-        SELECT count(id) FROM student WHERE depart = #{depart}
-    </select>
-
-    <select id="selectCountStudentByProfession" resultType="Integer" parameterType="String">
-        SELECT count(id) FROM student WHERE profession = #{profession}
+    <select id="selectRecordCount" resultType="Integer" parameterType="Map">
+        SELECT count(id) FROM student WHERE 1 = 1
+        <if test="profession != null and !&quot;&quot;.equals(profession)">
+            AND profession = #{profession}
+        </if>
+        <if test="depart != null and !&quot;&quot;.equals(depart)">
+            AND depart = #{depart}
+        </if>
     </select>
 
     <!--insert-->

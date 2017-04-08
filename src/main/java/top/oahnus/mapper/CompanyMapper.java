@@ -11,12 +11,10 @@ import java.util.List;
  * 1:07
  */
 @Mapper
-public interface CompanyMapper {
+public interface CompanyMapper extends BaseMapper{
     List<Company> selectAllCompany(@Param("offset")Integer offset, @Param("limit")Integer limit);
     Company selectCompanyByName(@Param("name") String name);
     Company selectCompanyById(@Param("id")String id);
-    //TODO 分页查询，同事返回数据总数
-    Integer selectCountOfCompany();
 
     Integer insertOneCompany(Company company);
     Integer insertCompanies(List<Company> companies);

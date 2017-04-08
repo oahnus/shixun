@@ -106,9 +106,8 @@
         AND course.company_id = #{companyId}
     </select>
 
-    <select id="selectCountCourseByCondition" resultType="Integer">
-        SELECT count(id) FROM course
-        WHERE 1 = 1
+    <select id="selectRecordCount" resultType="Integer" parameterType="Map">
+        SELECT count(id) FROM teacher WHERE 1 = 1
         <if test="companyId != null and !&quot;&quot;.equals(companyId)">
             AND company_id = #{companyId}
         </if>
@@ -127,12 +126,20 @@
     </insert>
 
     <!-- update -->
-    <!--<update id="updateCourse" parameterType="Course">-->
-        <!--UPDATE course SET -->
-        <!--course.name = #{name},-->
-        <!--course.company_id = #{company.id},-->
-        <!---->
-    <!--</update>-->
+    <update id="updateCourse" parameterType="Course">
+        UPDATE course SET
+        course.name = #{name},
+        course.company_id = #{company.id},
+        course.teacher_id = #{teacher.id},
+        course.professions = #{professions},
+        course.memo = #{memo},
+        course.start_time = #{startTime},
+        course.end_time = #{endTime},
+        course.addition = #{addition},
+        course.update_time = #{updateTime},
+        course.state = #{state, typeHandler=top.oahnus.handler.CourseStateHandler}
+        WHERE id = #{id}
+    </update>
 
     <!-- delete -->
     <delete id="deleteCourseById" parameterType="String">

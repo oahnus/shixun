@@ -1,6 +1,7 @@
 package top.oahnus.entity;
 
 import lombok.Data;
+import top.oahnus.dto.CourseSelectionDto;
 
 import java.util.Date;
 
@@ -11,16 +12,17 @@ import java.util.Date;
 @Data
 public class CourseSelection {
     private String id;
-    private String courseId;
-    private String studentId;
+    private Course course;
+    private Student student;
     private Date courseUpdateTime;
+    private Date createTime;
     private Date editTime;
 
     public CourseSelection() {}
 
-    public CourseSelection(String courseId, String studentId, Date courseUpdateTime) {
-        this.courseId = courseId;
-        this.studentId = studentId;
-        this.courseUpdateTime = courseUpdateTime;
+    public CourseSelection(CourseSelectionDto courseSelectionDto) {
+        this.id = courseSelectionDto.getId();
+        this.course.setId(courseSelectionDto.getCourseId());
+        this.student.setId(courseSelectionDto.getStudentId());
     }
 }

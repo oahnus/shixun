@@ -1,6 +1,7 @@
 package top.oahnus.controller.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.oahnus.controller.ServerState;
 import top.oahnus.dto.CompanyDto;
@@ -29,7 +30,7 @@ public class CompanyController {
     }
 
     @PutMapping
-    public ResponseData<Company> updateCompany(@RequestBody CompanyDto companyDto) {
+    public ResponseData<Company> updateCompany(@Validated @RequestBody CompanyDto companyDto) {
         Company company = companyService.updateCompany(companyDto);
         return new ResponseData<>(ServerState.SUCCESS, company, "success");
     }
@@ -44,7 +45,7 @@ public class CompanyController {
      * 单条插入公司信息
      */
     @PostMapping
-    public ResponseData<Company> insertNewCompany(@RequestBody CompanyDto companyDto) {
+    public ResponseData<Company> insertNewCompany(@Validated @RequestBody CompanyDto companyDto) {
         Company company = companyService.addCompany(companyDto);
         return new ResponseData<>(ServerState.SUCCESS, company, "success");
     }

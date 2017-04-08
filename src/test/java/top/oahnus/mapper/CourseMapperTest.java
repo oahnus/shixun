@@ -54,7 +54,7 @@ public class CourseMapperTest {
 
     @Test
     public void testSelectCountCourse() {
-        Integer count = courseMapper.selectCountCourseByCondition(null,null,null);
+        Integer count = courseMapper.selectRecordCount(null);
         System.out.println(count);
     }
 
@@ -63,8 +63,8 @@ public class CourseMapperTest {
         Course course = new Course();
         Teacher teacher = new Teacher();
         Company company = new Company();
-        teacher.setId("33bbb073141d11e7becf80fa5b3ea16e");
-        company.setId("33ba6d80141d11e7becf80fa5b3ea16e");
+        teacher.setId("cda070f61ba611e7afdc80fa5b3ea16e");
+        company.setId("cd9f42f41ba611e7afdc80fa5b3ea16e");
 
         course.setName("测试课程");
         course.setProfessions("通信工程;测试专业");
@@ -77,6 +77,29 @@ public class CourseMapperTest {
         course.setState(CourseState.ON_SELECTED);
 
         Integer count = courseMapper.insertNewCourse(course);
+        System.out.println(count);
+    }
+
+    @Test
+    public void testUpdateCourse() {
+        Course course = new Course();
+        Teacher teacher = new Teacher();
+        Company company = new Company();
+        teacher.setId("cda06c1f1ba611e7afdc80fa5b3ea16e");
+        company.setId("cd9f42f41ba611e7afdc80fa5b3ea16e");
+
+        course.setId("0f1e1a271c0c11e794be80fa5b3ea16e");
+        course.setName("机械原理");
+        course.setProfessions("通信工程;船海");
+        course.setTeacher(teacher);
+        course.setCompany(company);
+        course.setAddition("附件地址");
+        course.setStartTime(new Date());
+        course.setEndTime(new Date());
+        course.setMemo("memo");
+        course.setState(CourseState.COURSE_START);
+
+        Integer count = courseMapper.updateCourse(course);
         System.out.println(count);
     }
 }

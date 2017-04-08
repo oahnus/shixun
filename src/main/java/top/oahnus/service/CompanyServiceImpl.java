@@ -29,7 +29,7 @@ public class CompanyServiceImpl implements CompanyService {
             throw new BadRequestParamException("请求参数错误");
         }
         List<Company> companies = companyMapper.selectAllCompany((page - 1) * limit, limit);
-        Integer totalRecord = companyMapper.selectCountOfCompany();
+        Integer totalRecord = companyMapper.selectRecordCount(null);
         return new Page<>(companies, totalRecord, page, limit);
     }
 

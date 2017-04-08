@@ -13,6 +13,7 @@ import java.util.List;
 public interface TeacherService {
     Page<List<Teacher>> selectTeacherByProfession(String profession, Integer page, Integer limit);
     Page<List<Teacher>> selectTeacherByDepart(String depart, Integer page, Integer limit);
+    Page<List<Teacher>> selectAllTeacher(Integer page, Integer limit);
 
     List<Teacher> insertTeachers(List<Teacher> teacherList);
     Teacher insertOneTeacher(TeacherDto teacherDto);

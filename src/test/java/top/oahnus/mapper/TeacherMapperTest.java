@@ -7,23 +7,24 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 /**
- * Created by oahnus on 2017/3/31
- * 21:16.
+ * Created by oahnus on 2017/4/8
+ * 9:52.
  */
 @SpringBootTest
 @EnableAutoConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-public class CompanyMapperTest {
+public class TeacherMapperTest {
     @Autowired
-    private CompanyMapper companyMapper;
+    private TeacherMapper teacherMapper;
 
     @Test
-    public void selectCountOfCompany() throws Exception {
-        Integer count = companyMapper.selectRecordCount(null);
-        System.out.println(count);
+    public void selectCount(){
+        System.out.println(teacherMapper.selectRecordCount(null));
     }
-
 }

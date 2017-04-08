@@ -1,0 +1,49 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "top.oahnus.mapper.CourseSelectionMapper">
+    <resultMap id = "courseSelection_map" type= "CourseSelection">
+        <result property = "id" column = "id"/>
+        <result property = "course.id" column = "course.id" javaType="String"/>
+        <result property = "course.name" column = "course.name" javaType="String"/>
+        <result property = "course.professions" column = "course.professions" javaType="String"/>
+        <result property = "course.addition" column = "course.addition" javaType="String"/>
+        <result property = "course.memo" column = "course.memo" javaType="String"/>
+        <result property = "course.startTime" column = "course.start_time" javaType="Date"/>
+        <result property = "course.endTime" column = "course.end_time" javaType="Date"/>
+        <result property = "course.updateTime" column = "course.update_time" javaType="Date"/>
+        <result property = "course.state" column = "course.state" javaType="top.oahnus.enums.CourseState" typeHandler="top.oahnus.handler.CourseStateHandler"/>
+        <result property = "student.id" column = "student.id" javaType="String"/>
+        <result property = "student.name" column = "student.id" javaType="String"/>
+        <result property = "student.studentNum" column = "student.student_num" javaType="String"/>
+        <result property = "student.sex" column = "student.sex" javaType="String"/>
+        <result property = "student.profession" column = "student.profession" javaType="String"/>
+        <result property = "student.depart" column = "student.depart" javaType="String"/>
+        <result property = "student.email" column = "student.email" javaType="String"/>
+        <result property = "createTime" column = "create_time" javaType="Date"/>
+        <result property = "editTime" column = "edit_time" javaType="Date"/>
+    </resultMap>
+
+    <sql id="base_sql">
+        cs.id,
+        course_id,
+        cs.student_id,
+        c.id 'course.id',
+        c.name 'course.name',
+        c.professions 'course.professions',
+        c.addition 'course.addition',
+        c.memo 'course.memo',
+        c.start_time 'course.startTime',
+        c.end_time 'course.endTime',
+        c.state 'course.state',
+        c.update_time 'course.update_time',
+        s.id 'student.id',
+        s.student_num 'student.studentNum',
+        s.name 'student.name',
+        s.sex 'student.sex',
+        s.profession 'student.profession',
+        s.depart 'student.depart',
+        s.email 'student.email'
+    </sql>
+</mapper>

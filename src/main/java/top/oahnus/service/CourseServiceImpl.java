@@ -7,10 +7,12 @@ import top.oahnus.dto.Page;
 import top.oahnus.entity.Course;
 import top.oahnus.exception.BadRequestParamException;
 import top.oahnus.exception.DataExistedException;
+import top.oahnus.exception.NotFoundException;
 import top.oahnus.exception.SQLExecuteFailedExceeption;
 import top.oahnus.mapper.CourseMapper;
 import top.oahnus.util.StringUtil;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,7 +28,7 @@ public class CourseServiceImpl implements CourseService {
     public Page<List<Course>> selectAllCourse(Integer page, Integer limit) {
         if (page == null || limit == null) throw new BadRequestParamException("请求参数错误");
         List<Course> courses = courseMapper.selectAllCourse((page - 1) * limit, limit);
-        Integer totalRecord = courseMapper.selectCountCourseByCondition(null, null, null);
+        Integer totalRecord = courseMapper.selectRecordCount(null);
         return new Page<>(courses, totalRecord, page, limit);
     }
 
@@ -34,7 +36,7 @@ public class CourseServiceImpl implements CourseService {
     public Page<List<Course>> selectCourseByProfessionsLikeProfession(String profession, Integer page, Integer limit) {
         if (StringUtil.isEmpty(profession) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
         List<Course> courses = courseMapper.selectCourseByProfessionsLikeProfession(profession, (page - 1) * limit, limit);
-        Integer totalRecord = courseMapper.selectCountCourseByCondition(null, null, profession);
+        Integer totalRecord = courseMapper.selectRecordCount(new HashMap<String, String>(){{put("profession", profession);}});
         return new Page<>(courses, totalRecord, page, limit);
     }
 
@@ -42,7 +44,7 @@ public class CourseServiceImpl implements CourseService {
     public Page<List<Course>> selectCourseByTeacherId(String teacherId, Integer page, Integer limit) {
         if (StringUtil.isEmpty(teacherId) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
         List<Course> courses = courseMapper.selectCourseByTeacherId(teacherId, (page - 1) * limit, limit);
-        Integer totalRecord = courseMapper.selectCountCourseByCondition(teacherId, null, null);
+        Integer totalRecord = courseMapper.selectRecordCount(new HashMap<String, String>(){{put("teacherId", teacherId);}});
         return new Page<>(courses, totalRecord, page, limit);
     }
 
@@ -50,7 +52,7 @@ public class CourseServiceImpl implements CourseService {
     public Page<List<Course>> selectCourseByCompanyId(String companyId, Integer page, Integer limit) {
         if (StringUtil.isEmpty(companyId) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
         List<Course> courses = courseMapper.selectCourseByCompanyId(companyId, (page - 1) * limit, limit);
-        Integer totalRecord = courseMapper.selectCountCourseByCondition(null, companyId, null);
+        Integer totalRecord = courseMapper.selectRecordCount(new HashMap<String, String>(){{put("companyId", companyId);}});
         return new Page<>(courses, totalRecord, page, limit);
     }
 
@@ -65,6 +67,20 @@ public class CourseServiceImpl implements CourseService {
             throw new DataExistedException("插入失败,数据已存在");
         } else {
             course = courseMapper.selectCourseByNameAndTeacherIdAndCompanyId(courseDto.getName(),courseDto.getTeacherId(),courseDto.getCompanyId());
+            return course;
+        }
+    }
+
+    @Override
+    public Course updateCourse(CourseDto courseDto) {
+        if (courseDto == null) throw new BadRequestParamException("请求参数错误");
+        Course course = new Course(courseDto);
+        Integer count = courseMapper.updateCourse(course);
+        if (count < 0) {
+            throw new SQLExecuteFailedExceeption("更新数据失败");
+        } else if (count == 0) {
+            throw new NotFoundException("数据不存在");
+        } else {
             return course;
         }
     }

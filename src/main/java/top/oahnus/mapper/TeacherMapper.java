@@ -11,13 +11,11 @@ import java.util.List;
  * 0:41.
  */
 @Mapper
-public interface TeacherMapper {
+public interface TeacherMapper extends BaseMapper{
     Teacher selectTeacherByWorkerId(@Param("worker_id")String workerId);
     List<Teacher> selectTeacherByProfession(@Param("profession")String profession, @Param("offset")Integer offset, @Param("limit")Integer limit);
     List<Teacher> selectTeacherByDepart(@Param("depart")String depart, @Param("offset")Integer offset, @Param("limit")Integer limit);
-    Integer selectCountTeacherByProfession(@Param("profession")String profession);
-    Integer selectCountTeacherByDepart(@Param("depart")String depart);
-
+    List<Teacher> selectAllTeacher(@Param("offset")Integer offset, @Param("limit")Integer limit);
 
     Integer insertTeachers(List<Teacher> teacherList);
     Integer insertOneTeacher(Teacher teacher);

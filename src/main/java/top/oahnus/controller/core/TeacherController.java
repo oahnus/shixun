@@ -25,7 +25,15 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
-    @GetMapping("/professions")
+    @GetMapping
+    public ResponseData<Page> getAllTeacher(@RequestParam("page")Integer page,
+                                            @RequestParam("limit")Integer limit) {
+        Page<List<Teacher>> p = new Page<>();
+        p = teacherService.selectAllTeacher(page, limit);
+        return new ResponseData<>(ServerState.SUCCESS, p, "success");
+    }
+
+    @GetMapping("/profession")
     public ResponseData<Page> getTeacherByProfession(
             @RequestParam("profession")String profession,
             @RequestParam("page")Integer page,
@@ -35,7 +43,7 @@ public class TeacherController {
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
-    @GetMapping("/departs")
+    @GetMapping("/depart")
     public ResponseData<Page> getTeacherByDepart(
             @RequestParam("depart")String depart,
             @RequestParam("page")Integer page,
@@ -46,13 +54,13 @@ public class TeacherController {
     }
 
     @PostMapping
-    public ResponseData<Teacher> insertOneTeacher(@RequestBody TeacherDto teacherDto) {
+    public ResponseData<Teacher> insertOneTeacher(@Validated @RequestBody TeacherDto teacherDto) {
         Teacher teacher = teacherService.insertOneTeacher(teacherDto);
         return new ResponseData<>(ServerState.SUCCESS, teacher, "success");
     }
 
     @PutMapping
-    public ResponseData<Teacher> updateTeacher(@RequestBody TeacherDto teacherDto) {
+    public ResponseData<Teacher> updateTeacher(@Validated @RequestBody TeacherDto teacherDto) {
         Teacher teacher = teacherService.updateTeacher(teacherDto);
         return new ResponseData<>(ServerState.SUCCESS, teacher, "success");
     }

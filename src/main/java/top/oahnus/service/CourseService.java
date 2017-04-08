@@ -19,7 +19,7 @@ public interface CourseService {
 
     Course insertNewCourse(CourseDto courseDto);
 
-//    Integer updateCourse(CourseDto courseDto);
+    Course updateCourse(CourseDto courseDto);
 
     Integer deleteCourseById(String courseId);
 }

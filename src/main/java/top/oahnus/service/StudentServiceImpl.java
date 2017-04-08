@@ -13,6 +13,7 @@ import top.oahnus.mapper.StudentMapper;
 import top.oahnus.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -31,7 +32,8 @@ public class StudentServiceImpl implements StudentService {
             throw new BadRequestParamException("请求参数错误");
         }
         List<Student> studentList = studentMapper.selectStudentByProfession(profession, (page-1)*limit, limit);
-        Integer totalRecord = studentMapper.selectCountStudentByProfession(profession);
+        // TODO 强行创建匿名 Map
+        Integer totalRecord = studentMapper.selectRecordCount(new HashMap<String,String>(){{put("profession", profession);}});
         return new Page<>(studentList, totalRecord, page, limit);
     }
 
@@ -41,7 +43,7 @@ public class StudentServiceImpl implements StudentService {
             throw new BadRequestParamException("请求参数错误");
         }
         List<Student> studentList = studentMapper.selectStudentByDepart(depart, (page-1)*limit, limit);
-        Integer totalRecord = studentMapper.selectCountStudentByDepart(depart);
+        Integer totalRecord = studentMapper.selectRecordCount(new HashMap<String,String>(){{put("depart", depart);}});
         return new Page<>(studentList, totalRecord, page, limit);
     }
 

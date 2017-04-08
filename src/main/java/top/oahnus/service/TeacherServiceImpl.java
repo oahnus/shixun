@@ -13,6 +13,7 @@ import top.oahnus.mapper.TeacherMapper;
 import top.oahnus.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class TeacherServiceImpl implements TeacherService {
             throw new BadRequestParamException("请求参数错误");
         }
         List<Teacher> teachers = teacherMapper.selectTeacherByProfession(profession, (page-1)*limit, limit);
-        Integer totalRecord = teacherMapper.selectCountTeacherByProfession(profession);
+        Integer totalRecord = teacherMapper.selectRecordCount(new HashMap<String, String>(){{put("profession", profession);}});
         return new Page<>(teachers, totalRecord, page, limit);
     }
 
@@ -40,7 +41,17 @@ public class TeacherServiceImpl implements TeacherService {
             throw new BadRequestParamException("请求参数错误");
         }
         List<Teacher> teachers = teacherMapper.selectTeacherByDepart(depart, (page-1)*limit, limit);
-        Integer totalRecord = teacherMapper.selectCountTeacherByDepart(depart);
+        Integer totalRecord = teacherMapper.selectRecordCount(new HashMap<String, String>(){{put("depart", depart);}});
+        return new Page<>(teachers, totalRecord, page, limit);
+    }
+
+    @Override
+    public Page<List<Teacher>> selectAllTeacher(Integer page, Integer limit) {
+        if(page == null || limit == null) {
+            throw new BadRequestParamException("请求参数错误");
+        }
+        List<Teacher> teachers = teacherMapper.selectAllTeacher((page-1)*limit, limit);
+        Integer totalRecord = teacherMapper.selectRecordCount(null);
         return new Page<>(teachers, totalRecord, page, limit);
     }
 

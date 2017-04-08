@@ -19,8 +19,8 @@
         FROM company LIMIT #{offset},#{limit}
     </select>
 
-    <select id="selectCountOfCompany" resultType="Integer">
-        SELECT count(name) FROM company
+    <select id="selectRecordCount" resultType="Integer">
+        SELECT count(id) FROM company WHERE 1 = 1
     </select>
 
     <select id="selectCompanyByName" resultMap="company_map">
