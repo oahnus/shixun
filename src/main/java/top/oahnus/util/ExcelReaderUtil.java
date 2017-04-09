@@ -126,6 +126,7 @@ public class ExcelReaderUtil {
         Map<Object,Integer> headerMap = new HashMap<>();
         int index = 0;
         if (rowHeader != null) {
+            System.out.println(type.ordinal());
             switch (type.ordinal()) {
                 case 1:
                     List<Company> companyList = new ArrayList<>();

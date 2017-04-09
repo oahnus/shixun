@@ -29,6 +29,10 @@ mybatis:
     map-underscore-to-camel-case: true
     use-column-label: true
 
+logging:
+  level: info
+
+
 # logging.level.org.hibernate.SQL=DEBUG
 # logging.level.org.hibernate.state.descriptor.sql.BasicBinder=TRACE
 

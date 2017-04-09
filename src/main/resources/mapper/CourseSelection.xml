@@ -46,4 +46,36 @@
         s.depart 'student.depart',
         s.email 'student.email'
     </sql>
+
+    <select id="selectCourseSelectionByCourseId" resultMap="courseSelection_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course_selection cs
+        LEFT JOIN course c
+        ON cs.course_id = c.id
+        LEFT JOIN student s
+        ON cs.student_id = s.id
+        WHERE cs.course_id = #{courseId} LIMIT #{offset},#{limit}
+    </select>
+
+    <select id="selectCourseSelectionByStudentId" resultMap="courseSelection_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course_selection cs
+        LEFT JOIN course c
+        ON cs.course_id = c.id
+        LEFT JOIN student s
+        ON cs.student_id = s.id
+        WHERE cs.student_id = #{studentId} LIMIT #{offset},#{limit}
+    </select>
+
+    <select id="selectRecordCount" resultType="Integer" parameterType="Map">
+        SELECT count(id) FROM course_selection WHERE 1 = 1
+        <if test="courseId != null and !&quot;&quot;.equals(courseId)">
+            AND course_id = #{courseId}
+        </if>
+        <if test="studentId != null and !&quot;&quot;.equals(studentId)">
+            AND studentId = #{studentId}
+        </if>
+    </select>
 </mapper>
