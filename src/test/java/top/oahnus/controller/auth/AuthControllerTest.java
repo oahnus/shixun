@@ -26,7 +26,7 @@ public class AuthControllerTest {
 
     @Test
     public void login() throws Exception {
-        String json = "{\"username\":\"1341901120\",\"password\":\"1341901120\",\"authType\":\"STUDENT\"}";
+        String json = "{\"username\":\"10012\",\"password\":\"10012\",\"authType\":\"TEACHER\"}";
         mockMvc.perform(post("/auth")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(json)

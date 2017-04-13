@@ -37,6 +37,12 @@
         FROM student WHERE depart = #{depart} LIMIT #{offset},#{limit}
     </select>
 
+    <select id="selectAllStudent" resultMap="student_map">
+        SELECT
+        <include refid="base_columns"/>
+        FROM student LIMIT #{offset},#{limit}
+    </select>
+
     <select id="selectRecordCount" resultType="Integer" parameterType="Map">
         SELECT count(id) FROM student WHERE 1 = 1
         <if test="profession != null and !&quot;&quot;.equals(profession)">

@@ -24,7 +24,7 @@ public class UserAuthMapperTest {
 
     @Test
     public void login() throws Exception {
-        UserAuth userAuth = userAuthMapper.login("1341901120", MD5Util.getMD5("1341901120"),3);
+        UserAuth userAuth = userAuthMapper.login("10012", MD5Util.getMD5("10012"),2);
         System.out.println(userAuth);
     }
 }

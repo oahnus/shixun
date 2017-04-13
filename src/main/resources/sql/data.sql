@@ -44,8 +44,8 @@ VALUES
   (11, 'teacherCountTaughtCourse', '统计授课', '', 'home/teacherCountTaughtCourse', 10, 2),
 
   (12, 'companyCourseManagement', '课程管理', 'book', '', 0, 1),
-  (13, 'companyTaughtCourse', '已授课程', '', 'home/companyTaughtCourse', 10, 1),
-  (14, 'companyTeachingCourse', '在授课程', '', 'home/companyTeachingCourse', 10, 1),
+  (13, 'companyTaughtCourse', '已授课程', '', 'home/companyTaughtCourse', 12, 1),
+  (14, 'companyTeachingCourse', '在授课程', '', 'home/companyTeachingCourse', 12, 1),
   (15, 'companyCountManagement', '统计管理', 'area-chart', '', 0, 1),
   (16, 'companyCountTaughtCourse', '统计授课', '', 'home/companyCountTaughtCourse', 15, 1),
 
@@ -55,7 +55,7 @@ VALUES
   (20, 'studentManagement', '学生管理', '', 'home/studentManagement', 17, 0),
   (21, 'teacherManagement', '教师管理', '', 'home/teacherManagement', 17, 0),
   (22, 'companyManagement', '企业管理', '', 'home/companyManagement', 17, 0),
-  (23, 'countManagement', '统计管理', '', 'home/countManagement', 0, 0),
+  (23, 'countManagement', '统计管理', 'area-chart', 'home/countManagement', 0, 0),
   (24, 'countCourseSelection', '统计选课', '', 'home/countCourseSelection', 23, 0),
   (25, 'countTaughtCourse', '统计授课', '', 'home/countTaughtCourse', 23, 0),
   (26, 'countScore', '统计分数', '', 'home/countScore', 23, 0);

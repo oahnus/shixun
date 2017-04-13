@@ -32,14 +32,21 @@ public class StudentController {
         return new ResponseData<>(ServerState.SUCCESS, student, "success");
     }
 
+    @GetMapping
+    public ResponseData<Page> selectAllStudent(@RequestParam("page")Integer page,
+                                               @RequestParam("limit")Integer limit) {
+        Page<List<Student>> p = studentService.selectAllStudent(page, limit);
+        return new ResponseData<>(ServerState.SUCCESS, p, "success");
+    }
+
     /**
      * 分页获取学院学生
      */
     @GetMapping("/depart")
     public ResponseData<Page> selectStudentsByDepart(@RequestParam("depart")String depart,
                                                      @RequestParam("page")Integer page,
-                                                     @RequestParam("limit") Integer size){
-        Page<List<Student>> p = studentService.selectStudentByDepart(depart, page, size);
+                                                     @RequestParam("limit") Integer limit){
+        Page<List<Student>> p = studentService.selectStudentByDepart(depart, page, limit);
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
@@ -49,8 +56,8 @@ public class StudentController {
     @GetMapping("/profession")
     public ResponseData<Page> selectStudentsByProfession(@RequestParam("profession")String profession,
                                                          @RequestParam("page")Integer page,
-                                                         @RequestParam("limit")Integer size){
-        Page<List<Student>> p = studentService.selectStudentByProfession(profession, page, size);
+                                                         @RequestParam("limit")Integer limit){
+        Page<List<Student>> p = studentService.selectStudentByProfession(profession, page, limit);
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 

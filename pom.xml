@@ -5,7 +5,7 @@
 
     <groupId>top.oahnus</groupId>
     <artifactId>shixun</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <!--jar-->
     <packaging>jar</packaging>
     <!--war-->

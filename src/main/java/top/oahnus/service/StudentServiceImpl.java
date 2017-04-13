@@ -48,6 +48,15 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Page<List<Student>> selectAllStudent(Integer page, Integer limit) {
+        if (page == null || limit == null)
+            throw new BadRequestParamException("请求参数错误");
+        List<Student> studentList = studentMapper.selectAllStudent((page-1)*limit, limit);
+        Integer totalRecord = studentMapper.selectRecordCount(null);
+        return new Page<>(studentList, totalRecord, page, limit);
+    }
+
+    @Override
     public List<Student> insertStudents(List<Student> students) {
         if (students == null) throw new ReadDataFailedException("读取Excel文件失败");
 
