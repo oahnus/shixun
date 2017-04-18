@@ -7,4 +7,5 @@ package top.oahnus;
 public class Constants {
     public static final String UPLOAD_FILE_PARAM_NAME = "upload_file";
     public static final String TOKEN = "TOKEN";
+    public static final String[] ALLOWED_UPLOAD_FILE_EXTENSIONS = {".doc", ".pdf"};
 }

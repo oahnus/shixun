@@ -1,6 +1,7 @@
 package top.oahnus.service;
 
 import top.oahnus.dto.UserAuthDto;
+import top.oahnus.dto.UserDto;
 import top.oahnus.entity.UserAuth;
 
 /**
@@ -8,4 +9,5 @@ import top.oahnus.entity.UserAuth;
  */
 public interface UserAuthService {
     UserAuth getUserAuth(UserAuthDto userAuthDto);
+    Integer resetPassword(UserDto userDto);
 }

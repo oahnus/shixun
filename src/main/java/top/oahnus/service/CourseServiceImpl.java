@@ -1,6 +1,7 @@
 package top.oahnus.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import top.oahnus.dto.CourseDto;
 import top.oahnus.dto.Page;
@@ -23,15 +24,21 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseMapper courseMapper;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
+
+    //TODO redis存储
     @Override
     public Page<List<Course>> selectAllCourse(Integer page, Integer limit) {
         if (page == null || limit == null) throw new BadRequestParamException("请求参数错误");
+
         List<Course> courses = courseMapper.selectAllCourse((page - 1) * limit, limit);
         Integer totalRecord = courseMapper.selectRecordCount(null);
         return new Page<>(courses, totalRecord, page, limit);
     }
 
+    //TODO redis存储
     @Override
     public Page<List<Course>> selectCourseByProfessionsLikeProfession(String profession, Integer page, Integer limit) {
         if (StringUtil.isEmpty(profession) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
@@ -40,6 +47,7 @@ public class CourseServiceImpl implements CourseService {
         return new Page<>(courses, totalRecord, page, limit);
     }
 
+    //TODO redis存储
     @Override
     public Page<List<Course>> selectCourseByTeacherId(String teacherId, Integer page, Integer limit) {
         if (StringUtil.isEmpty(teacherId) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
@@ -48,6 +56,7 @@ public class CourseServiceImpl implements CourseService {
         return new Page<>(courses, totalRecord, page, limit);
     }
 
+    //TODO redis存储
     @Override
     public Page<List<Course>> selectCourseByCompanyId(String companyId, Integer page, Integer limit) {
         if (StringUtil.isEmpty(companyId) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");

@@ -4,6 +4,7 @@ import top.oahnus.enums.AuthType;
 
 /**
  * Created by oahnus on 2017/2/26.
+ *
  */
 public interface TokenService {
     // length 64

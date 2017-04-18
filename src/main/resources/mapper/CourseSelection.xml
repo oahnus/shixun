@@ -47,6 +47,7 @@
         s.email 'student.email'
     </sql>
 
+    <!-- select -->
     <select id="selectCourseSelectionByCourseId" resultMap="courseSelection_map">
         SELECT
         <include refid="base_sql"/>
@@ -75,7 +76,18 @@
             AND course_id = #{courseId}
         </if>
         <if test="studentId != null and !&quot;&quot;.equals(studentId)">
-            AND studentId = #{studentId}
+            AND student_id = #{studentId}
         </if>
     </select>
+
+    <!-- insert -->
+    <insert id="insertNewCourseSelection" parameterType="CourseSelection">
+        INSERT INTO course_selection
+        (course_id, student_id, course_update_time, create_time, edit_time)
+        VALUE (
+          #{courseId}, #{studentId}, #{courseUpdateTime}, #{createTime}, #{editTime}
+        )
+    </insert>
+
+
 </mapper>

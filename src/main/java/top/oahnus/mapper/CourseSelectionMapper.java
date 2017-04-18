@@ -18,5 +18,5 @@ public interface CourseSelectionMapper extends BaseMapper {
     List<CourseSelection> selectCourseSelectionByCourseId(@Param("courseId")String courseId,
                                                            @Param("offset")Integer offset,
                                                            @Param("limit")Integer limit);
-
+    Integer insertNewCourseSelection(CourseSelection courseSelection);
 }

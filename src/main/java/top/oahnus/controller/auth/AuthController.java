@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import top.oahnus.controller.ServerState;
+import top.oahnus.dto.ResponseData;
 import top.oahnus.dto.TokenDto;
 import top.oahnus.dto.UserAuthDto;
+import top.oahnus.dto.UserDto;
 import top.oahnus.entity.UserAuth;
 import top.oahnus.service.TokenService;
 import top.oahnus.service.UserAuthService;
@@ -45,4 +48,10 @@ public class AuthController {
     }
 
     // TODO 根据用户留下的邮箱发送验证邮件来修改密码
+
+    @PostMapping("/user/reset")
+    public ResponseData<Integer> resetPassword(@Validated @RequestBody UserDto userDto) {
+        Integer count = userAuthService.resetPassword(userDto);
+        return new ResponseData<>(ServerState.SUCCESS, count, "success");
+    }
 }

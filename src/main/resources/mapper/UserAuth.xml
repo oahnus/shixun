@@ -15,4 +15,11 @@
         AND password = #{password}
         AND type = #{type}
     </select>
+
+    <update id="resetPassword">
+        UPDATE user_auth SET password = #{newPassword}
+        WHERE username = #{username}
+        AND password = #{oldPassword}
+        AND type = #{type}
+    </update>
 </mapper>

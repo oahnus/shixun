@@ -2,6 +2,7 @@ package top.oahnus.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.oahnus.dto.CourseSelectionDto;
 import top.oahnus.dto.Page;
 import top.oahnus.entity.CourseSelection;
 import top.oahnus.exception.BadRequestParamException;
@@ -36,5 +37,10 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
         List<CourseSelection> courseSelections = courseSelectionMapper.selectCourseSelectionByStudentId(studentId, page, limit);
         Integer totalRecord = courseSelectionMapper.selectRecordCount(new HashMap<String, String>(){{put("studentId", studentId);}});
         return new Page<>(courseSelections, totalRecord, page, limit);
+    }
+
+    @Override
+    public CourseSelection insertNewCourseSelection(CourseSelectionDto courseSelectionDto) {
+        return null;
     }
 }
