@@ -190,6 +190,7 @@ CREATE TABLE task_result (
   student_id VARCHAR(40) NOT NULL COMMENT '学生id',
   content VARCHAR(255) NOT NULL COMMENT '上传的成果文件url',
   memo VARCHAR(255) NULL COMMENT '任务成果描述(备注)',
+  create_time TIMESTAMP NULL COMMENT '提交时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_task_id_student_id (task_id, student_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '任务成果表';
@@ -208,12 +209,12 @@ FOR EACH ROW
 DROP TABLE IF EXISTS score;
 CREATE TABLE score (
   id VARCHAR(40) NOT NULL COMMENT '分数id',
-  course_id VARCHAR(40) NOT NULL COMMENT '课程id',
+  course_selection_id VARCHAR(40) NOT NULL COMMENT '选课id',
   student_id VARCHAR(40) NOT NULL COMMENT '学生id',
   teacher_score FLOAT(11) DEFAULT 0 COMMENT '教师评分',
   company_score FLOAT(11) DEFAULT 0 COMMENT '公司评分',
   PRIMARY KEY (id),
-  UNIQUE KEY idx_course_id_student_id (course_id, student_id)
+  UNIQUE KEY idx_course_selection_id_student_id (course_selection_id, student_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '学生分数表';
 
 DELIMITER ;;

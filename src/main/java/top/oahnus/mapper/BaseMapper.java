@@ -1,8 +1,5 @@
 package top.oahnus.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.Map;
 
 /**

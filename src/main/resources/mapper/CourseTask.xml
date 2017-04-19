@@ -1,0 +1,58 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "top.oahnus.mapper.CourseTaskMapper">
+    <resultMap id="course_task_map" type="CourseTask">
+        <result column="id" property="id" javaType="String"/>
+        <result column="course_id" property="courseId" javaType="String"/>
+        <result column="name" property="name" javaType="String"/>
+        <result column="content" property="content" javaType="String"/>
+        <result column="start_time" property="startTime" javaType="Date"/>
+        <result column="end_time" property="endTime" javaType="Date"/>
+        <result column="memo" property="memo" javaType="String"/>
+    </resultMap>
+
+    <sql id="base_sql">
+        id, course_id, name, content, start_time, end_time, memo
+    </sql>
+
+    <!-- query -->
+    <select id="selectRecordCount" resultType="Integer" parameterType="Map">
+        SELECT count(id) FROM course_task WHERE 1 = 1
+        <if test="courseId != null and !&quot;&quot;.equals(courseId)">
+            AND course_id = #{courseId}
+        </if>
+    </select>
+
+    <select id="selectCourseTaskByCourseId" resultMap="course_task_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course_task WHERE course_id = #{courseId}
+    </select>
+
+    <!-- insert -->
+    <insert id="insertNewCourseTask" parameterType="CourseTask">
+        INSERT INTO course_task
+        (id, course_id, name, content, start_time, end_time, memo)
+        VALUE
+        (NULL, #{courseId}, #{name}, #{content}, #{startTime}, #{endTime},#{memo})
+    </insert>
+
+    <!-- update -->
+    <update id="updateCourseTask" parameterType="CourseTask">
+        UPDATE course_task SET
+            course_id = #{courseId},
+            name = #{name},
+            content = #{content},
+            start_time = #{startTime},
+            end_time = #{endTime},
+            memo = #{memo}
+        WHERE id = #{id}
+    </update>
+
+    <!-- delete -->
+    <delete id="deleteCourseTask" parameterType="String">
+        DELETE FROM course_task WHERE id = #{courseTaskId}
+    </delete>
+</mapper>

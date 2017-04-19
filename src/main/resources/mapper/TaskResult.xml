@@ -1,0 +1,39 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "top.oahnus.mapper.TaskResultMapper">
+    <resultMap id="task_result_map" type="TaskResult">
+        <result column="id" property="id" javaType="String"/>
+        <result column="task_id" property="taskId" javaType="String"/>
+        <result column="student_id" property="studentId" javaType="String"/>
+        <result column="content" property="content" javaType="String"/>
+        <result column="memo" property="memo" javaType="String"/>
+        <result column="create_time" property="createTime" javaType="Date"/>
+    </resultMap>
+
+    <sql id="base_sql">
+        id, task_id, student_id, content, memo, create_time
+    </sql>
+
+    <!-- query -->
+
+    <select id="selectTaskResultByStudentId" resultMap="task_result_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM task_result WHERE student_id = #{studentId}
+    </select>
+
+    <!-- insert -->
+    <insert id="insertNewTaskResult" parameterType="TaskResult">
+        INSERT INTO task_result
+        (id, task_id, student_id, content, memo)
+        VALUE
+        (NULL, #{taskId}, #{studentId}, #{content}, #{memo})
+    </insert>
+
+    <!-- delete -->
+    <delete id="deleteTaskResult" parameterType="String">
+        DELETE FROM task_result WHERE id = #{taskResultId}
+    </delete>
+</mapper>

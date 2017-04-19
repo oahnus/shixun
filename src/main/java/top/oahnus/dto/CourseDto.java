@@ -25,7 +25,6 @@ public class CourseDto {
     @NotEmpty(message = "可选专业不能为空")
     private String professions;
     private String memo;
-    @NotEmpty(message = "请上传课程附件")
     private String addition;
     @Future
     private Date startTime;
