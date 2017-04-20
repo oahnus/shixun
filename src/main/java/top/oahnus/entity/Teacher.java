@@ -33,6 +33,7 @@ public class Teacher {
     }
 
     public Teacher(TeacherDto teacherDto) {
+        this.id = teacherDto.getId();
         this.workerId = teacherDto.getWorkerId();
         this.name = teacherDto.getName();
         this.profession = teacherDto.getProfession();

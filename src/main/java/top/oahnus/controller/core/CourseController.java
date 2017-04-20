@@ -47,8 +47,8 @@ public class CourseController {
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
-    @GetMapping("/profession/{profession}")
-    public ResponseData<Page> getCourseByProfession(@PathVariable("profession")String profession,
+    @GetMapping("/profession")
+    public ResponseData<Page> getCourseByProfession(@RequestParam("profession") String profession,
                                                     @RequestParam("page")Integer page,
                                                     @RequestParam("limit")Integer limit) {
         Page<List<Course>> p = new Page<>();
@@ -56,8 +56,8 @@ public class CourseController {
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
-    @GetMapping("/teacher/{teacherId}")
-    public ResponseData<Page> getCourseByTeacherId(@PathVariable("teacherId")String teacherId,
+    @GetMapping("/teacher")
+    public ResponseData<Page> getCourseByTeacherId(@RequestParam("teacherId")String teacherId,
                                                     @RequestParam("page")Integer page,
                                                     @RequestParam("limit")Integer limit) {
         Page<List<Course>> p = new Page<>();
@@ -65,8 +65,8 @@ public class CourseController {
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
-    @GetMapping("/teacher/{companyId}")
-    public ResponseData<Page> getCourseByCompanyId(@PathVariable("companyId")String companyId,
+    @GetMapping("/company")
+    public ResponseData<Page> getCourseByCompanyId(@RequestParam("companyId")String companyId,
                                                    @RequestParam("page")Integer page,
                                                    @RequestParam("limit")Integer limit) {
         Page<List<Course>> p = new Page<>();

@@ -39,5 +39,7 @@ public class Student {
         this.name = studentDto.getName();
         this.depart = studentDto.getDepart();
         this.profession = studentDto.getProfession();
+        this.sex = studentDto.getSex();
+        this.email = studentDto.getEmail();
     }
 }

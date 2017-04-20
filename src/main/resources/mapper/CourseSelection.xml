@@ -70,6 +70,19 @@
         WHERE cs.student_id = #{studentId} LIMIT #{offset},#{limit}
     </select>
 
+    <select id="selectCourseSelectionByStudentIdAndCourseIdAndCourseUpdateTime" resultMap="courseSelection_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course_selection cs
+        LEFT JOIN course c
+        ON cs.course_id = c.id
+        LEFT JOIN student s
+        ON cs.student_id = s.id
+        WHERE cs.student_id = #{studentId}
+        AND cs.course_id = #{courseId}
+        AND cs.course_update_time = #{courseUpdateTime}
+    </select>
+
     <select id="selectRecordCount" resultType="Integer" parameterType="Map">
         SELECT count(id) FROM course_selection WHERE 1 = 1
         <if test="courseId != null and !&quot;&quot;.equals(courseId)">
@@ -85,7 +98,7 @@
         INSERT INTO course_selection
         (course_id, student_id, course_update_time, create_time, edit_time)
         VALUE (
-          #{courseId}, #{studentId}, #{courseUpdateTime}, #{createTime}, #{editTime}
+          #{courseId}, #{studentId}, #{courseUpdateTime}, current_timestamp, current_timestamp
         )
     </insert>
 

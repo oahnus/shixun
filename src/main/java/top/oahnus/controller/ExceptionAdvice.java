@@ -2,6 +2,7 @@ package top.oahnus.controller;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import top.oahnus.dto.ResponseData;
@@ -39,6 +40,11 @@ public class ExceptionAdvice {
         return new ResponseData(ServerState.REQUEST_PARAMETER_ERROR, e.getBindingResult().getFieldError().getDefaultMessage());
     }
 
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseData handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        return new ResponseData(ServerState.REQUEST_PARAMETER_ERROR, e.getMessage());
+    }
+    
     @ExceptionHandler(ClientException.class)
     public ResponseData handleClientException(ClientException e) {
         if (e instanceof NoAuthException) {

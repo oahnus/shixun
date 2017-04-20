@@ -21,7 +21,7 @@ public class CourseSelectionController {
     @Autowired
     private CourseSelectionService courseSelectionService;
 
-    @GetMapping("/courseId")
+    @GetMapping("/course")
     public ResponseData<Page> getCourseSelectionByCourseId(@RequestParam("courseId")String courseId,
                                                            @RequestParam("page")Integer page,
                                                            @RequestParam("limit")Integer limit) {
@@ -29,7 +29,7 @@ public class CourseSelectionController {
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
-    @GetMapping("/studentId")
+    @GetMapping("/student")
     public ResponseData<Page> getCourseSelectionByStudentId(@RequestParam("studentId")String studentId,
                                                            @RequestParam("page")Integer page,
                                                            @RequestParam("limit")Integer limit) {

@@ -24,5 +24,6 @@ public class CourseSelection {
         this.id = courseSelectionDto.getId();
         this.course.setId(courseSelectionDto.getCourseId());
         this.student.setId(courseSelectionDto.getStudentId());
+        this.courseUpdateTime = courseSelectionDto.getCourseUpdateTime();
     }
 }

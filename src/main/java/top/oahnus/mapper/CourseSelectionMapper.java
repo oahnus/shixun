@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import top.oahnus.entity.CourseSelection;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,5 +19,10 @@ public interface CourseSelectionMapper extends BaseMapper {
     List<CourseSelection> selectCourseSelectionByCourseId(@Param("courseId")String courseId,
                                                            @Param("offset")Integer offset,
                                                            @Param("limit")Integer limit);
+
+    CourseSelection selectCourseSelectionByStudentIdAndCourseIdAndCourseUpdateTime(@Param("studentId")String studentId,
+                                                                                   @Param("courseId")String courseId,
+                                                                                   @Param("courseUpdateTime")Date courseUpdateTime);
+
     Integer insertNewCourseSelection(CourseSelection courseSelection);
 }

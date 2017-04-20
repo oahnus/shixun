@@ -10,7 +10,7 @@ auth:
     package: top.oahnus.controller.administrator
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/shixun_17_02_26?useSSL=false&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/shixun_17_02_26?useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver

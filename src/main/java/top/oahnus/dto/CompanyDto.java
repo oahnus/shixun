@@ -16,9 +16,9 @@ public class CompanyDto {
     private String name;
     @NotEmpty(message = "公司联系人不能为空")
     private String contact;
-    @Pattern(regexp = "^((13[0-9])|(15[^4,\\\\D])|(18[0,5-9]))\\\\d{8}$")
+    @Pattern(regexp = "^(1[1-9][0-9]{9})$", message = "手机号码格式错误")
     private String contactPhone;
     private String address;
-    @Pattern(regexp = "^([a-z0-9A-Z]+[-|\\\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\\\.)+[a-zA-Z]{2,}$")
+    @Pattern(regexp = "^[a-z_0-9.-]{1,64}@([a-z0-9-]{1,200}.){1,5}[a-z]{1,6}$", message = "邮箱格式错误")
     private String email;
 }

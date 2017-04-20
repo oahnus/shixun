@@ -14,8 +14,8 @@ import java.util.Date;
 public class Course {
     private String id;
     private String name;
-    private Teacher teacher;
-    private Company company;
+    private Teacher teacher = new Teacher();
+    private Company company = new Company();
     // 开设该课程的专业集合,以;间隔
     private String professions;
     // 课程描述

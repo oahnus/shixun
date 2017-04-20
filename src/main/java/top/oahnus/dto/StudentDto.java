@@ -21,6 +21,6 @@ public class StudentDto {
     @NotEmpty(message = "学生学院不能为空")
     private String depart;
     private String sex;
-    @Pattern(regexp = "^([a-z0-9A-Z]+[-|\\\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\\\.)+[a-zA-Z]{2,}$")
+    @Pattern(regexp = "^[a-z_0-9.-]{1,64}@([a-z0-9-]{1,200}.){1,5}[a-z]{1,6}$", message = "邮箱格式错误")
     private String email;
 }

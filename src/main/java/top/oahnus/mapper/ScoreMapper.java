@@ -15,6 +15,9 @@ public interface ScoreMapper extends BaseMapper{
     List<Score> selectScoreByStudentId(@Param("studentId")String studentId);
     List<Score> selectScoreByCourseId(@Param("courseId")String courseId);
 
+    Integer insertNewScore(@Param("studentId")String studentId,
+                           @Param("courseSelectionId")String courseSelectionId);
+
     Integer updateScoreByTeacher(Score score);
     Integer updateScoreByCompany(Score score);
 }

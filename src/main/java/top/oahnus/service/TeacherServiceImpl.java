@@ -103,7 +103,9 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Teacher updateTeacher(TeacherDto teacherDto) {
         Teacher teacher = new Teacher(teacherDto);
+        System.out.println(teacher);
         Integer count = teacherMapper.updateTeacher(teacher);
+        System.out.println(count);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("更新数据库失败");
         } else {

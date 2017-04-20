@@ -62,7 +62,14 @@
             AND student_id = #{studentId}
         </if>
     </select>
-    
+
+    <insert id="insertNewScore">
+        INSERT INTO score
+        (id, student_id,  course_selection_id, teacher_score, company_score)
+        VALUE
+        (NULL, #{studentId}, #{courseSelectionId}, 0, 0)
+    </insert>
+
     <update id="updateScoreByTeacher" parameterType="Score">
         UPDATE score
         LEFT JOIN course_selection

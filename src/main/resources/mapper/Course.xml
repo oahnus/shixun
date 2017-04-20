@@ -95,7 +95,7 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="selectCourseByNameAndTeacherIdAndCompanyId" parameterType="Course">
+    <select id="selectCourseByNameAndTeacherIdAndCompanyId" resultMap="course_map">
         SELECT
         <include refid="base_sql"/>
         FROM course
@@ -107,15 +107,15 @@
     </select>
 
     <select id="selectRecordCount" resultType="Integer" parameterType="Map">
-        SELECT count(id) FROM teacher WHERE 1 = 1
+        SELECT count(id) FROM course WHERE 1 = 1
         <if test="companyId != null and !&quot;&quot;.equals(companyId)">
-            AND company_id = #{companyId}
+            AND course.company_id = #{companyId}
         </if>
         <if test="teacherId != null and !&quot;&quot;.equals(teacherId)">
-            AND teacher_id = #{teacherId}
+            AND course.teacher_id = #{teacherId}
         </if>
         <if test="profession != null and !&quot;&quot;.equals(profession)">
-            AND professions LIKE concat('%', #{profession}, '%')
+            AND course.professions LIKE concat('%', #{profession}, '%')
         </if>
     </select>
 

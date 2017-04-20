@@ -2,7 +2,6 @@ package top.oahnus.dto;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Pattern;
 
@@ -24,6 +23,6 @@ public class TeacherDto {
     private String sex;
     // 职称
     private String jobTitle;
-    @Pattern(regexp = "^([a-z0-9A-Z]+[-|\\\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\\\.)+[a-zA-Z]{2,}$")
+    @Pattern(regexp = "^[a-z_0-9.-]{1,64}@([a-z0-9-]{1,200}.){1,5}[a-z]{1,6}$", message = "邮箱格式错误")
     private String email;
 }
