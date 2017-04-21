@@ -75,6 +75,16 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <select id="selectCourseByNameLikeCourseName" resultMap="course_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN company ON course.company_id = company.id
+        WHERE course.name LIKE concat('%', #{courseName}, '%')
+        LIMIT #{offset}, #{limit}
+    </select>
+
     <select id="selectCourseByTeacherId" resultMap="course_map">
         SELECT
         <include refid="base_sql"/>
@@ -93,6 +103,15 @@
         LEFT JOIN company ON course.company_id = company.id
         WHERE course.company_id = #{companyId}
         LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectCourseById" resultMap="course_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN company ON course.company_id = company.id
+        WHERE course.id = #{courseId}
     </select>
 
     <select id="selectCourseByNameAndTeacherIdAndCompanyId" resultMap="course_map">

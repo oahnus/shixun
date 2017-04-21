@@ -5,10 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.oahnus.dto.CourseSelectionDto;
 import top.oahnus.dto.Page;
+import top.oahnus.entity.Course;
 import top.oahnus.entity.CourseSelection;
+import top.oahnus.enums.CourseState;
 import top.oahnus.exception.BadRequestParamException;
 import top.oahnus.exception.DataExistedException;
+import top.oahnus.exception.DataStatusException;
 import top.oahnus.exception.SQLExecuteFailedExceeption;
+import top.oahnus.mapper.CourseMapper;
 import top.oahnus.mapper.CourseSelectionMapper;
 import top.oahnus.mapper.ScoreMapper;
 import top.oahnus.util.StringUtil;
@@ -26,6 +30,8 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
     private CourseSelectionMapper courseSelectionMapper;
     @Autowired
     private ScoreMapper scoreMapper;
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Override
     public Page<List<CourseSelection>> selectCourseSelectionByCourseId(String courseId, Integer page, Integer limit) {
@@ -45,10 +51,24 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
         return new Page<>(courseSelections, totalRecord, page, limit);
     }
 
+
+    // todo 插入选课表之前，先判断课程状态是否开放选课，之后判断学生专业是否在课程可选择专业范围内
+    // todo 插入选课信息同时创建分数表数据
     @Override
     @Transactional
     public CourseSelection insertNewCourseSelection(CourseSelectionDto courseSelectionDto) {
         CourseSelection courseSelection = new CourseSelection(courseSelectionDto);
+
+        //查询课程状态
+        // todo 从redis中读取课程信息
+        Course course = courseMapper.selectCourseById(courseSelectionDto.getCourseId());
+
+        CourseState state = course.getState();
+        if (state.equals(CourseState.OFF_SELECTED)) {
+            throw new DataStatusException("课程还未开放选课");
+        }
+
+        // 插入选课信息
         Integer count = courseSelectionMapper.insertNewCourseSelection(courseSelection);
         if (count == 0) {
             throw new DataExistedException("数据已存在");
@@ -68,5 +88,24 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
                 return cs;
             }
         }
+    }
+
+
+
+
+
+    @Override
+    @Transactional
+    public Integer deleteCourseSelectionById(String courseSelectionId) {
+        if (StringUtil.isEmpty(courseSelectionId)) throw new BadRequestParamException("请求参数错误");
+        Integer count = courseSelectionMapper.deleteCourseSelectionById(courseSelectionId);
+        if (count < 0) {
+            throw new SQLExecuteFailedExceeption("删除操作失败");
+        }
+        Integer c = scoreMapper.deleteScoreByCourseSelectionId(courseSelectionId);
+        if (c < 0) {
+            throw new SQLExecuteFailedExceeption("删除操作失败");
+        }
+        return count;
     }
 }

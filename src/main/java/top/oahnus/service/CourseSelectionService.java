@@ -15,4 +15,5 @@ public interface CourseSelectionService {
     Page<List<CourseSelection>> selectCourseSelectionByStudentId(String studentId, Integer page, Integer limit);
 
     CourseSelection insertNewCourseSelection(CourseSelectionDto courseSelectionDto);
+    Integer deleteCourseSelectionById(String courseSelectionId);
 }

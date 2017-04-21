@@ -89,4 +89,8 @@
         WHERE score.student_id = #{studentId}
         AND course_selection.course_id = #{course.id}
     </update>
+
+    <delete id="deleteScoreByCourseSelectionId">
+        DELETE FROM score WHERE course_selection_id = #{courseSelectionId}_
+    </delete>
 </mapper>

@@ -20,4 +20,6 @@ public interface ScoreMapper extends BaseMapper{
 
     Integer updateScoreByTeacher(Score score);
     Integer updateScoreByCompany(Score score);
+
+    Integer deleteScoreByCourseSelectionId(@Param("courseSelectionId")String courseSelectionId);
 }

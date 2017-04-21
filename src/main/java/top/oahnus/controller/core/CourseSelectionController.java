@@ -37,6 +37,4 @@ public class CourseSelectionController {
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
-    // todo 插入选课表之前，先判断课程状态是否开放选课，之后判断学生专业是否在课程可选择专业范围内
-    // todo 插入选课信息同时创建分数表数据
 }

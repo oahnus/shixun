@@ -25,4 +25,6 @@ public interface CourseSelectionMapper extends BaseMapper {
                                                                                    @Param("courseUpdateTime")Date courseUpdateTime);
 
     Integer insertNewCourseSelection(CourseSelection courseSelection);
+
+    Integer deleteCourseSelectionById(@Param("courseSelectionId")String courseSelectionId);
 }

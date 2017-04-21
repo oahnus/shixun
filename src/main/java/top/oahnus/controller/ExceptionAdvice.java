@@ -61,6 +61,8 @@ public class ExceptionAdvice {
             return new ResponseData(ServerState.FILE_UPLOAD_ERROR, e.getMessage());
         } else if (e instanceof LoginFailedException) {
             return new ResponseData(ServerState.READ_DATA_FAILED, e.getMessage());
+        } else if (e instanceof DataStatusException) {
+            return new ResponseData(ServerState.DATA_STATUS_NOT_ALLOWED, e.getMessage());
         } else {
             return new ResponseData(ServerState.FAILED, e.getMessage());
         }
