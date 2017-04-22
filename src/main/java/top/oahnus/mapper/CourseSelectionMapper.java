@@ -20,9 +20,8 @@ public interface CourseSelectionMapper extends BaseMapper {
                                                            @Param("offset")Integer offset,
                                                            @Param("limit")Integer limit);
 
-    CourseSelection selectCourseSelectionByStudentIdAndCourseIdAndCourseUpdateTime(@Param("studentId")String studentId,
-                                                                                   @Param("courseId")String courseId,
-                                                                                   @Param("courseUpdateTime")Date courseUpdateTime);
+    CourseSelection selectCourseSelectionByStudentIdAndCourseId(@Param("studentId")String studentId,
+                                                                                   @Param("courseId")String courseId);
 
     Integer insertNewCourseSelection(CourseSelection courseSelection);
 

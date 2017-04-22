@@ -23,12 +23,18 @@
         <result property = "student.email" column = "student.email" javaType="String"/>
         <result property = "createTime" column = "create_time" javaType="Date"/>
         <result property = "editTime" column = "edit_time" javaType="Date"/>
+        <result property = "teacherScore" column = "teacher_score" javaType="Float"/>
+        <result property = "companyScore" column = "company_score" javaType="Float"/>
     </resultMap>
 
     <sql id="base_sql">
         cs.id,
         course_id,
         cs.student_id,
+        cs.teacher_score,
+        cs.company_score,
+        cs.create_time,
+        cs.edit_time,
         c.id 'course.id',
         c.name 'course.name',
         c.professions 'course.professions',
@@ -70,7 +76,7 @@
         WHERE cs.student_id = #{studentId} LIMIT #{offset},#{limit}
     </select>
 
-    <select id="selectCourseSelectionByStudentIdAndCourseIdAndCourseUpdateTime" resultMap="courseSelection_map">
+    <select id="selectCourseSelectionByStudentIdAndCourseId" resultMap="courseSelection_map">
         SELECT
         <include refid="base_sql"/>
         FROM course_selection cs
@@ -80,7 +86,6 @@
         ON cs.student_id = s.id
         WHERE cs.student_id = #{studentId}
         AND cs.course_id = #{courseId}
-        AND cs.course_update_time = #{courseUpdateTime}
     </select>
 
     <select id="selectRecordCount" resultType="Integer" parameterType="Map">

@@ -14,7 +14,6 @@ import top.oahnus.exception.DataStatusException;
 import top.oahnus.exception.SQLExecuteFailedExceeption;
 import top.oahnus.mapper.CourseMapper;
 import top.oahnus.mapper.CourseSelectionMapper;
-import top.oahnus.mapper.ScoreMapper;
 import top.oahnus.util.StringUtil;
 
 import java.util.HashMap;
@@ -28,8 +27,6 @@ import java.util.List;
 public class CourseSelectionServiceImpl implements CourseSelectionService{
     @Autowired
     private CourseSelectionMapper courseSelectionMapper;
-    @Autowired
-    private ScoreMapper scoreMapper;
     @Autowired
     private CourseMapper courseMapper;
 
@@ -53,7 +50,6 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
 
 
     // todo 插入选课表之前，先判断课程状态是否开放选课，之后判断学生专业是否在课程可选择专业范围内
-    // todo 插入选课信息同时创建分数表数据
     @Override
     @Transactional
     public CourseSelection insertNewCourseSelection(CourseSelectionDto courseSelectionDto) {
@@ -76,23 +72,13 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
             throw new SQLExecuteFailedExceeption("插入数据失败");
         } else {
             // 创建选课信息的同时,创建分数表数据
-            CourseSelection cs = courseSelectionMapper.selectCourseSelectionByStudentIdAndCourseIdAndCourseUpdateTime(
+            CourseSelection cs = courseSelectionMapper.selectCourseSelectionByStudentIdAndCourseId(
                     courseSelection.getStudent().getId(),
-                    courseSelection.getCourse().getId(),
-                    courseSelection.getCourseUpdateTime()
+                    courseSelection.getCourse().getId()
             );
-            Integer c = scoreMapper.insertNewScore(courseSelection.getStudent().getId(),cs.getId());
-            if (c < 0) {
-                throw new SQLExecuteFailedExceeption("插入数据失败");
-            } else {
-                return cs;
-            }
+            return cs;
         }
     }
-
-
-
-
 
     @Override
     @Transactional
@@ -100,10 +86,6 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
         if (StringUtil.isEmpty(courseSelectionId)) throw new BadRequestParamException("请求参数错误");
         Integer count = courseSelectionMapper.deleteCourseSelectionById(courseSelectionId);
         if (count < 0) {
-            throw new SQLExecuteFailedExceeption("删除操作失败");
-        }
-        Integer c = scoreMapper.deleteScoreByCourseSelectionId(courseSelectionId);
-        if (c < 0) {
             throw new SQLExecuteFailedExceeption("删除操作失败");
         }
         return count;

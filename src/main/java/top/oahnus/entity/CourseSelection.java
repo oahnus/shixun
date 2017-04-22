@@ -14,9 +14,10 @@ public class CourseSelection {
     private String id;
     private Course course;
     private Student student;
-    private Date courseUpdateTime;
     private Date createTime;
     private Date editTime;
+    private Float teacherScore;
+    private Float companyScore;
 
     public CourseSelection() {}
 
@@ -24,6 +25,5 @@ public class CourseSelection {
         this.id = courseSelectionDto.getId();
         this.course.setId(courseSelectionDto.getCourseId());
         this.student.setId(courseSelectionDto.getStudentId());
-        this.courseUpdateTime = courseSelectionDto.getCourseUpdateTime();
     }
 }

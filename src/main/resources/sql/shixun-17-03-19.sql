@@ -139,11 +139,12 @@ CREATE TABLE course_selection (
   id VARCHAR(40) NOT NULL COMMENT '选课表id',
   course_id VARCHAR(40) NOT NULL COMMENT '课程id',
   student_id VARCHAR(40) NOT NULL COMMENT '学生id',
-  course_update_time TIMESTAMP NULL COMMENT '课程更新时间,用于区分不同学期的课程',
+  teacher_score FLOAT(11) DEFAULT 0 COMMENT '教师评分',
+  company_score FLOAT(11) DEFAULT 0 COMMENT '公司评分',
   create_time TIMESTAMP NULL COMMENT '选课时间',
   edit_time TIMESTAMP ON UPDATE current_timestamp COMMENT '修改时间',
   PRIMARY KEY (id),
-  UNIQUE KEY idx_c_id_s_id_c_update (course_id, student_id, course_update_time)
+  UNIQUE KEY idx_c_id_s_id (course_id, student_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '学生选课表';
 
 DELIMITER ;;
@@ -204,28 +205,6 @@ FOR EACH ROW
   END ;;
 
 -- --------------------------------------------
-
-# 分数表
-DROP TABLE IF EXISTS score;
-CREATE TABLE score (
-  id VARCHAR(40) NOT NULL COMMENT '分数id',
-  course_selection_id VARCHAR(40) NOT NULL COMMENT '选课id',
-  student_id VARCHAR(40) NOT NULL COMMENT '学生id',
-  teacher_score FLOAT(11) DEFAULT 0 COMMENT '教师评分',
-  company_score FLOAT(11) DEFAULT 0 COMMENT '公司评分',
-  PRIMARY KEY (id),
-  UNIQUE KEY idx_course_selection_id_student_id (course_selection_id, student_id)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '学生分数表';
-
-DELIMITER ;;
-CREATE TRIGGER before_insert_score
-BEFORE INSERT ON score
-FOR EACH ROW
-  BEGIN
-    SET new.id = REPLACE(uuid(), '-','');
-  END ;;
-
--- ---------------------------------------------
 
 # 用户权限表
 DROP TABLE IF EXISTS user_auth;
