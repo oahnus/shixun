@@ -1,5 +1,8 @@
 package top.oahnus.service;
 
+import io.protostuff.LinkedBuffer;
+import io.protostuff.ProtobufIOUtil;
+import io.protostuff.runtime.RuntimeSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,7 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    private RuntimeSchema<Course> schema = RuntimeSchema.createFrom(Course.class);
 
     //TODO redis存储
     @Override
@@ -34,6 +38,11 @@ public class CourseServiceImpl implements CourseService {
         if (page == null || limit == null) throw new BadRequestParamException("请求参数错误");
 
         List<Course> courses = courseMapper.selectAllCourse((page - 1) * limit, limit);
+        courses.forEach(course -> {
+            byte[] bytes = ProtobufIOUtil.toByteArray(course, schema,
+                    LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));
+            redisTemplate.opsForValue().set("course:" + course.getId(), String.valueOf(bytes));
+        });
         Integer totalRecord = courseMapper.selectRecordCount(null);
         return new Page<>(courses, totalRecord, page, limit);
     }
