@@ -12,6 +12,7 @@ import top.oahnus.dto.CourseDto;
 import top.oahnus.dto.Page;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.entity.Course;
+import top.oahnus.enums.CourseState;
 import top.oahnus.exception.FileUplaodException;
 import top.oahnus.service.CourseService;
 
@@ -39,40 +40,55 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+    @GetMapping("/{courseId}")
+    public ResponseData<Course> selectCourseById(@PathVariable("courseId")String courseId) {
+        Course course = courseService.selectCourseByCourseId(courseId);
+        return new ResponseData<>(ServerState.SUCCESS, course, "success");
+    }
+
+    /**
+     * 4.22 添加根据CourseState查询选课信息
+     */
     @GetMapping
-    public ResponseData<Page> getAllCourse(@RequestParam("page")Integer page,
+    public ResponseData<Page> getAllCourse(@RequestParam(value = "state",required = false)String state,
+                                           @RequestParam("page")Integer page,
                                            @RequestParam("limit")Integer limit) {
         Page<List<Course>> p = new Page<>();
-        p = courseService.selectAllCourse(page, limit);
+        p = courseService.selectAllCourse(state, page, limit);
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
     @GetMapping("/profession")
-    public ResponseData<Page> getCourseByProfession(@RequestParam("profession") String profession,
+    public ResponseData<Page> getCourseByProfession(@RequestParam(value = "state",required = false)String state,
+                                                    @RequestParam("profession") String profession,
                                                     @RequestParam("page")Integer page,
                                                     @RequestParam("limit")Integer limit) {
         Page<List<Course>> p = new Page<>();
-        p = courseService.selectCourseByProfessionsLikeProfession(profession, page, limit);
+        p = courseService.selectCourseByProfessionsLikeProfession(state, profession, page, limit);
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
     @GetMapping("/teacher")
-    public ResponseData<Page> getCourseByTeacherId(@RequestParam("teacherId")String teacherId,
+    public ResponseData<Page> getCourseByTeacherId(@RequestParam(value = "state",required = false)String state,
+                                                   @RequestParam("teacherId")String teacherId,
                                                     @RequestParam("page")Integer page,
                                                     @RequestParam("limit")Integer limit) {
         Page<List<Course>> p = new Page<>();
-        p = courseService.selectCourseByTeacherId(teacherId, page, limit);
+        p = courseService.selectCourseByTeacherId(state, teacherId, page, limit);
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
     @GetMapping("/company")
-    public ResponseData<Page> getCourseByCompanyId(@RequestParam("companyId")String companyId,
+    public ResponseData<Page> getCourseByCompanyId(@RequestParam(value = "state",required = false)String state,
+                                                   @RequestParam("companyId")String companyId,
                                                    @RequestParam("page")Integer page,
                                                    @RequestParam("limit")Integer limit) {
         Page<List<Course>> p = new Page<>();
-        p = courseService.selectCourseByCompanyId(companyId, page, limit);
+        p = courseService.selectCourseByCompanyId(state, companyId, page, limit);
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
+
+
 
     @PostMapping
     public ResponseData<Course> insertNewCourse(@Validated @RequestBody CourseDto courseDto) {

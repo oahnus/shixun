@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import top.oahnus.dto.Page;
 import top.oahnus.dto.StudentDto;
 import top.oahnus.entity.Student;
-import top.oahnus.exception.BadRequestParamException;
-import top.oahnus.exception.DataExistedException;
-import top.oahnus.exception.ReadDataFailedException;
-import top.oahnus.exception.SQLExecuteFailedExceeption;
+import top.oahnus.exception.*;
 import top.oahnus.mapper.StudentMapper;
 import top.oahnus.util.StringUtil;
 
@@ -54,6 +51,18 @@ public class StudentServiceImpl implements StudentService {
         List<Student> studentList = studentMapper.selectAllStudent((page-1)*limit, limit);
         Integer totalRecord = studentMapper.selectRecordCount(null);
         return new Page<>(studentList, totalRecord, page, limit);
+    }
+
+    @Override
+    public Student selectStudentById(String studentId) {
+        if (StringUtil.isEmpty(studentId)) {
+            throw new BadRequestParamException("请求参数错误");
+        }
+        Student student = studentMapper.selectStudentById(studentId);
+        if (student == null) {
+            throw new NotFoundException("数据不存在");
+        }
+        return student;
     }
 
     @Override

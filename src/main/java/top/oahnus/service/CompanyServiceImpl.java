@@ -6,6 +6,7 @@ import top.oahnus.dto.CompanyDto;
 import top.oahnus.dto.Page;
 import top.oahnus.entity.Company;
 import top.oahnus.exception.BadRequestParamException;
+import top.oahnus.exception.NotFoundException;
 import top.oahnus.exception.ReadDataFailedException;
 import top.oahnus.exception.SQLExecuteFailedExceeption;
 import top.oahnus.mapper.CompanyMapper;
@@ -31,6 +32,18 @@ public class CompanyServiceImpl implements CompanyService {
         List<Company> companies = companyMapper.selectAllCompany((page - 1) * limit, limit);
         Integer totalRecord = companyMapper.selectRecordCount(null);
         return new Page<>(companies, totalRecord, page, limit);
+    }
+
+    @Override
+    public Company selectCompanyById(String companyId) {
+        if (StringUtil.isEmpty(companyId)) {
+            throw new BadRequestParamException("请求参数错误");
+        }
+        Company company = companyMapper.selectCompanyById(companyId);
+        if (company == null) {
+            throw new NotFoundException("数据未找到");
+        }
+        return company;
     }
 
     @Override

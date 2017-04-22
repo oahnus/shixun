@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface CompanyService {
     Page<List<Company>> getAllCompany(Integer page, Integer limit);
+    Company selectCompanyById(String companyId);
+
     Company addCompany(CompanyDto companyDto);
     Company updateCompany(CompanyDto companyDto);
     Integer deleteCompany(String companyId);

@@ -62,6 +62,9 @@
         FROM course
         LEFT JOIN teacher ON course.teacher_id = teacher.id
         LEFT JOIN company ON course.company_id = company.id
+        <if test="state != null">
+            WHERE course.state = #{state}
+        </if>
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -72,6 +75,9 @@
         LEFT JOIN teacher ON course.teacher_id = teacher.id
         LEFT JOIN company ON course.company_id = company.id
         WHERE course.professions LIKE concat('%', #{profession}, '%')
+        <if test="state != null">
+            AND course.state = #{state}
+        </if>
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -82,6 +88,9 @@
         LEFT JOIN teacher ON course.teacher_id = teacher.id
         LEFT JOIN company ON course.company_id = company.id
         WHERE course.name LIKE concat('%', #{courseName}, '%')
+        <if test="state != null">
+            AND course.state = #{state}
+        </if>
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -92,6 +101,9 @@
         LEFT JOIN teacher ON course.teacher_id = teacher.id
         LEFT JOIN company ON course.company_id = company.id
         WHERE course.teacher_id = #{teacherId}
+        <if test="state != null">
+            AND course.state = #{state}
+        </if>
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -102,6 +114,9 @@
         LEFT JOIN teacher ON course.teacher_id = teacher.id
         LEFT JOIN company ON course.company_id = company.id
         WHERE course.company_id = #{companyId}
+        <if test="state != null">
+            AND course.state = #{state}
+        </if>
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -135,6 +150,9 @@
         </if>
         <if test="profession != null and !&quot;&quot;.equals(profession)">
             AND course.professions LIKE concat('%', #{profession}, '%')
+        </if>
+        <if test="state != null">
+            AND course.state = #{state}
         </if>
     </select>
 

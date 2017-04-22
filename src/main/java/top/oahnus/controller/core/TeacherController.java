@@ -25,6 +25,12 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
+    @GetMapping("/{teacherId}")
+    public ResponseData<Teacher> selectTeacherById(@PathVariable("teacherId")String teacherId) {
+        Teacher teacher = teacherService.selectTeacherById(teacherId);
+        return new ResponseData<>(ServerState.SUCCESS, teacher, "success");
+    }
+
     @GetMapping
     public ResponseData<Page> getAllTeacher(@RequestParam("page")Integer page,
                                             @RequestParam("limit")Integer limit) {

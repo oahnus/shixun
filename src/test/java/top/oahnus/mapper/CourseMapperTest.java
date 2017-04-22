@@ -30,25 +30,25 @@ public class CourseMapperTest {
 
     @Test
     public void testGetAll(){
-        List<Course> courseList = courseMapper.selectAllCourse(0,10);
+        List<Course> courseList = courseMapper.selectAllCourse(0,0,10);
         courseList.forEach(System.out::println);
     }
 
     @Test
     public void testSelectCourseByProfessionsLikeProfession() {
-        List<Course> courses = courseMapper.selectCourseByProfessionsLikeProfession("通信工程", 0, 10);
+        List<Course> courses = courseMapper.selectCourseByProfessionsLikeProfession(0,"通信工程", 0, 10);
         courses.forEach(System.out::println);
     }
 
     @Test
     public void testSelectCourseByTeacherId() {
-        List<Course> courses = courseMapper.selectCourseByTeacherId("33bbb073141d11e7becf80fa5b3ea16e", 0, 10);
+        List<Course> courses = courseMapper.selectCourseByTeacherId(0,"33bbb073141d11e7becf80fa5b3ea16e", 0, 10);
         courses.forEach(System.out::println);
     }
 
     @Test
     public void testSelectCourseByCompanyId() {
-        List<Course> courses = courseMapper.selectCourseByCompanyId("33ba6d80141d11e7becf80fa5b3ea16e", 0, 10);
+        List<Course> courses = courseMapper.selectCourseByCompanyId(0,"33ba6d80141d11e7becf80fa5b3ea16e", 0, 10);
         courses.forEach(System.out::println);
     }
 

@@ -25,6 +25,12 @@
         FROM student WHERE profession = #{profession} LIMIT #{offset},#{limit}
     </select>
 
+    <select id="selectStudentById" resultMap="student_map">
+        SELECT
+        <include refid="base_columns"/>
+        FROM student WHERE id = #{studentId}
+    </select>
+
     <select id="selectStudentByStudentNum" resultMap="student_map">
         SELECT
         <include refid="base_columns"/>

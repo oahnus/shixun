@@ -23,6 +23,12 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @GetMapping("/{studentId}")
+    public ResponseData<Student> selectStudentById(@PathVariable("studentId")String studentId) {
+        Student student = studentService.selectStudentById(studentId);
+        return new ResponseData<>(ServerState.SUCCESS, student, "success");
+    }
+
     /**
      * 单条插入学生信息
      */

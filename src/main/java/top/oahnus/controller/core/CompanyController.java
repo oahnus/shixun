@@ -23,6 +23,12 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
+    @GetMapping("/{companyId}")
+    public ResponseData<Company> selectCompanyById(@PathVariable("companyId")String companyId) {
+        Company company = companyService.selectCompanyById(companyId);
+        return new ResponseData<>(ServerState.SUCCESS, company, "success");
+    }
+
     @GetMapping
     public ResponseData<Page> getAllCompany(@RequestParam("page")Integer page, @RequestParam("limit")Integer limit) {
         Page<List<Company>> p = companyService.getAllCompany(page, limit);

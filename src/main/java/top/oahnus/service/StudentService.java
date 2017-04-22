@@ -14,6 +14,7 @@ public interface StudentService {
     Page<List<Student>> selectStudentByProfession(String profession, Integer page, Integer limit);
     Page<List<Student>> selectStudentByDepart(String depart, Integer page, Integer limit);
     Page<List<Student>> selectAllStudent(Integer page, Integer limit);
+    Student selectStudentById(String studentId);
 
     List<Student> insertStudents(List<Student> studentList);
     Student insertOneStudent(StudentDto studentDto);

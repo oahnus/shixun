@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import top.oahnus.dto.Page;
 import top.oahnus.dto.TeacherDto;
 import top.oahnus.entity.Teacher;
-import top.oahnus.exception.BadRequestParamException;
-import top.oahnus.exception.DataExistedException;
-import top.oahnus.exception.ReadDataFailedException;
-import top.oahnus.exception.SQLExecuteFailedExceeption;
+import top.oahnus.exception.*;
 import top.oahnus.mapper.TeacherMapper;
 import top.oahnus.util.StringUtil;
 
@@ -53,6 +50,18 @@ public class TeacherServiceImpl implements TeacherService {
         List<Teacher> teachers = teacherMapper.selectAllTeacher((page-1)*limit, limit);
         Integer totalRecord = teacherMapper.selectRecordCount(null);
         return new Page<>(teachers, totalRecord, page, limit);
+    }
+
+    @Override
+    public Teacher selectTeacherById(String teacherId) {
+        if (StringUtil.isEmpty(teacherId)) {
+            throw new BadRequestParamException("请求参数错误");
+        }
+        Teacher teacher = teacherMapper.selectTeacherById(teacherId);
+        if (teacher == null) {
+            throw new NotFoundException("数据未找到");
+        }
+        return teacher;
     }
 
     @Override

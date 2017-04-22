@@ -16,6 +16,7 @@ public interface TeacherMapper extends BaseMapper{
     List<Teacher> selectTeacherByProfession(@Param("profession")String profession, @Param("offset")Integer offset, @Param("limit")Integer limit);
     List<Teacher> selectTeacherByDepart(@Param("depart")String depart, @Param("offset")Integer offset, @Param("limit")Integer limit);
     List<Teacher> selectAllTeacher(@Param("offset")Integer offset, @Param("limit")Integer limit);
+    Teacher selectTeacherById(@Param("teacherId")String teacherId);
 
     Integer insertTeachers(List<Teacher> teacherList);
     Integer insertOneTeacher(Teacher teacher);

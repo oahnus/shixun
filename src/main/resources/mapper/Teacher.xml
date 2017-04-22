@@ -39,6 +39,12 @@
         FROM teacher WHERE worker_id = #{worker_id}
     </select>
 
+    <select id="selectTeacherById" resultMap="teacher_map">
+        SELECT
+        <include refid="base_columns"/>
+        FROM teacher WHERE id = #{teacherId}
+    </select>
+
     <select id="selectTeacherByDepart" resultMap="teacher_map">
         SELECT
         <include refid="base_columns"/>
