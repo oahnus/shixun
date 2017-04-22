@@ -36,7 +36,6 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Page<List<Course>> selectAllCourse(Integer page, Integer limit) {
         if (page == null || limit == null) throw new BadRequestParamException("请求参数错误");
-
         List<Course> courses = courseMapper.selectAllCourse((page - 1) * limit, limit);
         courses.forEach(course -> {
             byte[] bytes = ProtobufIOUtil.toByteArray(course, schema,
