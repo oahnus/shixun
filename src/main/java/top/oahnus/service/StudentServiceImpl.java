@@ -104,7 +104,10 @@ public class StudentServiceImpl implements StudentService {
         Integer count = studentMapper.deleteStudentById(studentId);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("删除学生信息失败");
+        } else if (count == 0) {
+            throw new NotFoundException("数据为找到");
         } else {
+            // todo 删除用户权限表中的数据
             return count;
         }
     }
@@ -112,6 +115,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student updateStudent(StudentDto studentDto) {
         Student student = new Student(studentDto);
+        if (student.getId() == null) {
+            throw new BadRequestParamException("id不能为空");
+        }
         Integer count = studentMapper.updateStudent(student);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("更新学生数据失败");

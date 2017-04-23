@@ -26,9 +26,9 @@ public class CourseDto {
     private String professions;
     private String memo;
     private String addition;
-    @Future
+    @Future(message = "课程开始时间要大于当前时间")
     private Date startTime;
-    @Future
+    @Future(message = "课程结束时间要大于当前时间")
     private Date endTime;
     @NotEmpty(message = "课程状态信息不能为空")
     private String state;

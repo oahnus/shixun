@@ -142,7 +142,7 @@ CREATE TABLE course_selection (
   teacher_score FLOAT(11) DEFAULT 0 COMMENT '教师评分',
   company_score FLOAT(11) DEFAULT 0 COMMENT '公司评分',
   create_time TIMESTAMP NULL COMMENT '选课时间',
-  edit_time TIMESTAMP ON UPDATE current_timestamp COMMENT '修改时间',
+  edit_time TIMESTAMP NULL COMMENT '修改时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_c_id_s_id (course_id, student_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '学生选课表';
@@ -226,7 +226,7 @@ FOR EACH ROW
 
 -- -----------------------------------------
 # 17-03-29
-ALTER TABLE course ADD COLUMN state TINYINT NOT NULL COMMENT '开课状态,0 开放选课中,1 关闭选课,2 开课中,3 已结课';
+ALTER TABLE course ADD COLUMN state TINYINT NOT NULL DEFAULT 3 COMMENT '开课状态,0 开放选课中,1 关闭选课,2 开课中,3 已结课';
 
 -- ----------------------------------------
 # TODO 选课人数

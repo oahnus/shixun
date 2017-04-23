@@ -63,6 +63,9 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company updateCompany(CompanyDto companyDto) {
         Company company = new Company(companyDto);
+        if (company.getId() == null) {
+            throw new BadRequestParamException("id不能为空");
+        }
         Integer count = companyMapper.updateCompany(company);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("更新数据库失败");

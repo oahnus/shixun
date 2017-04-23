@@ -1,6 +1,7 @@
 package top.oahnus.entity;
 
 import lombok.Data;
+import top.oahnus.dto.CourseTaskDto;
 
 import java.util.Date;
 
@@ -18,4 +19,16 @@ public class CourseTask {
     private Date startTime;
     private Date endTime;
     private String memo;
+
+    public CourseTask() {}
+
+    public CourseTask(CourseTaskDto courseTaskDto) {
+        this.id = courseTaskDto.getId();
+        this.courseId = courseTaskDto.getCourseId();
+        this.name = courseTaskDto.getName();
+        this.content = courseTaskDto.getContent();
+        this.startTime = courseTaskDto.getStartTime();
+        this.endTime = courseTaskDto.getEndTime();
+        this.memo = courseTaskDto.getMemo();
+    }
 }

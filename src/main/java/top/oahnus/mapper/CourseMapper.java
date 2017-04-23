@@ -3,6 +3,7 @@ package top.oahnus.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import top.oahnus.entity.Course;
+import top.oahnus.enums.CourseState;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public interface CourseMapper extends BaseMapper {
     Integer insertNewCourse(Course course);
 
     Integer updateCourse(Course course);
+    Integer changeCourseState(@Param("profession")String profession, @Param("state")Integer state);
 
     Integer deleteCourseById(@Param("id")String courseId);
 }

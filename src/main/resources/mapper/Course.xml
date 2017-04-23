@@ -151,6 +151,9 @@
         <if test="profession != null and !&quot;&quot;.equals(profession)">
             AND course.professions LIKE concat('%', #{profession}, '%')
         </if>
+        <if test="courseName != null and !&quot;&quot;.equals(courseName)">
+            AND course.name LIKE concat('%', #{courseName}, '%')
+        </if>
         <if test="state != null">
             AND course.state = #{state}
         </if>
@@ -176,6 +179,13 @@
         course.update_time = #{updateTime},
         course.state = #{state, typeHandler=top.oahnus.handler.CourseStateHandler}
         WHERE id = #{id}
+    </update>
+
+    <update id="changeCourseState">
+        UPDATE course SET state = #{state}
+        <if test="profession != null and !&quot;&quot;.equals(profession)">
+            WHERE professions LIKE concat('%', #{profession}, '%')
+        </if>
     </update>
 
     <!-- delete -->

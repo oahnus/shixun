@@ -1,6 +1,7 @@
 package top.oahnus.controller.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.oahnus.controller.ServerState;
@@ -51,7 +52,11 @@ public class CompanyController {
      * 单条插入公司信息
      */
     @PostMapping
-    public ResponseData<Company> insertNewCompany(@Validated @RequestBody CompanyDto companyDto) {
+    public ResponseData<Company> insertNewCompany(@Validated @RequestBody CompanyDto companyDto,
+                                                  BindingResult result) {
+        if (result.hasErrors()) {
+            return new ResponseData<>(ServerState.REQUEST_PARAMETER_ERROR, result.getFieldError().getDefaultMessage());
+        }
         Company company = companyService.addCompany(companyDto);
         return new ResponseData<>(ServerState.SUCCESS, company, "success");
     }

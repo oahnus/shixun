@@ -15,7 +15,7 @@
         <result property = "course.updateTime" column = "course.update_time" javaType="Date"/>
         <result property = "course.state" column = "course.state" javaType="top.oahnus.enums.CourseState" typeHandler="top.oahnus.handler.CourseStateHandler"/>
         <result property = "student.id" column = "student.id" javaType="String"/>
-        <result property = "student.name" column = "student.id" javaType="String"/>
+        <result property = "student.name" column = "student.name" javaType="String"/>
         <result property = "student.studentNum" column = "student.student_num" javaType="String"/>
         <result property = "student.sex" column = "student.sex" javaType="String"/>
         <result property = "student.profession" column = "student.profession" javaType="String"/>
@@ -101,9 +101,9 @@
     <!-- insert -->
     <insert id="insertNewCourseSelection" parameterType="CourseSelection">
         INSERT INTO course_selection
-        (course_id, student_id, course_update_time, create_time, edit_time)
+        (course_id, student_id, create_time, edit_time)
         VALUE (
-          #{courseId}, #{studentId}, #{courseUpdateTime}, current_timestamp, current_timestamp
+          #{course.id}, #{student.id}, current_timestamp, current_timestamp
         )
     </insert>
 

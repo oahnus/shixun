@@ -17,6 +17,4 @@ public class CourseSelectionDto {
     private String courseId;
     @NotEmpty(message = "学生id不能为空")
     private String studentId;
-    @NotNull(message = "课程更新时间不能为空")
-    private Date courseUpdateTime;
 }

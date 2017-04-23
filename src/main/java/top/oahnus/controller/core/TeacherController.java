@@ -1,6 +1,7 @@
 package top.oahnus.controller.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.oahnus.controller.ServerState;
@@ -60,7 +61,11 @@ public class TeacherController {
     }
 
     @PostMapping
-    public ResponseData<Teacher> insertOneTeacher(@Validated @RequestBody TeacherDto teacherDto) {
+    public ResponseData<Teacher> insertOneTeacher(@Validated @RequestBody TeacherDto teacherDto,
+                                                  BindingResult result) {
+        if (result.hasErrors()) {
+            return new ResponseData<>(ServerState.REQUEST_PARAMETER_ERROR, result.getFieldError().getDefaultMessage());
+        }
         Teacher teacher = teacherService.insertOneTeacher(teacherDto);
         return new ResponseData<>(ServerState.SUCCESS, teacher, "success");
     }

@@ -12,8 +12,8 @@ import java.util.Date;
 @Data
 public class CourseSelection {
     private String id;
-    private Course course;
-    private Student student;
+    private Course course = new Course();
+    private Student student = new Student();
     private Date createTime;
     private Date editTime;
     private Float teacherScore;

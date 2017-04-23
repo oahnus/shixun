@@ -2,6 +2,7 @@ package top.oahnus.controller.core;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import top.oahnus.dto.Page;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.entity.Course;
 import top.oahnus.enums.CourseState;
+import top.oahnus.exception.BadRequestParamException;
 import top.oahnus.exception.FileUplaodException;
 import top.oahnus.service.CourseService;
 
@@ -88,10 +90,12 @@ public class CourseController {
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
-
-
     @PostMapping
-    public ResponseData<Course> insertNewCourse(@Validated @RequestBody CourseDto courseDto) {
+    public ResponseData<Course> insertNewCourse(@Validated @RequestBody CourseDto courseDto,
+                                                BindingResult result) {
+        if (result.hasErrors()) {
+            return new ResponseData<>(ServerState.REQUEST_PARAMETER_ERROR, result.getFieldError().getDefaultMessage());
+        }
         Course course = courseService.insertNewCourse(courseDto);
         return new ResponseData<>(ServerState.SUCCESS, course, "success");
     }
@@ -100,6 +104,13 @@ public class CourseController {
     public ResponseData<Course> updateCourse(@Validated @RequestBody CourseDto courseDto) {
         Course course = courseService.updateCourse(courseDto);
         return new ResponseData<>(ServerState.SUCCESS, course, "success");
+    }
+
+    @PutMapping("/state")
+    public ResponseData<Integer> changeCourseState(@RequestParam("profession")String profession,
+                                                   @RequestParam("state")String state) {
+        Integer count = courseService.changeCourseState(profession, state);
+        return new ResponseData<>(ServerState.SUCCESS, count, "success");
     }
 
     @DeleteMapping("/{courseId}")

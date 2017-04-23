@@ -8,10 +8,7 @@ import top.oahnus.dto.Page;
 import top.oahnus.entity.Course;
 import top.oahnus.entity.CourseSelection;
 import top.oahnus.enums.CourseState;
-import top.oahnus.exception.BadRequestParamException;
-import top.oahnus.exception.DataExistedException;
-import top.oahnus.exception.DataStatusException;
-import top.oahnus.exception.SQLExecuteFailedExceeption;
+import top.oahnus.exception.*;
 import top.oahnus.mapper.CourseMapper;
 import top.oahnus.mapper.CourseSelectionMapper;
 import top.oahnus.util.StringUtil;
@@ -60,7 +57,7 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
         Course course = courseMapper.selectCourseById(courseSelectionDto.getCourseId());
 
         CourseState state = course.getState();
-        if (state.equals(CourseState.OFF_SELECTED)) {
+        if (!state.equals(CourseState.ON_SELECTED)) {
             throw new DataStatusException("课程还未开放选课");
         }
 
@@ -87,6 +84,8 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
         Integer count = courseSelectionMapper.deleteCourseSelectionById(courseSelectionId);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("删除操作失败");
+        } else if (count == 0) {
+            throw new NotFoundException("数据为找到");
         }
         return count;
     }

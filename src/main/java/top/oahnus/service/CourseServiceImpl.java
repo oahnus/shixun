@@ -3,6 +3,7 @@ package top.oahnus.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.oahnus.dto.CourseDto;
 import top.oahnus.dto.Page;
 import top.oahnus.entity.Course;
@@ -27,7 +28,6 @@ public class CourseServiceImpl implements CourseService {
     private CourseMapper courseMapper;
     @Autowired
     private StringRedisTemplate redisTemplate;
-
 
     //TODO redis存储
     @Override
@@ -106,6 +106,25 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Page<List<Course>> selectCourseByCourseNameLike(String state, String courseName, Integer page, Integer limit) {
+        if (StringUtil.isEmpty(courseName) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
+        CourseState courseState;
+        try {
+            courseState = CourseState.valueOf(state);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new BadRequestParamException("非法课程状态");
+        }
+
+        List<Course> courses = courseMapper.selectCourseByNameLikeCourseName(courseState.ordinal(), courseName, (page - 1) * limit, limit);
+        Integer totalRecord = courseMapper.selectRecordCount(
+                new HashMap<String, String>(){{
+                    put("courseName", courseName);
+                    put("state", String.valueOf(courseState.ordinal()));
+                }});
+        return new Page<>(courses, totalRecord, page, limit);
+    }
+
+    @Override
     public Course selectCourseByCourseId(String courseId) {
         if (StringUtil.isEmpty(courseId)) {
             throw new BadRequestParamException("请求参数错误");
@@ -136,6 +155,9 @@ public class CourseServiceImpl implements CourseService {
     public Course updateCourse(CourseDto courseDto) {
         if (courseDto == null) throw new BadRequestParamException("请求参数错误");
         Course course = new Course(courseDto);
+        if (course.getId() == null) {
+            throw new BadRequestParamException("id不能为空");
+        }
         Integer count = courseMapper.updateCourse(course);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("更新数据失败");
@@ -147,10 +169,42 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
+    public Integer changeCourseState(String profession, String state) {
+        CourseState courseState;
+        try {
+            courseState = CourseState.valueOf(state);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new BadRequestParamException("非法课程状态");
+        }
+        // 如果将课程状态改为关闭选课,则将课程状态改为开课状态
+        if (courseState.equals(CourseState.OFF_SELECTED)) {
+            Integer count = courseMapper.changeCourseState(profession, CourseState.COURSE_START.ordinal());
+            if (count < 0) {
+                throw new SQLExecuteFailedExceeption("更新课程状态失败");
+            }
+            return count;
+        } else if(courseState.equals(CourseState.ON_SELECTED)) {
+            Integer count = courseMapper.changeCourseState(profession, CourseState.COURSE_START.ordinal());
+            if (count < 0) {
+                throw new SQLExecuteFailedExceeption("更新课程状态失败");
+            }
+            return count;
+        } else {
+            throw new BadRequestParamException("无法修改课程状态");
+        }
+    }
+
+    @Override
     public Integer deleteCourseById(String courseId) {
         if (courseId == null) throw new BadRequestParamException("请求参数错误");
         Integer count = courseMapper.deleteCourseById(courseId);
-        if (count < 0) throw new SQLExecuteFailedExceeption("删除失败");
+        if (count < 0) {
+            throw new SQLExecuteFailedExceeption("删除失败");
+        }
+        else if (count == 0) {
+            throw new NotFoundException("数据为找到");
+        }
         return count;
     }
 }
