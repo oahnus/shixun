@@ -10,11 +10,12 @@
         <result column="content" property="content" javaType="String"/>
         <result column="start_time" property="startTime" javaType="Date"/>
         <result column="end_time" property="endTime" javaType="Date"/>
+        <result column="deadline" property="deadline" javaType="Date"/>
         <result column="memo" property="memo" javaType="String"/>
     </resultMap>
 
     <sql id="base_sql">
-        id, course_id, name, content, start_time, end_time, memo
+        id, course_id, name, content, start_time, end_time, deadline, memo
     </sql>
 
     <!-- query -->
@@ -29,6 +30,12 @@
         SELECT
         <include refid="base_sql"/>
         FROM course_task WHERE course_id = #{courseId}
+    </select>
+
+    <select id="selectCourseTaskById" resultMap="course_task_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM course_task WHERE id = #{courseTaskId}
     </select>
 
     <!-- insert -->
@@ -47,6 +54,7 @@
             content = #{content},
             start_time = #{startTime},
             end_time = #{endTime},
+            deadline = #{deadline},
             memo = #{memo}
         WHERE id = #{id}
     </update>

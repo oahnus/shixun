@@ -7,6 +7,7 @@ import java.util.Date;
 /**
  * Created by oahnus on 2017/4/19
  * 17:13.
+ * 双向评价
  */
 @Data
 public class Review {

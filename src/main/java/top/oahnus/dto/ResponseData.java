@@ -1,7 +1,7 @@
 package top.oahnus.dto;
 
 import lombok.Data;
-import top.oahnus.controller.ServerState;
+import top.oahnus.enums.ServerState;
 
 /**
  * Created by oahnus on 2017/2/26.

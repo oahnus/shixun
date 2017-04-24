@@ -22,5 +22,7 @@ public class CourseTaskDto {
     private Date startTime;
     @Future(message = "请选择大于当前时间的日期")
     private Date endTime;
+    @Future(message = "请选择大于当前时间的日期")
+    private Date deadline;
     private String memo;
 }

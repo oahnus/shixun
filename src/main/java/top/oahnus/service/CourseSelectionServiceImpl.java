@@ -68,7 +68,6 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
         } else if (count < 0) {
             throw new SQLExecuteFailedExceeption("插入数据失败");
         } else {
-            // 创建选课信息的同时,创建分数表数据
             CourseSelection cs = courseSelectionMapper.selectCourseSelectionByStudentIdAndCourseId(
                     courseSelection.getStudent().getId(),
                     courseSelection.getCourse().getId()
@@ -78,7 +77,6 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
     }
 
     @Override
-    @Transactional
     public Integer deleteCourseSelectionById(String courseSelectionId) {
         if (StringUtil.isEmpty(courseSelectionId)) throw new BadRequestParamException("请求参数错误");
         Integer count = courseSelectionMapper.deleteCourseSelectionById(courseSelectionId);

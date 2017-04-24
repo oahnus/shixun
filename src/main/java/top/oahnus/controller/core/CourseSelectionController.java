@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import top.oahnus.controller.ServerState;
+import top.oahnus.enums.ServerState;
 import top.oahnus.dto.CourseSelectionDto;
 import top.oahnus.dto.Page;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.entity.CourseSelection;
-import top.oahnus.mapper.CourseSelectionMapper;
 import top.oahnus.service.CourseSelectionService;
 
 import java.util.List;

@@ -18,6 +18,7 @@ public class CourseTask {
     private String content;
     private Date startTime;
     private Date endTime;
+    private Date deadline;
     private String memo;
 
     public CourseTask() {}

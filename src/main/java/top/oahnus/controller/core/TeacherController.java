@@ -4,15 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import top.oahnus.controller.ServerState;
+import top.oahnus.enums.ServerState;
 import top.oahnus.dto.Page;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.dto.TeacherDto;
 import top.oahnus.entity.Teacher;
 import top.oahnus.service.TeacherService;
 
-import javax.xml.ws.Response;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -7,15 +7,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import top.oahnus.Constants;
-import top.oahnus.controller.ServerState;
-import top.oahnus.dto.CompanyDto;
+import top.oahnus.enums.ServerState;
 import top.oahnus.dto.ResponseData;
-import top.oahnus.dto.StudentDto;
 import top.oahnus.entity.Company;
 import top.oahnus.entity.Student;
 import top.oahnus.entity.Teacher;
 import top.oahnus.enums.AuthType;
-import top.oahnus.exception.DataFormatException;
 import top.oahnus.exception.ReadDataFailedException;
 import top.oahnus.service.CompanyService;
 import top.oahnus.service.StudentService;

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import top.oahnus.controller.ServerState;
+import top.oahnus.enums.ServerState;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.dto.TokenDto;
 import top.oahnus.dto.UserAuthDto;

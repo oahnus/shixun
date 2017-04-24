@@ -1,4 +1,4 @@
-package top.oahnus.controller;
+package top.oahnus.enums;
 
 /**
  * Created by oahnus on 2017/2/26.
@@ -11,6 +11,7 @@ public enum ServerState {
     LOGIN_FAILED_ERROR(10001),
     REQUEST_PARAMETER_ERROR(20000),
     FILE_UPLOAD_ERROR(20001),
+    TIME_SPAN_ERROR(20002),
     DATA_NOT_FOUND_ERROR(30000),
     DATA_EXISTED_ERROR(30001),
     DATA_STATUS_NOT_ALLOWED(30002),

@@ -13,6 +13,7 @@ import java.util.List;
 @Mapper
 public interface CourseTaskMapper extends BaseMapper {
     List<CourseTask> selectCourseTaskByCourseId(@Param("courseId")String courseId);
+    CourseTask selectCourseTaskById(@Param("courseTaskId")String courseTaskId);
 
     Integer insertNewCourseTask(CourseTask courseTask);
     Integer updateCourseTask(CourseTask courseTask);

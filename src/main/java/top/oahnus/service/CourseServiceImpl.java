@@ -158,6 +158,7 @@ public class CourseServiceImpl implements CourseService {
         if (course.getId() == null) {
             throw new BadRequestParamException("id不能为空");
         }
+        // todo 如果课程已结课，不允许修改课程信息。
         Integer count = courseMapper.updateCourse(course);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("更新数据失败");

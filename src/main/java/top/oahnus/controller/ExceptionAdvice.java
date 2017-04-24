@@ -6,14 +6,12 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import top.oahnus.dto.ResponseData;
-import top.oahnus.enums.AuthType;
+import top.oahnus.enums.ServerState;
 import top.oahnus.exception.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * Created by oahnus on 2017/2/25.
@@ -65,7 +63,9 @@ public class ExceptionAdvice {
             return new ResponseData(ServerState.DATA_STATUS_NOT_ALLOWED, e.getMessage());
         } else if (e instanceof BadRequestParamException) {
             return new ResponseData(ServerState.REQUEST_PARAMETER_ERROR, e.getMessage());
-        }else {
+        } else if (e instanceof TimeSpanException) {
+            return new ResponseData(ServerState.TIME_SPAN_ERROR, e.getMessage());
+        } else {
             return new ResponseData(ServerState.FAILED, e.getMessage());
         }
     }

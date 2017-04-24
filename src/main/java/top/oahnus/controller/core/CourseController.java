@@ -8,25 +8,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import top.oahnus.Constants;
-import top.oahnus.controller.ServerState;
+import top.oahnus.enums.ServerState;
 import top.oahnus.dto.CourseDto;
 import top.oahnus.dto.Page;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.entity.Course;
-import top.oahnus.enums.CourseState;
-import top.oahnus.exception.BadRequestParamException;
-import top.oahnus.exception.FileUplaodException;
 import top.oahnus.service.CourseService;
+import top.oahnus.util.FileUploadDownloadUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -139,7 +132,7 @@ public class CourseController {
             FileUtils.copyInputStreamToFile(file.getInputStream(), additionFile);
             return new ResponseData<>(ServerState.SUCCESS, uuid + extension, "success");
         } else {
-            throw new FileUplaodException("上传文件格式错误");
+            return new ResponseData<>(ServerState.FILE_UPLOAD_ERROR, "上传文件格式错误");
         }
     }
 
@@ -155,25 +148,6 @@ public class CourseController {
                                        HttpServletResponse response,
                                        @PathVariable String filename) throws IOException {
         String fileAdditionSavedPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload/course/addition");
-        Path path = Paths.get(fileAdditionSavedPath + File.separator + filename);
-        File targetFile = path.toFile();
-
-        if (!targetFile.exists()) {
-            response.setContentType("application/json;charset=utf-8");
-            try (OutputStream out = response.getOutputStream()) {
-                String json = "{\"status\":\"30000\",\"msg\":\"文件未找到\"}";
-                out.write(json.getBytes());
-                out.flush();
-            }
-        } else {
-            response.setContentType("multipart/form-data");
-            response.addHeader("Content-Disposition",
-                    "attachment; filename=" + URLEncoder.encode(filename, "utf-8"));
-            byte[] bytes = Files.readAllBytes(path);
-            try (OutputStream out = response.getOutputStream()) {
-                out.write(bytes);
-                out.flush();
-            }
-        }
+        FileUploadDownloadUtil.downloadFile(response, filename, fileAdditionSavedPath);
     }
 }

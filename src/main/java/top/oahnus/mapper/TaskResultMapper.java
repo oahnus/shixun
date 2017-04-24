@@ -12,7 +12,10 @@ import java.util.List;
  */
 @Mapper
 public interface TaskResultMapper {
-    List<TaskResult> selectTaskResultByStudentId(@Param("studentId")String studentId);
+    List<TaskResult> selectTaskResult(@Param("courseId")String courseId, @Param("studentId")String studentId,@Param("taskId")String taskId);
+    TaskResult selectTaskResultById(@Param("taskResultId")String taskResultId);
+
     Integer deleteTaskResult(@Param("taskResultId")String taskResultId);
     Integer insertNewTaskResult(TaskResult taskResult);
+    Integer updateTaskResult(TaskResult taskResult);
 }
