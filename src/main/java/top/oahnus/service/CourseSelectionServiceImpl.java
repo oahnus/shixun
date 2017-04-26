@@ -7,10 +7,13 @@ import top.oahnus.dto.CourseSelectionDto;
 import top.oahnus.dto.Page;
 import top.oahnus.entity.Course;
 import top.oahnus.entity.CourseSelection;
+import top.oahnus.entity.Score;
+import top.oahnus.entity.Student;
 import top.oahnus.enums.CourseState;
 import top.oahnus.exception.*;
 import top.oahnus.mapper.CourseMapper;
 import top.oahnus.mapper.CourseSelectionMapper;
+import top.oahnus.mapper.ScoreMapper;
 import top.oahnus.util.StringUtil;
 
 import java.util.HashMap;
@@ -26,6 +29,8 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
     private CourseSelectionMapper courseSelectionMapper;
     @Autowired
     private CourseMapper courseMapper;
+    @Autowired
+    private ScoreMapper scoreMapper;
 
     @Override
     public Page<List<CourseSelection>> selectCourseSelectionByCourseId(String courseId, Integer page, Integer limit) {
@@ -72,19 +77,27 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
                     courseSelection.getStudent().getId(),
                     courseSelection.getCourse().getId()
             );
+            Score score = new Score();
+            score.setCompanyScore(0F);
+            score.setTeacherScore(0F);
+            score.setCourseSelection(cs);
+            score.setStudent(courseSelection.getStudent());
+            scoreMapper.insertNewScore(score);
             return cs;
         }
     }
 
     @Override
+    @Transactional
     public Integer deleteCourseSelectionById(String courseSelectionId) {
         if (StringUtil.isEmpty(courseSelectionId)) throw new BadRequestParamException("请求参数错误");
         Integer count = courseSelectionMapper.deleteCourseSelectionById(courseSelectionId);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("删除操作失败");
         } else if (count == 0) {
-            throw new NotFoundException("数据为找到");
+            throw new NotFoundException("数据未找到");
         }
+        scoreMapper.deleteScoreByCourseSelectionId(courseSelectionId);
         return count;
     }
 }

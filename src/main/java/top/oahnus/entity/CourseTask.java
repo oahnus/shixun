@@ -30,6 +30,7 @@ public class CourseTask {
         this.content = courseTaskDto.getContent();
         this.startTime = courseTaskDto.getStartTime();
         this.endTime = courseTaskDto.getEndTime();
+        this.deadline = courseTaskDto.getDeadline();
         this.memo = courseTaskDto.getMemo();
     }
 }

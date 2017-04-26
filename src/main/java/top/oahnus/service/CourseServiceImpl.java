@@ -136,6 +136,7 @@ public class CourseServiceImpl implements CourseService {
         return course;
     }
 
+    //todo 判断是否重复插入数据
     @Override
     public Course insertNewCourse(CourseDto courseDto) {
         if (courseDto == null) throw new BadRequestParamException("请求参数错误");

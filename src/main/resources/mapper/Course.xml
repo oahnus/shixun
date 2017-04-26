@@ -161,7 +161,7 @@
 
     <!-- insert -->
     <insert id="insertNewCourse" parameterType="Course">
-        INSERT INTO course (name, teacher_id, company_id, professions, memo, start_time, end_time, addition, state)
+        INSERT IGNORE INTO course (name, teacher_id, company_id, professions, memo, start_time, end_time, addition, state)
         VALUE (#{name}, #{teacher.id}, #{company.id}, #{professions}, #{memo}, #{startTime}, #{endTime}, #{addition}, #{state, typeHandler=top.oahnus.handler.CourseStateHandler})
     </insert>
 

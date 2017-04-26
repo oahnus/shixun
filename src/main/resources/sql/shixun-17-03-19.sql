@@ -139,8 +139,6 @@ CREATE TABLE course_selection (
   id VARCHAR(40) NOT NULL COMMENT '选课表id',
   course_id VARCHAR(40) NOT NULL COMMENT '课程id',
   student_id VARCHAR(40) NOT NULL COMMENT '学生id',
-  teacher_score FLOAT(11) DEFAULT 0 COMMENT '教师评分',
-  company_score FLOAT(11) DEFAULT 0 COMMENT '公司评分',
   create_time TIMESTAMP NULL COMMENT '选课时间',
   edit_time TIMESTAMP NULL COMMENT '修改时间',
   PRIMARY KEY (id),
@@ -166,7 +164,7 @@ CREATE TABLE course_task (
   content VARCHAR(255) NOT NULL COMMENT '任务内容，保存上传的任务内容文件的url地址',
   start_time TIMESTAMP NULL COMMENT '任务开始时间',
   end_time TIMESTAMP NULL COMMENT '任务结束时间',
-  delaline TIMESTAMP NULL COMMENT '任务成果截止时间',
+  deadline TIMESTAMP NULL COMMENT '任务成果截止时间',
   memo VARCHAR(255) NULL COMMENT '任务描述',
   PRIMARY KEY (id),
   KEY idx_course_id_name (course_id, name),
@@ -183,6 +181,29 @@ FOR EACH ROW
   END ;;
 
 -- -----------------------------------------------
+
+# 分数表
+DROP TABLE IF EXISTS score;
+CREATE TABLE score (
+  id VARCHAR(40) NOT NULL COMMENT '分数id',
+  course_selection_id VARCHAR(40) NOT NULL COMMENT '选课id',
+  student_id VARCHAR(40) NOT NULL COMMENT '学生id',
+  teacher_score FLOAT(11) DEFAULT 0 COMMENT '教师评分',
+  company_score FLOAT(11) DEFAULT 0 COMMENT '公司评分',
+  PRIMARY KEY (id),
+  UNIQUE KEY idx_course_selection_id_student_id (course_selection_id, student_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '学生分数表';
+
+DELIMITER ;;
+CREATE TRIGGER before_insert_score
+BEFORE INSERT ON score
+FOR EACH ROW
+  BEGIN
+    SET new.id = REPLACE(uuid(), '-','');
+  END ;;
+
+-- ---------------------------------------------
+
 
 # 任务成果表
 DROP TABLE IF EXISTS task_result;
@@ -232,6 +253,7 @@ ALTER TABLE course ADD COLUMN state TINYINT NOT NULL DEFAULT 3 COMMENT '开课�
 -- ----------------------------------------
 # TODO 选课人数
 # 用户菜单表
+DROP TABLE IF EXISTS user_menu;
 CREATE TABLE user_menu (
   id INT(10) AUTO_INCREMENT NOT NULL COMMENT '权限菜单ID',
   key_name VARCHAR(255) NOT NULL COMMENT '菜单key',
@@ -244,3 +266,30 @@ CREATE TABLE user_menu (
   KEY idx_parent_id(parent_id)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+-- ------------------------------------------
+# 评价表 双向 学生评教师，教师评学生，学生评公司，公司评学生
+DROP TABLE IF EXISTS review;
+CREATE TABLE review (
+  id VARCHAR(40) NOT NULL COMMENT 'id',
+  from_user_username VARCHAR(40) NOT NULL COMMENT '',
+  from_user_name VARCHAR(40) NOT NULL COMMENT '',
+  from_user_type INT(1) NOT NULL COMMENT '',
+  to_user_username VARCHAR(40) NOT NULL COMMENT '',
+  to_user_name VARCHAR(40) NOT NULL COMMENT '',
+  to_user_type INT(1) NOT NULL COMMENT '',
+  course_id VARCHAR(40) NOT NULL COMMENT '',
+  course_name VARCHAR(255) NOT NULL COMMENT '',
+  content VARCHAR(255) NOT NULL COMMENT '',
+  create_time TIMESTAMP NOT NULL COMMENT '',
+  PRIMARY KEY (id),
+  UNIQUE KEY idx_from_to_course(from_user_username, to_user_username, course_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DELIMITER ;;
+CREATE TRIGGER before_insert_review
+BEFORE INSERT ON review
+FOR EACH ROW
+  BEGIN
+    SET new.id = REPLACE(uuid(), '-','');
+  END ;;
+-- -------------------------------------------

@@ -23,16 +23,12 @@
         <result property = "student.email" column = "student.email" javaType="String"/>
         <result property = "createTime" column = "create_time" javaType="Date"/>
         <result property = "editTime" column = "edit_time" javaType="Date"/>
-        <result property = "teacherScore" column = "teacher_score" javaType="Float"/>
-        <result property = "companyScore" column = "company_score" javaType="Float"/>
     </resultMap>
 
     <sql id="base_sql">
         cs.id,
         course_id,
         cs.student_id,
-        cs.teacher_score,
-        cs.company_score,
         cs.create_time,
         cs.edit_time,
         c.id 'course.id',
@@ -100,7 +96,7 @@
 
     <!-- insert -->
     <insert id="insertNewCourseSelection" parameterType="CourseSelection">
-        INSERT INTO course_selection
+        INSERT IGNORE INTO course_selection
         (course_id, student_id, create_time, edit_time)
         VALUE (
           #{course.id}, #{student.id}, current_timestamp, current_timestamp

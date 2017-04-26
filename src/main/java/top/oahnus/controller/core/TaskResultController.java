@@ -30,9 +30,9 @@ public class TaskResultController {
     private TaskResultService taskResultService;
 
     @GetMapping
-    public ResponseData<List<TaskResult>> selectTaskResultByStudentAndTask(@RequestParam("courseId")String courseId,
-                                                                           @RequestParam("studentId")String studentId,
-                                                                           @RequestParam("taskId")String taskId) {
+    public ResponseData<List<TaskResult>> selectTaskResultByStudentAndTask(@RequestParam(value = "courseId",required = false)String courseId,
+                                                                           @RequestParam(value = "studentId",required = false)String studentId,
+                                                                           @RequestParam(value = "taskId", required = false)String taskId) {
         List<TaskResult> results = taskResultService.selectTaskResult(courseId, studentId, taskId);
         return new ResponseData<>(ServerState.SUCCESS, results, "success");
     }

@@ -4,49 +4,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace = "top.oahnus.mapper.TaskResultMapper">
     <resultMap id="task_result_map" type="TaskResult">
-        <result column="id" property="id" javaType="String"/>
-        <result column="task_id" property="taskId" javaType="String"/>
-        <result column="student_id" property="student.id" javaType="String"/>
-        <result column="student_num" property="studentNum" javaType="String"/>
-        <result column="name" property="name" javaType="String"/>
-        <result column="sex" property="sex" javaType="String"/>
-        <result column="profession" property="profession" javaType="String"/>
-        <result column="depart" property="depart" javaType="String"/>
-        <result column="email" property="email" javaType="String"/>
-        <result column="content" property="content" javaType="String"/>
-        <result column="memo" property="memo" javaType="String"/>
-        <result column="create_time" property="createTime" javaType="Date"/>
+        <result column="task_result.id" property="id" javaType="String"/>
+        <result column="task_result.task_id" property="taskId" javaType="String"/>
+        <result column="task_result.student_id" property="student.id" javaType="String"/>
+        <result column="student.student_num" property="student.studentNum" javaType="String"/>
+        <result column="student.name" property="student.name" javaType="String"/>
+        <result column="student.sex" property="student.sex" javaType="String"/>
+        <result column="student.profession" property="student.profession" javaType="String"/>
+        <result column="student.depart" property="student.depart" javaType="String"/>
+        <result column="student.email" property="student.email" javaType="String"/>
+        <result column="task_result.content" property="content" javaType="String"/>
+        <result column="task_result.memo" property="memo" javaType="String"/>
+        <result column="task_result.create_time" property="createTime" javaType="Date"/>
     </resultMap>
 
     <sql id="base_sql">
-        id, task_id, student_id, content, memo, create_time,
-        student_num, name, sex, profession, depart, email
+        task_result.id 'id',
+        task_result.task_id 'task_id',
+        student.id 'student.id',
+        task_result.content 'content',
+        task_result.memo 'memo',
+        task_result.create_time 'create_time',
+        student.student_num 'student.student_num',
+        student.name 'student.name',
+        student.sex 'student.sex',
+        student.profession 'student.profession',
+        student.depart 'student.depart',
+        student.email 'student.email'
     </sql>
 
     <!-- query -->
-
-    <select id="selectTaskResultByStudentIdAndTaskId" resultMap="task_result_map">
-        SELECT
-        <include refid="base_sql"/>
-        FROM task_result
-        LEFT JOIN student ON student_id = student.id
-        WHERE student_id = #{studentId}
-        AND task_id = #{taskId}
-    </select>
-
-    <select id="selectTaskResultByTaskId" resultMap="task_result_map">
-        SELECT <include refid="base_sql"/>
-        FROM task_result
-        LEFT JOIN student ON student_id = student.id
-        WHERE task_id = #{taskId}
-    </select>
-
-    <select id="selectTaskResultById" resultMap="task_result_map">
-        SELECT <include refid="base_sql"/>
-        FROM task_result
-        LEFT JOIN student ON student_id = student.id
-        WHERE id = #{taskResultId}
-    </select>
 
     <select id="selectTaskResult" resultMap="task_result_map">
         SELECT <include refid="base_sql"/>
@@ -57,23 +44,23 @@
         LEFT JOIN course
         ON course.id = course_task.course_id
         WHERE 1 = 1
-        <if test="">
-            AND course_id = #{courseId}
+        <if test="courseId != null and !&quot;&quot;.equals(courseId)">
+            AND course_task.course_id = #{courseId}
         </if>
-        <if test="">
-            AND student_id = #{studentId}
+        <if test="studentId != null and !&quot;&quot;.equals(studentId)">
+            AND task_result.student_id = #{studentId}
         </if>
-        <if test="">
-            AND task_id = #{taskId}
+        <if test="studentId != null and !&quot;&quot;.equals(studentId)">
+            AND task_result.task_id = #{taskId}
         </if>
     </select>
 
     <!-- insert -->
     <insert id="insertNewTaskResult" parameterType="TaskResult">
-        INSERT INTO task_result
-        (id, task_id, student_id, content, memo)
+        INSERT IGNORE INTO task_result
+        (id, task_id, student_id, content, memo, create_time)
         VALUE
-        (NULL, #{taskId}, #{studentId}, #{content}, #{memo})
+        (NULL, #{taskId}, #{student.id}, #{content}, #{memo}, current_timestamp)
     </insert>
 
     <!-- update -->

@@ -40,10 +40,10 @@
 
     <!-- insert -->
     <insert id="insertNewCourseTask" parameterType="CourseTask">
-        INSERT INTO course_task
-        (id, course_id, name, content, start_time, end_time, memo)
+        INSERT IGNORE INTO course_task
+        (id, course_id, name, content, start_time, end_time, deadline, memo)
         VALUE
-        (NULL, #{courseId}, #{name}, #{content}, #{startTime}, #{endTime},#{memo})
+        (NULL, #{courseId}, #{name}, #{content}, #{startTime}, #{endTime}, #{deadline}, #{memo})
     </insert>
 
     <!-- update -->

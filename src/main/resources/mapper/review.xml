@@ -1,0 +1,78 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "top.oahnus.mapper.ReviewMapper">
+    <resultMap id = "review_map" type= "Review">
+        <result column="id" property="id" javaType="String"/>
+        <result column="from_user_name" property="formUserName" javaType="String"/>
+        <result column="from_user_username" property="formUserUsername" javaType="String"/>
+        <result column="from_user_type" property="formUserType" javaType="Integer"/>
+        <result column="to_user_name" property="toUserName" javaType="String"/>
+        <result column="to_user_username" property="toUserUsername" javaType="String"/>
+        <result column="to_user_type" property="toUserType" javaType="Integer"/>
+        <result column="course_id" property="courseId" javaType="String"/>
+        <result column="course_name" property="courseName" javaType="String"/>
+        <result column="content" property="content" javaType="String"/>
+        <result column="create_time" property="createTime" javaType="Date"/>
+    </resultMap>
+
+    <sql id="base_sql">
+        id,
+        from_user_username, from_user_name, form_user_type,
+        to_user_username, to_user_name, to_user_type,
+        course_id, course_name,
+        content,
+        create_time
+    </sql>
+
+    <select id="selectReviewByParam" resultMap="review_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM review
+        WHERE 1 = 1
+        <if test="username != null and !&quot;&quot;.equals(username)">
+            AND from_user_username = #{username}
+        </if>
+        <if test="courseId != null and !&quot;&quot;.equals(courseId)">
+            AND course_id = #{courseId}
+        </if>
+        LIMIT #{offset},#{limit}
+    </select>
+
+    <select id="selectRecordCount" resultType="Integer" parameterType="Map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM review
+        WHERE 1 = 1
+        <if test="username != null and !&quot;&quot;.equals(username)">
+            AND from_user_username = #{username}
+        </if>
+        <if test="courseId != null and !&quot;&quot;.equals(courseId)">
+            AND course_id = #{courseId}
+        </if>
+    </select>
+
+    <select id="selectReviewById" resultMap="review_map">
+        SELECT <include refid="base_sql"/>
+        FROM review WHERE id = #{id}
+    </select>
+
+    <delete id="deleteReviewById" >
+        DELETE FROM review WHERE id = #{id}
+    </delete>
+
+    <insert id="insertNewReview" parameterType="Review">
+        INSERT IGNORE INTO review (
+            from_user_username, from_user_name, form_user_type,
+            to_user_username, to_user_name, to_user_type,
+            course_id, course_name,
+            content,
+            create_time
+        ) VALUE (
+            #{fromUserUsername}, #{fromUserName}, #{fromUserType},
+            #{toUserUsername}, #{toUserName}, #{toUserType},
+            #{courseId}, #{courseName}, #{content}, current_timestamp
+        )
+    </insert>
+</mapper>

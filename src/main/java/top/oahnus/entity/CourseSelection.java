@@ -16,8 +16,6 @@ public class CourseSelection {
     private Student student = new Student();
     private Date createTime;
     private Date editTime;
-    private Float teacherScore;
-    private Float companyScore;
 
     public CourseSelection() {}
 

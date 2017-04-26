@@ -4,6 +4,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import top.oahnus.enums.AuthType;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -19,8 +20,9 @@ public class ScoreDto {
     @NotEmpty(message = "学生ID不能为空")
     private String studentId;
     @Min(message = "分数要大于0", value = 0)
+    @Max(message = "分数要小于100", value = 100)
     @NotNull(message = "分数不能为空")
-    private String score;
+    private Float score;
     @NotNull(message = "角色类型不能为空")
     private AuthType authType;
 }
