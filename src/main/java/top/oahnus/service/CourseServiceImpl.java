@@ -1,6 +1,8 @@
 package top.oahnus.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,83 +31,93 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    //TODO redis存储
     @Override
+    @Cacheable(value = "coursecache", keyGenerator = "myKeyGenerator")
     public Page<List<Course>> selectAllCourse(String state, Integer page, Integer limit) {
+        System.out.println("无缓存");
         if (page == null || limit == null) throw new BadRequestParamException("请求参数错误");
-        CourseState courseState;
-        try {
-            courseState = CourseState.valueOf(state);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw new BadRequestParamException("非法课程状态");
+        Integer courseState = null;
+        if (state != null) {
+            try {
+                courseState = CourseState.valueOf(state).ordinal();
+            } catch (IllegalArgumentException | NullPointerException e) {
+                throw new BadRequestParamException("非法课程状态");
+            }
         }
 
-        List<Course> courses = courseMapper.selectAllCourse(courseState.ordinal(), (page - 1) * limit, limit);
-        Integer totalRecord = courseMapper.selectRecordCount(new HashMap<String,String>(){{put("state", String.valueOf(courseState.ordinal()));}});
+        List<Course> courses = courseMapper.selectAllCourse(courseState, (page - 1) * limit, limit);
+        Integer totalRecord = courseMapper.selectRecordCount(new HashMap<String,String>(){{put("state", String.valueOf(CourseState.valueOf(state).ordinal()));}});
         return new Page<>(courses, totalRecord, page, limit);
     }
 
-    //TODO redis存储
     @Override
+    @Cacheable(value = "coursecache", keyGenerator = "myKeyGenerator")
     public Page<List<Course>> selectCourseByProfessionsLikeProfession(String state, String profession, Integer page, Integer limit) {
         if (StringUtil.isEmpty(profession) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
-        CourseState courseState;
-        try {
-            courseState = CourseState.valueOf(state);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw new BadRequestParamException("非法课程状态");
+        Integer courseState = null;
+        if (state != null) {
+            try {
+                courseState = CourseState.valueOf(state).ordinal();
+            } catch (IllegalArgumentException | NullPointerException e) {
+                throw new BadRequestParamException("非法课程状态");
+            }
         }
 
-        List<Course> courses = courseMapper.selectCourseByProfessionsLikeProfession(courseState.ordinal(), profession, (page - 1) * limit, limit);
+        List<Course> courses = courseMapper.selectCourseByProfessionsLikeProfession(courseState, profession, (page - 1) * limit, limit);
         Integer totalRecord = courseMapper.selectRecordCount(
                 new HashMap<String, String>(){{
                     put("profession", profession);
-                    put("state", String.valueOf(courseState.ordinal()));
+                    put("state", String.valueOf(CourseState.valueOf(state).ordinal()));
                 }});
         return new Page<>(courses, totalRecord, page, limit);
     }
 
-    //TODO redis存储
     @Override
+    @Cacheable(value = "coursecache", keyGenerator = "myKeyGenerator")
     public Page<List<Course>> selectCourseByTeacherId(String state, String teacherId, Integer page, Integer limit) {
         if (StringUtil.isEmpty(teacherId) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
-        CourseState courseState;
-        try {
-            courseState = CourseState.valueOf(state);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw new BadRequestParamException("非法课程状态");
+        Integer courseState = null;
+        if (state != null) {
+            try {
+                courseState = CourseState.valueOf(state).ordinal();
+            } catch (IllegalArgumentException | NullPointerException e) {
+                throw new BadRequestParamException("非法课程状态");
+            }
         }
 
-        List<Course> courses = courseMapper.selectCourseByTeacherId(courseState.ordinal(), teacherId, (page - 1) * limit, limit);
+        List<Course> courses = courseMapper.selectCourseByTeacherId(courseState, teacherId, (page - 1) * limit, limit);
         Integer totalRecord = courseMapper.selectRecordCount(
                 new HashMap<String, String>(){{
                     put("teacherId", teacherId);
-                    put("state", String.valueOf(courseState.ordinal()));
+                    put("state", String.valueOf(CourseState.valueOf(state).ordinal()));
                 }});
         return new Page<>(courses, totalRecord, page, limit);
     }
 
-    //TODO redis存储
     @Override
+    @Cacheable(value = "coursecache", keyGenerator = "myKeyGenerator")
     public Page<List<Course>> selectCourseByCompanyId(String state, String companyId, Integer page, Integer limit) {
         if (StringUtil.isEmpty(companyId) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
-        CourseState courseState;
-        try {
-            courseState = CourseState.valueOf(state);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw new BadRequestParamException("非法课程状态");
+        Integer courseState = null;
+        if (state != null) {
+            try {
+                courseState = CourseState.valueOf(state).ordinal();
+            } catch (IllegalArgumentException | NullPointerException e) {
+                throw new BadRequestParamException("非法课程状态");
+            }
         }
 
-        List<Course> courses = courseMapper.selectCourseByCompanyId(courseState.ordinal(), companyId, (page - 1) * limit, limit);
+        List<Course> courses = courseMapper.selectCourseByCompanyId(courseState, companyId, (page - 1) * limit, limit);
         Integer totalRecord = courseMapper.selectRecordCount(
                 new HashMap<String, String>(){{
                     put("companyId", companyId);
-                    put("state", String.valueOf(courseState.ordinal()));
+                    put("state", String.valueOf(CourseState.valueOf(state).ordinal()));
                 }});
         return new Page<>(courses, totalRecord, page, limit);
     }
 
     @Override
+    @Cacheable(value = "coursecache", keyGenerator = "myKeyGenerator")
     public Page<List<Course>> selectCourseByCourseNameLike(String state, String courseName, Integer page, Integer limit) {
         if (StringUtil.isEmpty(courseName) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
         CourseState courseState;
@@ -153,6 +165,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @CachePut(value = "coursecache")
     public Course updateCourse(CourseDto courseDto) {
         if (courseDto == null) throw new BadRequestParamException("请求参数错误");
         Course course = new Course(courseDto);

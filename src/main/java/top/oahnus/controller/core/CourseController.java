@@ -45,7 +45,7 @@ public class CourseController {
      * 4.22 添加根据CourseState查询选课信息
      */
     @GetMapping
-    public ResponseData<Page> getAllCourse(@RequestParam(value = "state",required = false)String state,
+    public ResponseData<Page> getAllCourse(@RequestParam(value = "state",required = false, defaultValue = "")String state,
                                            @RequestParam("page")Integer page,
                                            @RequestParam("limit")Integer limit) {
         Page<List<Course>> p = new Page<>();
@@ -54,7 +54,7 @@ public class CourseController {
     }
 
     @GetMapping("/profession")
-    public ResponseData<Page> getCourseByProfession(@RequestParam(value = "state",required = false)String state,
+    public ResponseData<Page> getCourseByProfession(@RequestParam(value = "state",required = false, defaultValue = "")String state,
                                                     @RequestParam("profession") String profession,
                                                     @RequestParam("page")Integer page,
                                                     @RequestParam("limit")Integer limit) {
@@ -64,7 +64,7 @@ public class CourseController {
     }
 
     @GetMapping("/teacher")
-    public ResponseData<Page> getCourseByTeacherId(@RequestParam(value = "state",required = false)String state,
+    public ResponseData<Page> getCourseByTeacherId(@RequestParam(value = "state",required = false, defaultValue = "")String state,
                                                    @RequestParam("teacherId")String teacherId,
                                                     @RequestParam("page")Integer page,
                                                     @RequestParam("limit")Integer limit) {
@@ -74,7 +74,7 @@ public class CourseController {
     }
 
     @GetMapping("/company")
-    public ResponseData<Page> getCourseByCompanyId(@RequestParam(value = "state",required = false)String state,
+    public ResponseData<Page> getCourseByCompanyId(@RequestParam(value = "state",required = false, defaultValue = "")String state,
                                                    @RequestParam("companyId")String companyId,
                                                    @RequestParam("page")Integer page,
                                                    @RequestParam("limit")Integer limit) {

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.oahnus.enums.ServerState;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.mapper.DepartProfessionMapper;
+import top.oahnus.service.DepartAndProfessionService;
 
 import java.util.List;
 
@@ -18,17 +19,17 @@ import java.util.List;
 @CrossOrigin
 public class DepartAndProfessionController {
     @Autowired
-    private DepartProfessionMapper departProfessionMapper;
+    private DepartAndProfessionService departAndProfessionService;
 
     @GetMapping("/professions")
     public ResponseData<List<String>> getAllProfession(){
-        List<String> professions = departProfessionMapper.selectProfession();
+        List<String> professions = departAndProfessionService.getAllProfession();
         return new ResponseData<>(ServerState.SUCCESS, professions, "success");
     }
 
     @GetMapping("/departs")
     public ResponseData<List<String>> getAllDepart() {
-        List<String> departs = departProfessionMapper.selectDepart();
+        List<String> departs = departAndProfessionService.getAllDepart();
         return new ResponseData<>(ServerState.SUCCESS, departs, "success");
     }
 }
