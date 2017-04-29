@@ -99,7 +99,6 @@ public class CompanyServiceImpl implements CompanyService {
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("插入数据库失败");
         } else {
-            // TODO 把循环放到SQL中执行？
             companies.forEach(company -> {
                 companyList.add(companyMapper.selectCompanyByName(company.getName()));
             });

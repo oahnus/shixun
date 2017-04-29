@@ -29,7 +29,6 @@ public class StudentServiceImpl implements StudentService {
             throw new BadRequestParamException("请求参数错误");
         }
         List<Student> studentList = studentMapper.selectStudentByProfession(profession, (page-1)*limit, limit);
-        // TODO 强行创建匿名 Map
         Integer totalRecord = studentMapper.selectRecordCount(new HashMap<String,String>(){{put("profession", profession);}});
         return new Page<>(studentList, totalRecord, page, limit);
     }

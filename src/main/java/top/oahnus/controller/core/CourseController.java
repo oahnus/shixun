@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import top.oahnus.Constants;
+import top.oahnus.enums.CourseState;
 import top.oahnus.enums.ServerState;
 import top.oahnus.dto.CourseDto;
 import top.oahnus.dto.Page;
@@ -45,41 +46,26 @@ public class CourseController {
      * 4.22 添加根据CourseState查询选课信息
      */
     @GetMapping
-    public ResponseData<Page> getAllCourse(@RequestParam(value = "state",required = false, defaultValue = "")String state,
+    public ResponseData<Page> getAllCourse(@RequestParam(value = "state",required = false)CourseState state,
+                                           @RequestParam(value = "profession", required = false) String profession,
+                                           @RequestParam(value = "teacherId", required = false)String teacherId,
+                                           @RequestParam(value = "companyId", required = false)String companyId,
                                            @RequestParam("page")Integer page,
                                            @RequestParam("limit")Integer limit) {
         Page<List<Course>> p = new Page<>();
+        if (profession != null) {
+            p = courseService.selectCourseByProfessionsLikeProfession(state, profession, page, limit);
+            return new ResponseData<>(ServerState.SUCCESS, p, "success");
+        }
+        if (teacherId != null) {
+            p = courseService.selectCourseByTeacherId(state, teacherId, page, limit);
+            return new ResponseData<>(ServerState.SUCCESS, p, "success");
+        }
+        if (companyId != null) {
+            p = courseService.selectCourseByCompanyId(state, companyId, page, limit);
+            return new ResponseData<>(ServerState.SUCCESS, p, "success");
+        }
         p = courseService.selectAllCourse(state, page, limit);
-        return new ResponseData<>(ServerState.SUCCESS, p, "success");
-    }
-
-    @GetMapping("/profession")
-    public ResponseData<Page> getCourseByProfession(@RequestParam(value = "state",required = false, defaultValue = "")String state,
-                                                    @RequestParam("profession") String profession,
-                                                    @RequestParam("page")Integer page,
-                                                    @RequestParam("limit")Integer limit) {
-        Page<List<Course>> p = new Page<>();
-        p = courseService.selectCourseByProfessionsLikeProfession(state, profession, page, limit);
-        return new ResponseData<>(ServerState.SUCCESS, p, "success");
-    }
-
-    @GetMapping("/teacher")
-    public ResponseData<Page> getCourseByTeacherId(@RequestParam(value = "state",required = false, defaultValue = "")String state,
-                                                   @RequestParam("teacherId")String teacherId,
-                                                    @RequestParam("page")Integer page,
-                                                    @RequestParam("limit")Integer limit) {
-        Page<List<Course>> p = new Page<>();
-        p = courseService.selectCourseByTeacherId(state, teacherId, page, limit);
-        return new ResponseData<>(ServerState.SUCCESS, p, "success");
-    }
-
-    @GetMapping("/company")
-    public ResponseData<Page> getCourseByCompanyId(@RequestParam(value = "state",required = false, defaultValue = "")String state,
-                                                   @RequestParam("companyId")String companyId,
-                                                   @RequestParam("page")Integer page,
-                                                   @RequestParam("limit")Integer limit) {
-        Page<List<Course>> p = new Page<>();
-        p = courseService.selectCourseByCompanyId(state, companyId, page, limit);
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 

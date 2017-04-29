@@ -33,32 +33,49 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
     private ScoreMapper scoreMapper;
 
     @Override
-    public Page<List<CourseSelection>> selectCourseSelectionByCourseId(String courseId, Integer page, Integer limit) {
+    public Page<List<CourseSelection>> selectCourseSelectionByCourseId(String courseId, CourseState courseState, Integer page, Integer limit) {
         if (StringUtil.isEmpty(courseId) || page == null || limit == null)
             throw new BadRequestParamException("请求参数错误");
-        List<CourseSelection> courseSelections = courseSelectionMapper.selectCourseSelectionByCourseId(courseId, (page - 1)*limit, limit);
-        Integer totalRecord = courseSelectionMapper.selectRecordCount(new HashMap<String, String>(){{put("courseId", courseId);}});
+        if (courseState == null) {
+            courseState = CourseState.INIT;
+        }
+        CourseState finalCourseState = courseState;
+        System.out.println(courseState.ordinal());
+        List<CourseSelection> courseSelections = courseSelectionMapper.selectCourseSelectionByCourseId(courseId, courseState.ordinal(),(page - 1)*limit, limit);
+        System.out.println(courseSelections.size());
+        Integer totalRecord = courseSelectionMapper.selectRecordCount(
+                new HashMap<String, String>(){{
+                    put("courseId", courseId);
+                    put("courseState", String.valueOf(finalCourseState.ordinal()));
+                }});
         return new Page<>(courseSelections, totalRecord, page, limit);
     }
 
     @Override
-    public Page<List<CourseSelection>> selectCourseSelectionByStudentId(String studentId, Integer page, Integer limit) {
+    public Page<List<CourseSelection>> selectCourseSelectionByStudentId(String studentId, CourseState courseState, Integer page, Integer limit) {
         if (page == null || limit == null || StringUtil.isEmpty(studentId))
             throw new BadRequestParamException("请求参数错误");
-        List<CourseSelection> courseSelections = courseSelectionMapper.selectCourseSelectionByStudentId(studentId, (page - 1)*limit, limit);
-        Integer totalRecord = courseSelectionMapper.selectRecordCount(new HashMap<String, String>(){{put("studentId", studentId);}});
+        if (courseState == null) {
+            courseState = CourseState.INIT;
+        }
+        CourseState finalCourseState = courseState;
+
+        List<CourseSelection> courseSelections = courseSelectionMapper.selectCourseSelectionByStudentId(studentId, courseState.ordinal(),(page - 1)*limit, limit);
+        Integer totalRecord = courseSelectionMapper.selectRecordCount(
+                new HashMap<String, String>(){{
+                    put("studentId", studentId);
+                    put("courseState", String.valueOf(finalCourseState.ordinal()));
+                }});
         return new Page<>(courseSelections, totalRecord, page, limit);
     }
 
 
-    // todo 插入选课表之前，先判断课程状态是否开放选课，之后判断学生专业是否在课程可选择专业范围内
     @Override
     @Transactional
     public CourseSelection insertNewCourseSelection(CourseSelectionDto courseSelectionDto) {
         CourseSelection courseSelection = new CourseSelection(courseSelectionDto);
 
         //查询课程状态
-        // todo 从redis中读取课程信息
         Course course = courseMapper.selectCourseById(courseSelectionDto.getCourseId());
 
         CourseState state = course.getState();
@@ -66,6 +83,7 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
             throw new DataStatusException("课程还未开放选课");
         }
 
+        // todo 判断选课信息是否在课程可选专业范围内
         // 插入选课信息
         Integer count = courseSelectionMapper.insertNewCourseSelection(courseSelection);
         if (count == 0) {
@@ -77,6 +95,7 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
                     courseSelection.getStudent().getId(),
                     courseSelection.getCourse().getId()
             );
+
             Score score = new Score();
             score.setCompanyScore(0F);
             score.setTeacherScore(0F);

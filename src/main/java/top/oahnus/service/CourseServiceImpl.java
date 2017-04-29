@@ -2,7 +2,6 @@ package top.oahnus.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -11,10 +10,7 @@ import top.oahnus.dto.CourseDto;
 import top.oahnus.dto.Page;
 import top.oahnus.entity.Course;
 import top.oahnus.enums.CourseState;
-import top.oahnus.exception.BadRequestParamException;
-import top.oahnus.exception.DataExistedException;
-import top.oahnus.exception.NotFoundException;
-import top.oahnus.exception.SQLExecuteFailedExceeption;
+import top.oahnus.exception.*;
 import top.oahnus.mapper.CourseMapper;
 import top.oahnus.util.StringUtil;
 
@@ -34,106 +30,80 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Cacheable(value = "coursecache", keyGenerator = "myKeyGenerator")
-    public Page<List<Course>> selectAllCourse(String state, Integer page, Integer limit) {
+    public Page<List<Course>> selectAllCourse(CourseState state, Integer page, Integer limit) {
         System.out.println("无缓存");
         if (page == null || limit == null) throw new BadRequestParamException("请求参数错误");
-        Integer courseState = null;
-        if (state != null) {
-            try {
-                courseState = CourseState.valueOf(state).ordinal();
-            } catch (IllegalArgumentException | NullPointerException e) {
-                throw new BadRequestParamException("非法课程状态");
-            }
-        }
-
-        List<Course> courses = courseMapper.selectAllCourse(courseState, (page - 1) * limit, limit);
-        System.out.println(courseState);
-        Integer totalRecord = courseMapper.selectRecordCount(new HashMap<String,String>(){{put("state", String.valueOf(CourseState.valueOf(state).ordinal()));}});
+        if (state == null) state = CourseState.INIT;
+        CourseState finalState = state;
+        List<Course> courses = courseMapper.selectAllCourse(state.ordinal(), (page - 1) * limit, limit);
+        Integer totalRecord = courseMapper.selectRecordCount(
+                new HashMap<String,String>(){{
+                    put("state", String.valueOf(finalState.ordinal()));
+                }});
         return new Page<>(courses, totalRecord, page, limit);
     }
 
+    // todo 缓存的修改
     @Override
     @Cacheable(value = "coursecache", keyGenerator = "myKeyGenerator")
-    public Page<List<Course>> selectCourseByProfessionsLikeProfession(String state, String profession, Integer page, Integer limit) {
+    public Page<List<Course>> selectCourseByProfessionsLikeProfession(CourseState state, String profession, Integer page, Integer limit) {
         if (StringUtil.isEmpty(profession) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
-        Integer courseState = null;
-        if (state != null) {
-            try {
-                courseState = CourseState.valueOf(state).ordinal();
-            } catch (IllegalArgumentException | NullPointerException e) {
-                throw new BadRequestParamException("非法课程状态");
-            }
-        }
+        if (state == null) state = CourseState.INIT;
+        CourseState finalState = state;
 
-        List<Course> courses = courseMapper.selectCourseByProfessionsLikeProfession(courseState, profession, (page - 1) * limit, limit);
+        List<Course> courses = courseMapper.selectCourseByProfessionsLikeProfession(state.ordinal(), profession, (page - 1) * limit, limit);
         Integer totalRecord = courseMapper.selectRecordCount(
                 new HashMap<String, String>(){{
                     put("profession", profession);
-                    put("state", String.valueOf(CourseState.valueOf(state).ordinal()));
+                    put("state", String.valueOf(finalState.ordinal()));
                 }});
         return new Page<>(courses, totalRecord, page, limit);
     }
 
     @Override
     @Cacheable(value = "coursecache", keyGenerator = "myKeyGenerator")
-    public Page<List<Course>> selectCourseByTeacherId(String state, String teacherId, Integer page, Integer limit) {
+    public Page<List<Course>> selectCourseByTeacherId(CourseState state, String teacherId, Integer page, Integer limit) {
         if (StringUtil.isEmpty(teacherId) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
-        Integer courseState = null;
-        if (state != null) {
-            try {
-                courseState = CourseState.valueOf(state).ordinal();
-            } catch (IllegalArgumentException | NullPointerException e) {
-                throw new BadRequestParamException("非法课程状态");
-            }
-        }
+        if (state == null) state = CourseState.INIT;
+        CourseState finalState = state;
 
-        List<Course> courses = courseMapper.selectCourseByTeacherId(courseState, teacherId, (page - 1) * limit, limit);
+        List<Course> courses = courseMapper.selectCourseByTeacherId(state.ordinal(), teacherId, (page - 1) * limit, limit);
         Integer totalRecord = courseMapper.selectRecordCount(
                 new HashMap<String, String>(){{
                     put("teacherId", teacherId);
-                    put("state", String.valueOf(CourseState.valueOf(state).ordinal()));
+                    put("state", String.valueOf(finalState.ordinal()));
                 }});
         return new Page<>(courses, totalRecord, page, limit);
     }
 
     @Override
     @Cacheable(value = "coursecache", keyGenerator = "myKeyGenerator")
-    public Page<List<Course>> selectCourseByCompanyId(String state, String companyId, Integer page, Integer limit) {
+    public Page<List<Course>> selectCourseByCompanyId(CourseState state, String companyId, Integer page, Integer limit) {
         if (StringUtil.isEmpty(companyId) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
-        Integer courseState = null;
-        if (state != null) {
-            try {
-                courseState = CourseState.valueOf(state).ordinal();
-            } catch (IllegalArgumentException | NullPointerException e) {
-                throw new BadRequestParamException("非法课程状态");
-            }
-        }
+        if (state == null) state = CourseState.INIT;
+        CourseState finalState = state;
 
-        List<Course> courses = courseMapper.selectCourseByCompanyId(courseState, companyId, (page - 1) * limit, limit);
+        List<Course> courses = courseMapper.selectCourseByCompanyId(state.ordinal(), companyId, (page - 1) * limit, limit);
         Integer totalRecord = courseMapper.selectRecordCount(
                 new HashMap<String, String>(){{
                     put("companyId", companyId);
-                    put("state", String.valueOf(CourseState.valueOf(state).ordinal()));
+                    put("state", String.valueOf(finalState.ordinal()));
                 }});
         return new Page<>(courses, totalRecord, page, limit);
     }
 
     @Override
     @Cacheable(value = "coursecache", keyGenerator = "myKeyGenerator")
-    public Page<List<Course>> selectCourseByCourseNameLike(String state, String courseName, Integer page, Integer limit) {
+    public Page<List<Course>> selectCourseByCourseNameLike(CourseState state, String courseName, Integer page, Integer limit) {
         if (StringUtil.isEmpty(courseName) || page == null || limit == null) throw new BadRequestParamException("请求参数错误");
-        CourseState courseState;
-        try {
-            courseState = CourseState.valueOf(state);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw new BadRequestParamException("非法课程状态");
-        }
+        if (state == null) state = CourseState.INIT;
+        CourseState finalState = state;
 
-        List<Course> courses = courseMapper.selectCourseByNameLikeCourseName(courseState.ordinal(), courseName, (page - 1) * limit, limit);
+        List<Course> courses = courseMapper.selectCourseByNameLikeCourseName(state.ordinal(), courseName, (page - 1) * limit, limit);
         Integer totalRecord = courseMapper.selectRecordCount(
                 new HashMap<String, String>(){{
                     put("courseName", courseName);
-                    put("state", String.valueOf(courseState.ordinal()));
+                    put("state", String.valueOf(finalState.ordinal()));
                 }});
         return new Page<>(courses, totalRecord, page, limit);
     }
@@ -175,7 +145,15 @@ public class CourseServiceImpl implements CourseService {
         if (course.getId() == null) {
             throw new BadRequestParamException("id不能为空");
         }
-        // todo 如果课程已结课，不允许修改课程信息。
+        // 如果课程已结课，不允许修改课程信息。
+        Course c = courseMapper.selectCourseById(course.getId());
+        if (c.getState().equals(CourseState.COURSE_END)) {
+            throw new TimeSpanException("课程已关闭,无法修改课程信息");
+        }
+        // 如果选课结束,将课程状态设置为开课状态
+        if (course.getState().equals(CourseState.OFF_SELECTED)) {
+            course.setState(CourseState.COURSE_START);
+        }
         Integer count = courseMapper.updateCourse(course);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("更新数据失败");

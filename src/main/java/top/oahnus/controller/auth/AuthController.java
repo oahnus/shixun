@@ -48,7 +48,6 @@ public class AuthController {
     }
 
     // TODO 根据用户留下的邮箱发送验证邮件来修改密码
-
     @PostMapping("/user/reset")
     public ResponseData<Integer> resetPassword(@Validated @RequestBody UserDto userDto) {
         Integer count = userAuthService.resetPassword(userDto);

@@ -58,7 +58,11 @@
         ON cs.course_id = c.id
         LEFT JOIN student s
         ON cs.student_id = s.id
-        WHERE cs.course_id = #{courseId} LIMIT #{offset},#{limit}
+        WHERE cs.course_id = #{courseId}
+        <if test="courseState != null and courseState != 4">
+            AND c.state = #{courseState}
+        </if>
+        LIMIT #{offset},#{limit}
     </select>
 
     <select id="selectCourseSelectionByStudentId" resultMap="courseSelection_map">
@@ -69,7 +73,11 @@
         ON cs.course_id = c.id
         LEFT JOIN student s
         ON cs.student_id = s.id
-        WHERE cs.student_id = #{studentId} LIMIT #{offset},#{limit}
+        WHERE cs.student_id = #{studentId}
+        <if test="courseState != null and courseState != 4">
+            AND c.state = #{courseState}
+        </if>
+        LIMIT #{offset},#{limit}
     </select>
 
     <select id="selectCourseSelectionByStudentIdAndCourseId" resultMap="courseSelection_map">
@@ -85,12 +93,17 @@
     </select>
 
     <select id="selectRecordCount" resultType="Integer" parameterType="Map">
-        SELECT count(id) FROM course_selection WHERE 1 = 1
+        SELECT count(cs.id) FROM course_selection cs
+        LEFT JOIN course c ON course_id = c.id
+        WHERE 1 = 1
         <if test="courseId != null and !&quot;&quot;.equals(courseId)">
             AND course_id = #{courseId}
         </if>
         <if test="studentId != null and !&quot;&quot;.equals(studentId)">
             AND student_id = #{studentId}
+        </if>
+        <if test="courseState != null and courseState != 4">
+            AND c.state = #{courseState}
         </if>
     </select>
 

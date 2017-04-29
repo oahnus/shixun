@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import top.oahnus.enums.CourseState;
 import top.oahnus.enums.ServerState;
 import top.oahnus.dto.CourseSelectionDto;
 import top.oahnus.dto.Page;
@@ -24,20 +25,22 @@ public class CourseSelectionController {
     @Autowired
     private CourseSelectionService courseSelectionService;
 
-    @GetMapping("/course")
-    public ResponseData<Page> getCourseSelectionByCourseId(@RequestParam("courseId")String courseId,
+    @GetMapping
+    public ResponseData<Page> getCourseSelectionByCourseId(@RequestParam(value = "courseId", required = false)String courseId,
+                                                           @RequestParam(value = "studentId", required = false)String studentId,
+                                                           @RequestParam(value = "courseState", required = false)CourseState courseState,
                                                            @RequestParam("page")Integer page,
                                                            @RequestParam("limit")Integer limit) {
-        Page<List<CourseSelection>> p = courseSelectionService.selectCourseSelectionByCourseId(courseId, page, limit);
-        return new ResponseData<>(ServerState.SUCCESS, p, "success");
-    }
-
-    @GetMapping("/student")
-    public ResponseData<Page> getCourseSelectionByStudentId(@RequestParam("studentId")String studentId,
-                                                           @RequestParam("page")Integer page,
-                                                           @RequestParam("limit")Integer limit) {
-        Page<List<CourseSelection>> p = courseSelectionService.selectCourseSelectionByStudentId(studentId, page, limit);
-        return new ResponseData<>(ServerState.SUCCESS, p, "success");
+        if (courseId != null)
+        {
+            Page<List<CourseSelection>> p = courseSelectionService.selectCourseSelectionByCourseId(courseId, courseState, page, limit);
+            return new ResponseData<>(ServerState.SUCCESS, p, "success");
+        }
+        if (studentId != null) {
+            Page<List<CourseSelection>> p = courseSelectionService.selectCourseSelectionByStudentId(studentId, courseState, page, limit);
+            return new ResponseData<>(ServerState.SUCCESS, p, "success");
+        }
+        return new ResponseData<>(ServerState.REQUEST_PARAMETER_ERROR, null, "error");
     }
 
     @PostMapping

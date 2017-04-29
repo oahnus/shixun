@@ -14,11 +14,13 @@ import java.util.List;
 @Mapper
 public interface CourseSelectionMapper extends BaseMapper {
     List<CourseSelection> selectCourseSelectionByStudentId(@Param("studentId")String studentId,
+                                                           @Param("courseState")Integer state,
                                                            @Param("offset")Integer offset,
                                                            @Param("limit")Integer limit);
     List<CourseSelection> selectCourseSelectionByCourseId(@Param("courseId")String courseId,
-                                                           @Param("offset")Integer offset,
-                                                           @Param("limit")Integer limit);
+                                                          @Param("courseState")Integer state,
+                                                          @Param("offset")Integer offset,
+                                                          @Param("limit")Integer limit);
 
     CourseSelection selectCourseSelectionByStudentIdAndCourseId(@Param("studentId")String studentId,
                                                                                    @Param("courseId")String courseId);

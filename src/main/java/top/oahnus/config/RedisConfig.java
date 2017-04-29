@@ -32,10 +32,13 @@ public class RedisConfig extends CachingConfigurerSupport {
             public Object generate(Object target, Method method, Object... params) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("shixun:")
-                        .append(method.getName())
-                        .append(":");
-                for (Object obj : params) {
-                    sb.append(obj.toString());
+                        .append(method.getName());
+                if (params != null) {
+                    for (Object obj : params) {
+                        if (obj != null) {
+                            sb.append(":").append(obj.toString());
+                        }
+                    }
                 }
                 return sb.toString();
             }

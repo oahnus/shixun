@@ -120,6 +120,6 @@
     </update>
 
     <delete id="deleteScoreByCourseSelectionId">
-        DELETE FROM score WHERE course_selection_id = #{courseSelectionId}_
+        DELETE FROM score WHERE course_selection_id = #{courseSelectionId}
     </delete>
 </mapper>

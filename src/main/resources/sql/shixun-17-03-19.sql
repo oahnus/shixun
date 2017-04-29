@@ -251,7 +251,6 @@ FOR EACH ROW
 ALTER TABLE course ADD COLUMN state TINYINT NOT NULL DEFAULT 3 COMMENT '开课状态,0 开放选课中,1 关闭选课,2 开课中,3 已结课';
 
 -- ----------------------------------------
-# TODO 选课人数
 # 用户菜单表
 DROP TABLE IF EXISTS user_menu;
 CREATE TABLE user_menu (

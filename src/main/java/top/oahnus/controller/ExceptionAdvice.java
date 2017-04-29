@@ -5,6 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import top.oahnus.dto.ResponseData;
 import top.oahnus.enums.ServerState;
 import top.oahnus.exception.*;
@@ -36,6 +37,11 @@ public class ExceptionAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseData handleValidatedException(MethodArgumentNotValidException e) {
         return new ResponseData(ServerState.REQUEST_PARAMETER_ERROR, e.getBindingResult().getFieldError().getDefaultMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseData handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return new ResponseData(ServerState.REQUEST_PARAMETER_ERROR, "请求参数类型错误");
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

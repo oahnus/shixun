@@ -14,7 +14,8 @@ public enum CourseState {
     // 已开课
     COURSE_START,
     // 已结课
-    COURSE_END;
+    COURSE_END,
+    INIT;
 
     public static CourseState getState(int code){
         for (CourseState state: CourseState.values()) {
