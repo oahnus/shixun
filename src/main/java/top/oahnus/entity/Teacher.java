@@ -8,7 +8,7 @@ import top.oahnus.dto.TeacherDto;
  * 23:23
  */
 @Data
-public class Teacher {
+public class Teacher extends User{
     private String id;
     private String workerId;
     private String name;

@@ -16,5 +16,7 @@ public class UserAuth {
     private String password;
     // AuthType 角色类型
     private AuthType type;
+    // 登陆用户的信息
+    private User user;
     private List<UserMenu> userMenus;
 }

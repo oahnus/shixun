@@ -9,7 +9,7 @@ import top.oahnus.dto.CompanyDto;
  * 20:17
  */
 @Data
-public class Company {
+public class Company extends User{
     private String id;
     private String name;
     private String contact;

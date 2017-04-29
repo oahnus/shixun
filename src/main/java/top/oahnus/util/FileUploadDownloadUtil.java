@@ -15,6 +15,7 @@ import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -23,6 +24,23 @@ import java.util.stream.Stream;
  * 12:13.
  */
 public class FileUploadDownloadUtil {
+    public static boolean removeRubbishUplaodFile(String uploadFileSavedPath) throws IOException {
+        Stream<Path> fileStream = Files.walk(Paths.get(uploadFileSavedPath));
+        fileStream.filter(path -> !path.getFileName().startsWith("FILE")).forEach(path -> path.toFile().delete());
+        return true;
+    }
+
+    public static String markUploadFile(String fileSavedPath, String filename) {
+        File waitRemarkedFile = Paths.get(fileSavedPath + File.separator + filename).toFile();
+        if (waitRemarkedFile.exists()) {
+            String newFileName = fileSavedPath + File.separator + "FILE" + filename;
+            waitRemarkedFile.renameTo(new File(newFileName));
+            return newFileName;
+        } else {
+            return null;
+        }
+    }
+
     public static ResponseData<String> saveUploadFile(String fileSavedPath, MultipartFile file, String extension) throws IOException {
         if (Stream.of(Constants.ALLOWED_UPLOAD_FILE_EXTENSIONS)
                 .anyMatch(ext -> ext.equals(extension))) {

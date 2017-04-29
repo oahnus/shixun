@@ -8,7 +8,7 @@ import top.oahnus.dto.StudentDto;
  * 21:30
  */
 @Data
-public class Student {
+public class Student extends User{
     private String id;
     // 学号
     private String studentNum;

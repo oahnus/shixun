@@ -1,6 +1,7 @@
 package top.oahnus.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -46,6 +47,7 @@ public class CourseServiceImpl implements CourseService {
         }
 
         List<Course> courses = courseMapper.selectAllCourse(courseState, (page - 1) * limit, limit);
+        System.out.println(courseState);
         Integer totalRecord = courseMapper.selectRecordCount(new HashMap<String,String>(){{put("state", String.valueOf(CourseState.valueOf(state).ordinal()));}});
         return new Page<>(courses, totalRecord, page, limit);
     }
@@ -148,8 +150,8 @@ public class CourseServiceImpl implements CourseService {
         return course;
     }
 
-    //todo 判断是否重复插入数据
     @Override
+    @CacheEvict(value = "coursecache", allEntries = true)
     public Course insertNewCourse(CourseDto courseDto) {
         if (courseDto == null) throw new BadRequestParamException("请求参数错误");
         Course course = new Course(courseDto);
@@ -165,7 +167,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @CachePut(value = "coursecache")
+    // 为了保持一致性，在更新课程信息时，强制清空缓存
+    @CacheEvict(value = "coursecache", allEntries = true)
     public Course updateCourse(CourseDto courseDto) {
         if (courseDto == null) throw new BadRequestParamException("请求参数错误");
         Course course = new Course(courseDto);
@@ -185,6 +188,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "coursecache", allEntries = true)
     public Integer changeCourseState(String profession, String state) {
         CourseState courseState;
         try {
