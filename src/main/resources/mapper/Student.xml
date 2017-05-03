@@ -15,7 +15,7 @@
     </resultMap>
 
     <sql id="base_columns">
-        id, student_num, name, sex, profession, depart, email
+        student.id, student.student_num, student.name, student.sex, student.profession, student.depart, student.email
     </sql>
     
     <!--Query-->
@@ -49,13 +49,32 @@
         FROM student LIMIT #{offset},#{limit}
     </select>
 
+    <select id="selectStudentByCourseId" resultMap="student_map">
+        SELECT
+        <include refid="base_columns"/>
+        FROM student
+        LEFT JOIN course_selection
+        ON course_selection.student_id = student.id
+        WHERE course_selection.course_id = #{courseId}
+        LIMIT #{offset},#{limit}
+    </select>
+
+
     <select id="selectRecordCount" resultType="Integer" parameterType="Map">
-        SELECT count(id) FROM student WHERE 1 = 1
+        SELECT count(student.id) FROM student
+        <if test="courseId != null and !&quot;&quot;.equals(courseId)">
+            LEFT JOIN course_selection
+            ON course_selection.student_id = student.id
+        </if>
+        WHERE 1 = 1
         <if test="profession != null and !&quot;&quot;.equals(profession)">
-            AND profession = #{profession}
+            AND student.profession = #{profession}
         </if>
         <if test="depart != null and !&quot;&quot;.equals(depart)">
-            AND depart = #{depart}
+            AND student.depart = #{depart}
+        </if>
+        <if test="courseId != null and !&quot;&quot;.equals(courseId)">
+            AND course_selection.course_id = #{courseId}
         </if>
     </select>
 

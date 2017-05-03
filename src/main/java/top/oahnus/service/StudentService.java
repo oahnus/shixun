@@ -21,4 +21,6 @@ public interface StudentService {
 
     Integer deleteStudentById(String studentId);
     Student updateStudent(StudentDto studentDto);
+
+    Page<List<Student>> fetchStudentByCourseId(String courseId, Integer page, Integer limit);
 }

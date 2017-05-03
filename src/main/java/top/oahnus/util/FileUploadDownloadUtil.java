@@ -24,6 +24,8 @@ import java.util.stream.Stream;
  * 12:13.
  */
 public class FileUploadDownloadUtil {
+    private FileUploadDownloadUtil() {}
+
     public static boolean removeRubbishUplaodFile(String uploadFileSavedPath) throws IOException {
         Stream<Path> fileStream = Files.walk(Paths.get(uploadFileSavedPath));
         fileStream.filter(path -> !path.getFileName().startsWith("FILE")).forEach(path -> path.toFile().delete());

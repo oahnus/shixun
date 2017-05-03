@@ -43,32 +43,26 @@ public class StudentController {
         return new ResponseData<>(ServerState.SUCCESS, student, "success");
     }
 
-    @GetMapping
-    public ResponseData<Page> selectAllStudent(@RequestParam("page")Integer page,
-                                               @RequestParam("limit")Integer limit) {
-        Page<List<Student>> p = studentService.selectAllStudent(page, limit);
-        return new ResponseData<>(ServerState.SUCCESS, p, "success");
-    }
-
     /**
-     * 分页获取学院学生
+     * 分页获取学生
      */
-    @GetMapping("/depart")
-    public ResponseData<Page> selectStudentsByDepart(@RequestParam("depart")String depart,
+    // todo 根据课程获取选择该门课程的所有学生
+    @GetMapping
+    public ResponseData<Page> selectStudentsByDepart(@RequestParam(value = "depart",required = false)String depart,
+                                                     @RequestParam(value = "profession",required = false)String profession,
+                                                     @RequestParam(value = "courseId", required = false)String courseId,
                                                      @RequestParam("page")Integer page,
                                                      @RequestParam("limit") Integer limit){
-        Page<List<Student>> p = studentService.selectStudentByDepart(depart, page, limit);
-        return new ResponseData<>(ServerState.SUCCESS, p, "success");
-    }
-
-    /**
-     * 分页获取专业学生
-     */
-    @GetMapping("/profession")
-    public ResponseData<Page> selectStudentsByProfession(@RequestParam("profession")String profession,
-                                                         @RequestParam("page")Integer page,
-                                                         @RequestParam("limit")Integer limit){
-        Page<List<Student>> p = studentService.selectStudentByProfession(profession, page, limit);
+        Page<List<Student>> p = null;
+        if (depart != null) {
+            p = studentService.selectStudentByDepart(depart, page, limit);
+        } else if (profession != null) {
+            p = studentService.selectStudentByProfession(profession, page, limit);
+        } else if (courseId != null) {
+            p = studentService.fetchStudentByCourseId(courseId, page, limit);
+        } else {
+            p = studentService.selectAllStudent(page, limit);
+        }
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 

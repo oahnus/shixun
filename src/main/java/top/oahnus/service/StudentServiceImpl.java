@@ -124,4 +124,14 @@ public class StudentServiceImpl implements StudentService {
             return student;
         }
     }
+
+    @Override
+    public Page<List<Student>> fetchStudentByCourseId(String courseId, Integer page, Integer limit) {
+        if (StringUtil.isEmpty(courseId)) {
+            throw new BadRequestParamException("courseId不能为空");
+        }
+        List<Student> studentList = studentMapper.selectStudentByCourseId(courseId, (page-1)*limit, limit);
+        Integer totalRecord = studentMapper.selectRecordCount(new HashMap<String,String>(){{put("courseId", courseId);}});
+        return new Page<>(studentList, totalRecord, page, limit);
+    }
 }

@@ -14,6 +14,7 @@ import top.oahnus.exception.*;
 import top.oahnus.mapper.CourseMapper;
 import top.oahnus.mapper.CourseSelectionMapper;
 import top.oahnus.mapper.ScoreMapper;
+import top.oahnus.mapper.StudentMapper;
 import top.oahnus.util.StringUtil;
 
 import java.util.HashMap;
@@ -31,6 +32,8 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
     private CourseMapper courseMapper;
     @Autowired
     private ScoreMapper scoreMapper;
+    @Autowired
+    private StudentMapper studentMapper;
 
     @Override
     public Page<List<CourseSelection>> selectCourseSelectionByCourseId(String courseId, CourseState courseState, Integer page, Integer limit) {
@@ -40,9 +43,7 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
             courseState = CourseState.INIT;
         }
         CourseState finalCourseState = courseState;
-        System.out.println(courseState.ordinal());
         List<CourseSelection> courseSelections = courseSelectionMapper.selectCourseSelectionByCourseId(courseId, courseState.ordinal(),(page - 1)*limit, limit);
-        System.out.println(courseSelections.size());
         Integer totalRecord = courseSelectionMapper.selectRecordCount(
                 new HashMap<String, String>(){{
                     put("courseId", courseId);
@@ -83,7 +84,16 @@ public class CourseSelectionServiceImpl implements CourseSelectionService{
             throw new DataStatusException("课程还未开放选课");
         }
 
+        Student student = studentMapper.selectStudentById(courseSelectionDto.getStudentId());
+        if (student == null) {
+            throw new BadRequestParamException("请求参数错误,未找到ID为 " +courseSelectionDto.getStudentId()+ " 的学生");
+        }
         // todo 判断选课信息是否在课程可选专业范围内
+        String limitProfessions = course.getProfessions();
+        if (!limitProfessions.contains(student.getProfession())){
+            throw new BadRequestParamException("学生专业不符合课程专业限制");
+        }
+
         // 插入选课信息
         Integer count = courseSelectionMapper.insertNewCourseSelection(courseSelection);
         if (count == 0) {

@@ -8,6 +8,8 @@ import java.security.NoSuchAlgorithmException;
  * Created by oahnus on 2017/2/25.
  */
 public class MD5Util {
+    private MD5Util() {}
+
     public static String getMD5(String str){
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");

@@ -35,6 +35,8 @@ public class ExcelReaderUtil {
 
     private static ExcelReaderConfig config;
 
+    private ExcelReaderUtil() {}
+
     @PostConstruct
     public void init() {
         ExcelReaderUtil.config = tConfig;

@@ -17,6 +17,7 @@ public interface StudentMapper extends BaseMapper{
     List<Student> selectStudentByDepart(@Param("depart")String depart, @Param("offset")Integer offset, @Param("limit")Integer limit);
     List<Student> selectAllStudent(@Param("offset")Integer offset, @Param("limit")Integer limit);
     Student selectStudentById(@Param("studentId")String studentId);
+    List<Student> selectStudentByCourseId(@Param("courseId") String courseId, @Param("offset")Integer offset,@Param("limit") Integer limit);
 
     Integer insertStudents(List<Student> studentList);
     Integer insertOneStudent(Student student);

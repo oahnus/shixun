@@ -49,7 +49,6 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company addCompany(CompanyDto companyDto) {
         Company company = new Company(companyDto);
-        System.out.println(company);
         Integer count = companyMapper.insertOneCompany(company);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("插入数据库失败");
