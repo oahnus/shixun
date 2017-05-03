@@ -1,19 +1,37 @@
 package top.oahnus.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
 import top.oahnus.enums.AuthType;
+import top.oahnus.exception.NoAuthException;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by oahnus on 2017/2/26.
- *
  */
-public interface TokenService {
-    // length 64
-    int tokenLength = 64;
+@Service
+public class TokenService {
     // 7 days
     // 过期时间
-    long expire = 7;
+    public long expire = 7;
 
-    String setToken(String username, AuthType type);
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
-    String getUsernameAndTypeByToken(String token);
+    public String setToken(String username, AuthType type) {
+        String token = UUID.randomUUID().toString();
+        String key = "token:"+token;
+        redisTemplate.opsForValue().set(key, username+type.ordinal());
+        redisTemplate.expire(key, expire, TimeUnit.DAYS);
+        return token;
+    }
+
+    public String getUsernameAndTypeByToken(String token) {
+        String username = redisTemplate.opsForValue().get("token:"+token);
+        if(username == null) throw new NoAuthException("Illegal Token");
+        return username;
+    }
 }

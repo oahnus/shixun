@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @EnableAutoConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-public class TeacherServiceImplTest {
+public class TeacherServiceTest {
     @Autowired
     private TeacherService teacherService;
 

@@ -5,12 +5,12 @@
 <mapper namespace = "top.oahnus.mapper.ReviewMapper">
     <resultMap id = "review_map" type= "Review">
         <result column="id" property="id" javaType="String"/>
-        <result column="from_user_name" property="formUserName" javaType="String"/>
-        <result column="from_user_username" property="formUserUsername" javaType="String"/>
-        <result column="from_user_type" property="formUserType" javaType="Integer"/>
+        <result column="from_user_name" property="fromUserName" javaType="String"/>
+        <result column="from_user_username" property="fromUserUsername" javaType="String"/>
+        <result column="from_user_type" property="fromUserType" javaType="top.oahnus.enums.AuthType" typeHandler="top.oahnus.handler.AuthTypeHandler"/>
         <result column="to_user_name" property="toUserName" javaType="String"/>
         <result column="to_user_username" property="toUserUsername" javaType="String"/>
-        <result column="to_user_type" property="toUserType" javaType="Integer"/>
+        <result column="to_user_type" property="toUserType" javaType="top.oahnus.enums.AuthType" typeHandler="top.oahnus.handler.AuthTypeHandler"/>
         <result column="course_id" property="courseId" javaType="String"/>
         <result column="course_name" property="courseName" javaType="String"/>
         <result column="content" property="content" javaType="String"/>
@@ -19,7 +19,7 @@
 
     <sql id="base_sql">
         id,
-        from_user_username, from_user_name, form_user_type,
+        from_user_username, from_user_name, from_user_type,
         to_user_username, to_user_name, to_user_type,
         course_id, course_name,
         content,
@@ -31,22 +31,34 @@
         <include refid="base_sql"/>
         FROM review
         WHERE 1 = 1
-        <if test="username != null and !&quot;&quot;.equals(username)">
-            AND from_user_username = #{username}
+        <if test="fromUsername != null and !&quot;&quot;.equals(fromUsername)">
+            AND from_user_username = #{fromUsername}
+        </if>
+        <if test="toUsername != null and !&quot;&quot;.equals(toUsername)">
+            AND to_user_username = #{toUsername}
+        </if>
+        <if test="rate != null and !&quot;&quot;.equals(rate)">
+            AND rate = #{rate}
         </if>
         <if test="courseId != null and !&quot;&quot;.equals(courseId)">
             AND course_id = #{courseId}
         </if>
-        LIMIT #{offset},#{limit}
+        LIMIT #{offset}, #{limit}
     </select>
 
     <select id="selectRecordCount" resultType="Integer" parameterType="Map">
         SELECT
-        <include refid="base_sql"/>
+        count(id)
         FROM review
         WHERE 1 = 1
-        <if test="username != null and !&quot;&quot;.equals(username)">
-            AND from_user_username = #{username}
+        <if test="fromUsername != null and !&quot;&quot;.equals(fromUsername)">
+            AND from_user_username = #{fromUsername}
+        </if>
+        <if test="toUsername != null and !&quot;&quot;.equals(toUsername)">
+            AND to_user_username = #{toUsername}
+        </if>
+        <if test="rate != null">
+            AND rate = #{rate}
         </if>
         <if test="courseId != null and !&quot;&quot;.equals(courseId)">
             AND course_id = #{courseId}
@@ -64,15 +76,17 @@
 
     <insert id="insertNewReview" parameterType="Review">
         INSERT IGNORE INTO review (
-            from_user_username, from_user_name, form_user_type,
+            from_user_username, from_user_name, from_user_type,
             to_user_username, to_user_name, to_user_type,
             course_id, course_name,
+            rate,
             content,
             create_time
         ) VALUE (
-            #{fromUserUsername}, #{fromUserName}, #{fromUserType},
-            #{toUserUsername}, #{toUserName}, #{toUserType},
-            #{courseId}, #{courseName}, #{content}, current_timestamp
+            #{fromUserUsername}, #{fromUserName}, #{fromUserType, typeHandler=top.oahnus.handler.AuthTypeHandler},
+            #{toUserUsername}, #{toUserName}, #{toUserType, typeHandler=top.oahnus.handler.AuthTypeHandler},
+            #{courseId}, #{courseName},
+            #{rate}, #{content}, current_timestamp
         )
     </insert>
 </mapper>

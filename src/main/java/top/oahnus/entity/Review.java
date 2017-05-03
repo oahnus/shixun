@@ -17,11 +17,12 @@ public class Review {
     private String fromUserUsername;
     private String fromUserName;
     private AuthType fromUserType;
-    private String toUserUserName;
-    private String toUsername;
+    private String toUserUsername;
+    private String toUserName;
     private AuthType toUserType;
     private String courseId;
     private String courseName;
+    private Integer rate;
     private String content;
     private Date createTime;
 
@@ -31,11 +32,12 @@ public class Review {
         this.fromUserUsername = reviewDto.getFromUserName();
         this.fromUserName = reviewDto.getFromUserUsername();
         this.fromUserType = AuthType.valueOf(reviewDto.getFromUserType());
-        this.toUserUserName = reviewDto.getToUsername();
-        this.toUsername = reviewDto.getToUserUsername();
+        this.toUserUsername = reviewDto.getToUsername();
+        this.toUserName = reviewDto.getToUserUsername();
         this.toUserType = AuthType.valueOf(reviewDto.getToUserType());
         this.courseId = reviewDto.getCourseId();
         this.courseName = reviewDto.getCourseName();
+        this.rate = reviewDto.getRate();
         this.content = reviewDto.getContent();
     }
 }

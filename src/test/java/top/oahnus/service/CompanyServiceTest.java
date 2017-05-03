@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @EnableAutoConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-public class CompanyServiceImplTest {
+public class CompanyServiceTest {
     @Autowired
     private CompanyService companyService;
 

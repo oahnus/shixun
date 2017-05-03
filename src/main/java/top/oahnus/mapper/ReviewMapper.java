@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import top.oahnus.entity.Review;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by oahnus on 2017/4/26
@@ -12,9 +13,11 @@ import java.util.List;
  */
 @Mapper
 public interface ReviewMapper extends BaseMapper {
-    List<Review> selectReviewByParam(@Param("courseId")String courseId,
-                                     @Param("username")String username,
-                                     @Param("offset")Integer offset,
+    List<Review> selectReviewByParam(@Param("courseId") String courseId,
+                                     @Param("fromUsername") String fromUsername,
+                                     @Param("toUsername") String toUsername,
+                                     @Param("rate") Integer rate,
+                                     @Param("offset")Integer page,
                                      @Param("limit")Integer limit);
 
     Review selectReviewById(@Param("id")String id);

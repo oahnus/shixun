@@ -23,6 +23,6 @@ public class TokenDto {
     public TokenDto(String token){
         this.token = token;
         this.createAt = new Date();
-        this.expire = new Date(this.createAt.getTime() + TokenService.expire * 86400000);
+        this.expire = new Date(this.createAt.getTime() + 7 * 86400000);
     }
 }

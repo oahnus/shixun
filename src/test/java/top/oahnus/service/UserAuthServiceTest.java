@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
  */
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class UserAuthServiceImplTest {
+public class UserAuthServiceTest {
     @Autowired
     private UserAuthService userAuthService;
 

@@ -10,6 +10,9 @@ import top.oahnus.entity.Review;
 import top.oahnus.enums.ServerState;
 import top.oahnus.service.ReviewService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by oahnus on 2017/4/26
  * 14:23.
@@ -23,11 +26,14 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @GetMapping
-    public ResponseData<Page> selectReview(@RequestParam("courseId")String courseId,
-                                           @RequestParam("username")String username,
+    public ResponseData<Page> selectReview(@RequestParam(value = "courseId", required = false)String courseId,
+                                           @RequestParam(value = "fromUsername", required = false)String fromUsername,
+                                           @RequestParam(value = "toUsername", required = false)String toUsername,
+                                           @RequestParam(value = "rate", required = false)Integer rate,
                                            @RequestParam("page")Integer page,
                                            @RequestParam("limit")Integer limit){
-        Page p = reviewService.selectReviewByParam(courseId, username, page, limit);
+
+        Page p = reviewService.selectReviewByParam(courseId, fromUsername, toUsername, rate, page, limit);
         return new ResponseData<>(ServerState.SUCCESS, p, "success");
     }
 
@@ -38,9 +44,9 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseData<Review> insertReview(@Validated @RequestBody ReviewDto reviewDto) {
-        Review review = reviewService.insertNewReview(reviewDto);
-        return new ResponseData<>(ServerState.SUCCESS, review, "success");
+    public ResponseData<Integer> insertReview(@Validated @RequestBody ReviewDto reviewDto) {
+        Integer count = reviewService.insertNewReview(reviewDto);
+        return new ResponseData<>(ServerState.SUCCESS, count, "success");
     }
 
     @DeleteMapping("/{id}")

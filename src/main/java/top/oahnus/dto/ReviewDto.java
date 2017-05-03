@@ -3,6 +3,7 @@ package top.oahnus.dto;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -15,18 +16,20 @@ public class ReviewDto {
     private String fromUserUsername;
     @Pattern(regexp = "^STUDENT|TEACHER|COMPANY$", message = "用户角色错误")
     private String fromUserType;
-    @NotEmpty
+    @NotEmpty(message = "评论人name不能为空")
     private String fromUserName;
-    @NotEmpty
+    @NotEmpty(message = "被评论人username不能为空")
     private String toUserUsername;
-    @NotEmpty
+    @NotEmpty(message = "被评论人name不能为空")
     private String toUsername;
     @Pattern(regexp = "^STUDENT|TEACHER|COMPANY$", message = "用户角色错误")
     private String toUserType;
-    @NotEmpty
+    @NotEmpty(message = "评论课程id不能为空")
     private String courseId;
-    @NotEmpty
+    @NotEmpty(message = "评论课程名不能为空")
     private String courseName;
+    @NotNull(message = "评论等级不能为空")
+    private Integer rate;
     @NotEmpty(message = "评论内容不能为空")
     private String content;
 }
