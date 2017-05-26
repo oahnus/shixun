@@ -14,7 +14,10 @@ import java.util.List;
 public interface ScoreMapper extends BaseMapper {
     List<Score> selectScoreByStudentId(@Param("studentId")String studentId, @Param("offset")Integer offset,@Param("limit")Integer limit);
     List<Score> selectScoreByCourseId(@Param("courseId")String courseId, @Param("offset")Integer offset,@Param("limit")Integer limit);
-
+    List<Score> selectScoreByStudentIdAndCourseId(@Param("studentId")String studentId,
+                                                  @Param("courseId")String courseId,
+                                                  @Param("offset")Integer offset,
+                                                  @Param("limit")Integer limit);
     Integer insertNewScore(Score score);
 
     Integer updateTeacherScore(Score score);

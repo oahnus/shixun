@@ -238,14 +238,6 @@ CREATE TABLE user_auth (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DELIMITER ;;
-CREATE TRIGGER before_insert_user_auth
-BEFORE INSERT ON user_auth
-FOR EACH ROW
-  BEGIN
-    SET new.id = REPLACE(uuid(), '-','');
-  END ;;
-
 -- -----------------------------------------
 # 17-03-29
 ALTER TABLE course ADD COLUMN state TINYINT NOT NULL DEFAULT 3 COMMENT '开课状态,0 开放选课中,1 关闭选课,2 开课中,3 已结课';

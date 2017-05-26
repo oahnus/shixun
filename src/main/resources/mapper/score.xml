@@ -79,6 +79,19 @@
         WHERE course.id = #{courseId} LIMIT #{offset},#{limit}
     </select>
 
+    <select id="selectScoreByStudentIdAndCourseId" resultMap="score_map">
+        SELECT
+        <include refid="base_sql"/>
+        FROM score
+        LEFT JOIN course_selection
+        ON score.course_selection_id = course_selection.id
+        LEFT JOIN course
+        ON course_selection.course_id = course.id
+        LEFT JOIN student
+        ON score.student_id = student.id
+        WHERE course.id = #{courseId} AND score.student_id = #{studentId} LIMIT #{offset},#{limit}
+    </select>
+
     <select id="selectRecordCount" resultType="Integer" parameterType="Map">
         SELECT count(score.id) FROM score
         LEFT JOIN course_selection
@@ -106,7 +119,7 @@
         SET
         teacher_score = #{teacherScore}
         WHERE score.student_id = #{student.id}
-        AND course_selection.course_id = #{courseSelection.course.id}
+        AND course_selection.id = #{courseSelection.course.id}
     </update>
 
     <update id="updateCompanyScore" parameterType="Score">
@@ -116,7 +129,7 @@
         SET
         company_score = #{companyScore}
         WHERE score.student_id = #{student.id}
-        AND course_selection_id = #{courseSelection.course.id}
+        AND course_selection.id = #{courseSelection.course.id}
     </update>
 
     <delete id="deleteScoreByCourseSelectionId">

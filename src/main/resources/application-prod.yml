@@ -29,6 +29,10 @@ spring:
       hibernate:
         dialect:
           org.hibernate.dialect.MySQL5Dialect
+  http:
+    multipart:
+      max-file-size: 10Mb
+      max-request-size: 10Mb
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: top.oahnus.entity

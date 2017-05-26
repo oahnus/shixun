@@ -27,7 +27,12 @@ public class ScoreService {
         if (page == null || limit == null) {
             throw new BadRequestParamException("请求参数错误");
         }
-        if (!StringUtil.isEmpty(courseId)) {
+        if (!StringUtil.isEmpty(courseId) && !StringUtil.isEmpty(studentId)) {
+            List<Score> scores = scoreMapper.selectScoreByStudentIdAndCourseId(studentId, courseId, (page-1)*limit, limit);
+            Integer totalRecords = scoreMapper.selectRecordCount(new HashMap<String,String>(){{put("courseId", courseId);}});
+            return new Page<>(scores, totalRecords, page, limit);
+        }
+        else if (!StringUtil.isEmpty(courseId)) {
             List<Score> scores = scoreMapper.selectScoreByCourseId(courseId, (page-1)*limit, limit);
             Integer totalRecords = scoreMapper.selectRecordCount(new HashMap<String,String>(){{put("courseId", courseId);}});
             return new Page<>(scores, totalRecords, page, limit);

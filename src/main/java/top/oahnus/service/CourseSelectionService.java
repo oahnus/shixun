@@ -116,6 +116,7 @@ public class CourseSelectionService {
     @Transactional
     public Integer deleteCourseSelectionById(String courseSelectionId) {
         if (StringUtil.isEmpty(courseSelectionId)) throw new BadRequestParamException("请求参数错误");
+        // TODO 判断课程是否已开课，已开课不能删除选课
         Integer count = courseSelectionMapper.deleteCourseSelectionById(courseSelectionId);
         if (count < 0) {
             throw new SQLExecuteFailedExceeption("删除操作失败");
