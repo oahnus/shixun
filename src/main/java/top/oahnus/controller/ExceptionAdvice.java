@@ -1,12 +1,14 @@
 package top.oahnus.controller;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import top.oahnus.dto.ResponseData;
+import top.oahnus.payload.ResponseData;
 import top.oahnus.enums.ServerState;
 import top.oahnus.exception.*;
 
@@ -23,6 +25,7 @@ import java.io.StringWriter;
 public class ExceptionAdvice {
 
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseData handleException(Exception e){
         try (StringWriter stringWriter = new StringWriter();
              PrintWriter printWriter = new PrintWriter(stringWriter)) {
@@ -35,16 +38,19 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseData handleValidatedException(MethodArgumentNotValidException e) {
         return new ResponseData(ServerState.REQUEST_PARAMETER_ERROR, e.getBindingResult().getFieldError().getDefaultMessage());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseData handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         return new ResponseData(ServerState.REQUEST_PARAMETER_ERROR, "请求参数类型错误");
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseData handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
         return new ResponseData(ServerState.REQUEST_PARAMETER_ERROR, e.getMessage());
     }

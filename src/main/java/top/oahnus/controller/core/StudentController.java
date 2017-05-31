@@ -1,86 +1,88 @@
 package top.oahnus.controller.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import top.oahnus.enums.ServerState;
-import top.oahnus.dto.Page;
-import top.oahnus.dto.ResponseData;
-import top.oahnus.dto.StudentDto;
 import top.oahnus.entity.Student;
+import top.oahnus.enums.ServerState;
+import top.oahnus.payload.ResponseData;
+import top.oahnus.payload.StudentPayload;
 import top.oahnus.service.StudentService;
 
-import java.util.List;
-
 /**
- * Created by oahnus on 2017/2/26.
- * 21:00
+ * Created by oahnus on 2017/5/27
+ * 18:49.
  */
 @RestController
 @CrossOrigin
 @RequestMapping("/students")
 public class StudentController {
+
     @Autowired
     private StudentService studentService;
 
-    @GetMapping("/{studentId}")
-    public ResponseData<Student> selectStudentById(@PathVariable("studentId")String studentId) {
-        Student student = studentService.selectStudentById(studentId);
-        return new ResponseData<>(ServerState.SUCCESS, student, "success");
+    @GetMapping
+    public ResponseData<Page> findStudentByPage(@RequestParam("page")Integer page,
+                                                @RequestParam("limit")Integer limit) {
+        Page p = studentService.getStudentByPage(page, limit);
+        return new ResponseData<>(ServerState.SUCCESS, p, "ok");
     }
 
-    /**
-     * 单条插入学生信息
-     */
+    @GetMapping("/depart")
+    public ResponseData<Page> findStudentByDepart(@RequestParam("departId")Long depart,
+                                                  @RequestParam("page")Integer page,
+                                                  @RequestParam("limit")Integer limit) {
+        Page p = studentService.findByDepart(depart, page, limit);
+        return new ResponseData<>(ServerState.SUCCESS, p, "ok");
+    }
+
+    @GetMapping("/profession")
+    public ResponseData<Page> findStudentByProfession(@RequestParam("professionId")Long profession,
+                                                      @RequestParam("page")Integer page,
+                                                      @RequestParam("limit")Integer limit) {
+        Page p = studentService.findByProfession(profession, page, limit);
+        return new ResponseData<>(ServerState.SUCCESS, p, "ok");
+    }
+
+    @GetMapping("/name")
+    public ResponseData<Page> findStudentByName(@RequestParam("name")String name,
+                                                @RequestParam("page")Integer page,
+                                                @RequestParam("limit")Integer limit) {
+        Page p = studentService.findByNameLike(name, page, limit);
+        return new ResponseData<>(ServerState.SUCCESS, p, "ok");
+    }
+
+    @GetMapping("/{studentId}")
+    public ResponseData<Student> getById(@PathVariable("studentId")Long studentId) {
+        Student student = studentService.getById(studentId);
+        return new ResponseData<>(ServerState.SUCCESS, student,"ok");
+    }
+
     @PostMapping
-    public ResponseData<Student> insertNewStudent(@Validated @RequestBody StudentDto studentDto,
-                                                  BindingResult result) {
-        if (result.hasErrors()) {
+    public ResponseData<Student> insertStudent(@Validated @RequestBody StudentPayload payload,
+                                               BindingResult result) {
+        if(result.hasErrors()) {
             return new ResponseData<>(ServerState.REQUEST_PARAMETER_ERROR, result.getFieldError().getDefaultMessage());
         }
-        Student student = studentService.insertOneStudent(studentDto);
-        return new ResponseData<>(ServerState.SUCCESS, student, "success");
+        Student student = studentService.insertStudent(payload);
+        return new ResponseData<>(ServerState.SUCCESS, student, "ok");
     }
 
-    /**
-     * 分页获取学生
-     */
-    // todo 根据课程获取选择该门课程的所有学生
-    @GetMapping
-    public ResponseData<Page> selectStudentsByDepart(@RequestParam(value = "depart",required = false)String depart,
-                                                     @RequestParam(value = "profession",required = false)String profession,
-                                                     @RequestParam(value = "courseId", required = false)String courseId,
-                                                     @RequestParam("page")Integer page,
-                                                     @RequestParam("limit") Integer limit){
-        Page<List<Student>> p = null;
-        if (depart != null) {
-            p = studentService.selectStudentByDepart(depart, page, limit);
-        } else if (profession != null) {
-            p = studentService.selectStudentByProfession(profession, page, limit);
-        } else if (courseId != null) {
-            p = studentService.fetchStudentByCourseId(courseId, page, limit);
-        } else {
-            p = studentService.selectAllStudent(page, limit);
-        }
-        return new ResponseData<>(ServerState.SUCCESS, p, "success");
-    }
-
-    /**
-     * 更新单条学生记录
-     */
     @PutMapping
-    public ResponseData<Student> updateStudent(@Validated @RequestBody StudentDto studentDto) {
-        Student stu = studentService.updateStudent(studentDto);
-        return new ResponseData<>(ServerState.SUCCESS, stu, "success");
+    public ResponseData<Student> updateStudent(@Validated @RequestBody StudentPayload payload,
+                                               BindingResult result) {
+        if(result.hasErrors()) {
+            return new ResponseData<>(ServerState.REQUEST_PARAMETER_ERROR, result.getFieldError().getDefaultMessage());
+        }
+        Student student = studentService.updateStudent(payload);
+        return new ResponseData<>(ServerState.SUCCESS, student, "ok");
     }
 
-    /**
-     * 根据学生id删除单条学生数据
-     */
     @DeleteMapping("/{studentId}")
-    public ResponseData<String> deleteStudent(@PathVariable String studentId) {
+    public ResponseData<String> deleteById(@PathVariable("studentId")Long studentId) {
         studentService.deleteStudentById(studentId);
-        return new ResponseData<>(ServerState.SUCCESS, "SUCCESS", "success");
+        return new ResponseData<>(ServerState.SUCCESS, "删除成功","ok");
     }
 }

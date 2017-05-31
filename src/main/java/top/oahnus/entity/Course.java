@@ -1,9 +1,10 @@
 package top.oahnus.entity;
 
 import lombok.Data;
-import top.oahnus.dto.CourseDto;
+import top.oahnus.payload.CoursePayload;
 import top.oahnus.enums.CourseState;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -11,11 +12,19 @@ import java.util.Date;
  * 课程
  */
 @Data
+@Entity(name = "course")
 public class Course {
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
+    @OneToOne
+//    @JoinColumn(name = "id")
     private Teacher teacher = new Teacher();
+    @OneToOne
+//    @JoinColumn(name = "id")
     private Company company = new Company();
+
     // 开设该课程的专业集合,以;间隔
     private String professions;
     // 课程描述
@@ -33,17 +42,24 @@ public class Course {
 
     public Course() {}
 
-    public Course(CourseDto courseDto) {
-        this.id = courseDto.getId();
-        this.name = courseDto.getName();
-        this.teacher.setId(courseDto.getTeacherId());
-        this.company.setId(courseDto.getCompanyId());
-        this.professions = courseDto.getProfessions();
-        this.memo = courseDto.getMemo();
-        this.startTime = courseDto.getStartTime();
-        this.endTime = courseDto.getEndTime();
-        this.addition = courseDto.getAddition();
-        this.updateTime = new Date();
-        this.state = CourseState.valueOf(courseDto.getState());
+    public static Course fromPayload(CoursePayload payload) {
+        Course course = new Course();
+        course.setId(payload.getId());
+        course.setName(payload.getName());
+        course.setProfessions(payload.getProfessions());
+        course.setMemo(payload.getMemo());
+        course.setStartTime(payload.getStartTime());
+        course.setEndTime(payload.getEndTime());
+        course.updateTime = new Date();
+        course.setState(CourseState.INIT);
+
+        Teacher teacher = new Teacher();
+        teacher.setId(payload.getTeacherId());
+        Company company = new Company();
+        company.setId(payload.getCompanyId());
+
+        course.setTeacher(teacher);
+        course.setCompany(company);
+        return course;
     }
 }

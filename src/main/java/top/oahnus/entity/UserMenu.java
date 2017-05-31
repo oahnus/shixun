@@ -3,6 +3,7 @@ package top.oahnus.entity;
 import lombok.Data;
 import top.oahnus.enums.AuthType;
 
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -10,13 +11,17 @@ import java.util.List;
  * 13:58.
  */
 @Data
+@Entity(name = "user_menu")
 public class UserMenu {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String keyName;
     private String name;
     private String icon;
     private String href;
-    private AuthType type;
-    private int parentId;
+    private AuthType authType;
+    private Long parentId;
+    @Transient
     private List<UserMenu> child;
 }

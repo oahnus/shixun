@@ -1,119 +1,70 @@
 package top.oahnus.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import top.oahnus.dto.Page;
-import top.oahnus.dto.TeacherDto;
 import top.oahnus.entity.Teacher;
-import top.oahnus.exception.*;
-import top.oahnus.mapper.TeacherMapper;
+import top.oahnus.exception.BadRequestParamException;
+import top.oahnus.payload.TeacherPayload;
+import top.oahnus.repository.TeacherRepository;
 import top.oahnus.util.StringUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 /**
- * Created by oahnus on 2017/3/28
- * 18:37.
+ * Created by oahnus on 2017/5/27
+ * 17:41.
  */
 @Service
 public class TeacherService {
     @Autowired
-    private TeacherMapper teacherMapper;
+    private TeacherRepository teacherRepository;
 
-    public Page<List<Teacher>> selectTeacherByProfession(String profession, Integer page, Integer limit) {
-        if(page == null || limit == null || StringUtil.isEmpty(profession)) {
-            throw new BadRequestParamException("请求参数错误");
-        }
-        List<Teacher> teachers = teacherMapper.selectTeacherByProfession(profession, (page-1)*limit, limit);
-        Integer totalRecord = teacherMapper.selectRecordCount(new HashMap<String, String>(){{put("profession", profession);}});
-        return new Page<>(teachers, totalRecord, page, limit);
+    public Page<Teacher> getTeacherByPage(Integer page, Integer limit) {
+        Pageable pageable = new PageRequest(page - 1, limit);
+        return teacherRepository.findAll(pageable);
     }
 
-    public Page<List<Teacher>> selectTeacherByDepart(String depart, Integer page, Integer limit) {
-        if(page == null || limit == null || StringUtil.isEmpty(depart)) {
-            throw new BadRequestParamException("请求参数错误");
-        }
-        List<Teacher> teachers = teacherMapper.selectTeacherByDepart(depart, (page-1)*limit, limit);
-        Integer totalRecord = teacherMapper.selectRecordCount(new HashMap<String, String>(){{put("depart", depart);}});
-        return new Page<>(teachers, totalRecord, page, limit);
+    public Page<Teacher> getTeacherByDepart(Long depart, Integer page, Integer limit) {
+        if (depart == null) throw new BadRequestParamException("学院为空");
+        Pageable pageable = new PageRequest(page - 1, limit);
+        return teacherRepository.findByDepartId(depart, pageable);
     }
 
-    public Page<List<Teacher>> selectAllTeacher(Integer page, Integer limit) {
-        if(page == null || limit == null) {
-            throw new BadRequestParamException("请求参数错误");
-        }
-        List<Teacher> teachers = teacherMapper.selectAllTeacher((page-1)*limit, limit);
-        Integer totalRecord = teacherMapper.selectRecordCount(null);
-        return new Page<>(teachers, totalRecord, page, limit);
+    public Page<Teacher> getTeacherByProfession(Long profession, Integer page, Integer limit) {
+        if (profession == null) throw new BadRequestParamException("专业为空");
+        Pageable pageable = new PageRequest(page - 1, limit);
+        return teacherRepository.findByProfessionId(profession, pageable);
     }
 
-    public Teacher selectTeacherById(String teacherId) {
-        if (StringUtil.isEmpty(teacherId)) {
-            throw new BadRequestParamException("请求参数错误");
-        }
-        Teacher teacher = teacherMapper.selectTeacherById(teacherId);
-        if (teacher == null) {
-            throw new NotFoundException("数据未找到");
-        }
+    public Page<Teacher> getTeacherByWorkerIdLike(String workerId, Integer page, Integer limit) {
+        if (StringUtil.isEmpty(workerId)) throw new BadRequestParamException("教师工号为空");
+        Pageable pageable = new PageRequest(page - 1, limit);
+        workerId = "%" + workerId + "%";
+        return teacherRepository.findByWorkerIdLike(workerId, pageable);
+    }
+
+    public Page<Teacher> getTeacherByNameLike(String name, Integer page, Integer limit) {
+        if (StringUtil.isEmpty(name)) throw new BadRequestParamException("教师姓名为空");
+        Pageable pageable = new PageRequest(page - 1, limit);
+        name = "%" + name + "%";
+        return teacherRepository.findByNameLike(name, pageable);
+    }
+
+    public Teacher insertTeacher(TeacherPayload payload) {
+        Teacher teacher = Teacher.fromPayload(payload);
+        teacher = teacherRepository.save(teacher);
         return teacher;
     }
 
-    public List<Teacher> insertTeachers(List<Teacher> teachers) {
-        if (teachers == null) throw new ReadDataFailedException("读取Excel文件失败");
-
-        List<Teacher> teacherList = new ArrayList<>();
-
-        Integer count = teacherMapper.insertTeachers(teachers);
-        if (count < 0) {
-            throw new SQLExecuteFailedExceeption("插入数据库失败");
-        } else {
-            teachers.forEach(teacher -> {
-                teacherList.add(teacherMapper.selectTeacherByWorkerId(teacher.getWorkerId()));
-            });
-        }
-        return teacherList;
+    public Teacher updateTeacher(TeacherPayload payload) {
+        Teacher teacher = Teacher.fromPayload(payload);
+        teacher = teacherRepository.save(teacher);
+        return teacher;
     }
 
-    public Teacher insertOneTeacher(TeacherDto teacherDto) {
-        if (teacherDto == null) throw new BadRequestParamException("请求参数错误");
-
-        Teacher teacher = new Teacher(teacherDto);
-        Integer count = teacherMapper.insertOneTeacher(teacher);
-        if (count < 0) {
-            throw new SQLExecuteFailedExceeption("插入数据库失败");
-        } else if (count == 0) {
-            throw new DataExistedException("数据已存在");
-        } else {
-            teacher = teacherMapper.selectTeacherByWorkerId(teacher.getWorkerId());
-            return teacher;
-        }
-    }
-
-    public Integer deleteTeacherById(String teacherId) {
-        if (StringUtil.isEmpty(teacherId)) throw new BadRequestParamException("请求参数错误");
-
-        Integer count = teacherMapper.deleteTeacherById(teacherId);
-        if (count > 0) {
-            return count;
-        } else {
-            throw new SQLExecuteFailedExceeption("删除数据库失败");
-        }
-    }
-
-    public Teacher updateTeacher(TeacherDto teacherDto) {
-        Teacher teacher = new Teacher(teacherDto);
-        if (teacher.getId() == null) {
-            throw new BadRequestParamException("id不能为空");
-        }
-        Integer count = teacherMapper.updateTeacher(teacher);
-        if (count < 0) {
-            throw new SQLExecuteFailedExceeption("更新数据库失败");
-        } else if (count == 0) {
-            throw new NotFoundException("数据为找到");
-        } else {
-            return teacher;
-        }
+    public void deleteTeacherById(Long teacherId) {
+        if (teacherId == null) throw new BadRequestParamException("Id为空");
+        teacherRepository.delete(teacherId);
     }
 }

@@ -6,29 +6,55 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import top.oahnus.dto.UserAuthDto;
+import org.springframework.transaction.annotation.Transactional;
 import top.oahnus.entity.UserAuth;
 import top.oahnus.enums.AuthType;
+import top.oahnus.payload.UserAuthPayload;
+import top.oahnus.repository.UserAuthRepository;
+import top.oahnus.util.MD5Util;
 
 import static org.junit.Assert.*;
 
 /**
- * Created by oahnus on 2017/2/26.
+ * Created by oahnus on 2017/5/26
+ * 15:02.
  */
 @SpringBootTest
+@EnableAutoConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserAuthServiceTest {
     @Autowired
-    private UserAuthService userAuthService;
+    private UserAuthRepository userAuthRepository;
+    @Autowired
+    private UserAuthService service;
 
     @Test
     public void getUserAuth() throws Exception {
-        UserAuthDto userAuthDto = new UserAuthDto();
-        userAuthDto.setUsername("1341901120");
-        userAuthDto.setPassword("1341901120");
-        userAuthDto.setAuthType("STUDENT");
-        UserAuth userAuth = userAuthService.getUserAuth(userAuthDto);
-        System.out.println(userAuth.getId());
+        UserAuth userAuth = userAuthRepository.findByUsernameAndPasswordAndType(
+                "admin",
+                MD5Util.getMD5("111111"),
+                AuthType.ADMIN);
+        System.out.println(userAuth);
     }
 
+    @Test
+    @Transactional
+    public void resetPassword() throws Exception {
+        Integer count = userAuthRepository.resetPassword(
+                "e93b55632a8811e7a53c80fa5b3ea16e",
+                MD5Util.getMD5("123456"),
+                MD5Util.getMD5("admin"),
+                AuthType.ADMIN);
+        System.out.println(count);
+    }
+
+    @Test
+    public void login(){
+        UserAuthPayload payload = new UserAuthPayload();
+        payload.setAuthType(AuthType.COMPANY);
+        payload.setUsername("测试企业一");
+        payload.setPassword("123456");
+        UserAuth userAuth = service.getUserAuth(payload);
+        System.out.println(userAuth);
+    }
 }

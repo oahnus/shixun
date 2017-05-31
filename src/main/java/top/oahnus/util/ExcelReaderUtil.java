@@ -8,16 +8,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import top.oahnus.config.ExcelReaderConfig;
-import top.oahnus.entity.Company;
-import top.oahnus.entity.Student;
-import top.oahnus.entity.Teacher;
+import top.oahnus.entity.*;
 import top.oahnus.enums.AuthType;
 import top.oahnus.exception.DataFormatException;
 
-import javax.annotation.PostConstruct;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -25,27 +19,11 @@ import java.util.*;
 /**
  * Excel解析工具类,可以根据Excel中的标题导入数据
  */
-@Component
 public class ExcelReaderUtil {
     private static final String EXCEL_2003_EXTENSION = ".xls";
     private static final String EXCEL_2007_EXTENSION = ".xlsx";
 
-    @Autowired
-    private ExcelReaderConfig tConfig;
-
-    private static ExcelReaderConfig config;
-
     private ExcelReaderUtil() {}
-
-    @PostConstruct
-    public void init() {
-        ExcelReaderUtil.config = tConfig;
-    }
-
-    @Autowired
-    public static void setExcelReaderConfig(ExcelReaderConfig config) {
-        ExcelReaderUtil.config = config;
-    }
 
     /**
      * 从Cell中获取对应类型的值的字符串
@@ -127,106 +105,58 @@ public class ExcelReaderUtil {
 
         Map<Object,Integer> headerMap = new HashMap<>();
         int index = 0;
+
+        Profession profession = new Profession();
         if (rowHeader != null) {
-            System.out.println(type.ordinal());
             switch (type.ordinal()) {
                 case 1:
                     List<Company> companyList = new ArrayList<>();
 
-                    while (index < rowHeader.getPhysicalNumberOfCells()) {
-                        Cell cell = rowHeader.getCell(index);
-                        if (getCellFormatValue(cell).equals(config.getCompany().getName())) {
-                            headerMap.put("name", index);
-                        } else if (getCellFormatValue(cell).equals(config.getCompany().getContact())) {
-                            headerMap.put("contact", index);
-                        } else if (getCellFormatValue(cell).equals(config.getCompany().getContactPhone())) {
-                            headerMap.put("contact_phone", index);
-                        } else if (getCellFormatValue(cell).equals(config.getCompany().getAddress())) {
-                            headerMap.put("address", index);
-                        } else if (getCellFormatValue(cell).equals(config.getCompany().getEmail())) {
-                            headerMap.put("email", index);
-                        }
-                        index++;
-                    }
-
                     for (int i = 1; i <= rowNum; i++) {
                         row = sheet.getRow(i);
-                        companyList.add(new Company(
-                                getCellFormatValue(row.getCell(headerMap.get("name"))),// 企业名称
-                                getCellFormatValue(row.getCell(headerMap.get("contact"))),// 企业联系人
-                                getCellFormatValue(row.getCell(headerMap.get("contact_phone"))), // 联系人电话
-                                getCellFormatValue(row.getCell(headerMap.get("address"))), // 企业地址
-                                getCellFormatValue(row.getCell(headerMap.get("email"))) // 邮箱
-                        ));
+
+                        Company company = new Company();
+                        company.setName(getCellFormatValue(row.getCell(1)));
+                        company.setContact(getCellFormatValue(row.getCell(2)));
+                        company.setContactPhone(getCellFormatValue(row.getCell(3)));
+                        company.setAddress(getCellFormatValue(row.getCell(4)));
+                        company.setEmail(getCellFormatValue(row.getCell(5)));
+
+                        companyList.add(company);
                     }
                     return companyList;
                 case 2:
                     List<Teacher> teacherList = new ArrayList<>();
 
-                    // TODO 修改读取方式，通过获取Teacher类中的属性名来选取
-                    while (index < rowHeader.getPhysicalNumberOfCells()) {
-                        Cell cell = rowHeader.getCell(index);
-                        if (getCellFormatValue(cell).equals(config.getTeacher().getName())) {
-                            headerMap.put("name", index);
-                        } else if (getCellFormatValue(cell).equals(config.getTeacher().getWorkerId())) {
-                            headerMap.put("worker_id", index);
-                        } else if (getCellFormatValue(cell).equals(config.getTeacher().getSex())) {
-                            headerMap.put("sex", index);
-                        } else if (getCellFormatValue(cell).equals(config.getTeacher().getJobTitle())) {
-                            headerMap.put("job_title", index);
-                        } else if (getCellFormatValue(cell).equals(config.getTeacher().getDepart())) {
-                            headerMap.put("depart", index);
-                        } else if (getCellFormatValue(cell).equals(config.getTeacher().getProfession())) {
-                            headerMap.put("profession", index);
-                        } else if (getCellFormatValue(cell).equals(config.getTeacher().getEmail())) {
-                            headerMap.put("email", index);
-                        }
-                        index++;
-                    }
-
                     for (int i = 1; i <= rowNum; i++) {
                         row = sheet.getRow(i);
-                        teacherList.add(new Teacher(
-                                getCellFormatValue(row.getCell(headerMap.get("worker_id"))),// 工号
-                                getCellFormatValue(row.getCell(headerMap.get("name"))),// 姓名
-                                getCellFormatValue(row.getCell(headerMap.get("profession"))), // 专业
-                                getCellFormatValue(row.getCell(headerMap.get("depart"))), // 学院
-                                getCellFormatValue(row.getCell(headerMap.get("sex"))), // 性别
-                                getCellFormatValue(row.getCell(headerMap.get("job_title"))), // 征程
-                                getCellFormatValue(row.getCell(headerMap.get("email"))) // 邮箱
-                        ));
+
+                        Teacher teacher = new Teacher();
+                        teacher.setWorkerId(getCellFormatValue(row.getCell(1)));
+                        teacher.setName(getCellFormatValue(row.getCell(2)));
+                        teacher.setSex(getCellFormatValue(row.getCell(3)));
+                        teacher.setJobTitle(getCellFormatValue(row.getCell(4)));
+                        teacher.setProfessionId(Long.valueOf(getCellFormatValue(row.getCell(5))));
+                        teacher.setDepartId(Long.valueOf(getCellFormatValue(row.getCell(6))));
+                        teacher.setEmail(getCellFormatValue(row.getCell(7)));
+                        teacherList.add(teacher);
                     }
                     return teacherList;
                 case 3:
                     List<Student> studentList = new ArrayList<>();
-                    while (index < rowHeader.getPhysicalNumberOfCells()) {
-                        Cell cell = rowHeader.getCell(index);
-                        if (getCellFormatValue(cell).equals(config.getStudent().getName())) {
-                            headerMap.put("name", index);
-                        } else if (getCellFormatValue(cell).equals(config.getStudent().getStudentNum())) {
-                            headerMap.put("student_num", index);
-                        } else if (getCellFormatValue(cell).equals(config.getStudent().getSex())) {
-                            headerMap.put("sex", index);
-                        } else if (getCellFormatValue(cell).equals(config.getStudent().getDepart())) {
-                            headerMap.put("depart", index);
-                        } else if (getCellFormatValue(cell).equals(config.getStudent().getProfession())) {
-                            headerMap.put("profession", index);
-                        } else if (getCellFormatValue(cell).equals(config.getStudent().getEmail())) {
-                            headerMap.put("email", index);
-                        }
-                        index++;
-                    }
 
                     for (int i = 1; i <= rowNum; i++) {
                         row = sheet.getRow(i);
-                        studentList.add(new Student(
-                                getCellFormatValue(row.getCell(headerMap.get("student_num"))),// 学号
-                                getCellFormatValue(row.getCell(headerMap.get("name"))),// 姓名
-                                getCellFormatValue(row.getCell(headerMap.get("profession"))), // 专业
-                                getCellFormatValue(row.getCell(headerMap.get("depart"))), // 学院
-                                getCellFormatValue(row.getCell(headerMap.get("sex"))), // 性别
-                                getCellFormatValue(row.getCell(headerMap.get("email"))) // 邮箱
-                        ));
+
+                        Student student = new Student();
+                        student.setStudentNum(getCellFormatValue(row.getCell(1)));
+                        student.setName(getCellFormatValue(row.getCell(2)));
+                        student.setSex(getCellFormatValue(row.getCell(3)));
+                        student.setProfessionId(Long.valueOf(getCellFormatValue(row.getCell(4))));
+                        student.setDepartId(Long.valueOf(getCellFormatValue(row.getCell(5))));
+                        student.setEmail(getCellFormatValue(row.getCell(6)));
+
+                        studentList.add(student);
                     }
                     return studentList;
             }

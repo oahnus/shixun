@@ -1,7 +1,7 @@
 package top.oahnus.entity;
 
 import lombok.Data;
-import top.oahnus.dto.CourseTaskDto;
+import top.oahnus.payload.CourseTaskDto;
 
 import java.util.Date;
 
@@ -11,8 +11,8 @@ import java.util.Date;
  */
 @Data
 public class CourseTask {
-    private String id;
-    private String courseId;
+    private Long id;
+    private Long courseId;
     private String name;
     // 上传的任务内容文件的URL
     private String content;

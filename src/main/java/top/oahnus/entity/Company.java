@@ -1,7 +1,12 @@
 package top.oahnus.entity;
 
 import lombok.Data;
-import top.oahnus.dto.CompanyDto;
+import top.oahnus.payload.CompanyPayload;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 
 /**
@@ -9,8 +14,11 @@ import top.oahnus.dto.CompanyDto;
  * 20:17
  */
 @Data
+@Entity(name = "company")
 public class Company extends User{
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String contact;
     private String contactPhone;
@@ -19,20 +27,14 @@ public class Company extends User{
 
     public Company(){}
 
-    public Company(String name, String contact, String contactPhone, String address, String email) {
-        this.name = name;
-        this.contact = contact;
-        this.contactPhone = contactPhone;
-        this.address = address;
-        this.email = email;
-    }
-
-    public Company(CompanyDto companyDto) {
-        this.id = companyDto.getId();
-        this.name = companyDto.getName();
-        this.contact = companyDto.getContact();
-        this.contactPhone = companyDto.getContactPhone();
-        this.address = companyDto.getAddress();
-        this.email = companyDto.getEmail();
+    public static Company fromPayload(CompanyPayload payload) {
+        Company company = new Company();
+        company.setId(payload.getId());
+        company.setName(payload.getName());
+        company.setContact(payload.getContact());
+        company.setContactPhone(payload.getContactPhone());
+        company.setAddress(payload.getAddress());
+        company.setEmail(payload.getEmail());
+        return company;
     }
 }

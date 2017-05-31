@@ -1,7 +1,7 @@
 package top.oahnus.entity;
 
 import lombok.Data;
-import top.oahnus.dto.ReviewDto;
+import top.oahnus.payload.ReviewDto;
 import top.oahnus.enums.AuthType;
 
 import java.util.Date;
@@ -13,14 +13,14 @@ import java.util.Date;
  */
 @Data
 public class Review {
-    private String id;
+    private Long id;
     private String fromUserUsername;
     private String fromUserName;
     private AuthType fromUserType;
     private String toUserUsername;
     private String toUserName;
     private AuthType toUserType;
-    private String courseId;
+    private Long courseId;
     private String courseName;
     private Integer rate;
     private String content;

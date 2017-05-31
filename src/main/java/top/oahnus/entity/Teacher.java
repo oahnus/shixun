@@ -1,19 +1,24 @@
 package top.oahnus.entity;
 
 import lombok.Data;
-import top.oahnus.dto.TeacherDto;
+import top.oahnus.payload.TeacherPayload;
+
+import javax.persistence.*;
 
 /**
  * Created by oahnus on 2017/3/1.
  * 23:23
  */
 @Data
+@Entity(name = "teacher")
 public class Teacher extends User{
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String workerId;
     private String name;
-    private String profession;
-    private String depart;
+    private Long professionId;
+    private Long departId;
     // 性别
     private String sex;
     // 职称
@@ -22,24 +27,17 @@ public class Teacher extends User{
 
     public Teacher() {}
 
-    public Teacher(String workerId, String name, String profession, String depart, String sex, String jobTitle, String email) {
-        this.workerId = workerId;
-        this.name = name;
-        this.profession = profession;
-        this.depart = depart;
-        this.sex = sex;
-        this.jobTitle = jobTitle;
-        this.email = email;
-    }
+    public static Teacher fromPayload(TeacherPayload payload) {
+        Teacher teacher = new Teacher();
+        teacher.setId(payload.getId());
+        teacher.setWorkerId(payload.getWorkerId());
+        teacher.setName(payload.getName());
+        teacher.setSex(payload.getSex());
+        teacher.setJobTitle(payload.getJobTitle());
+        teacher.setEmail(payload.getEmail());
+        teacher.setProfessionId(payload.getProfessionId());
+        teacher.setDepartId(payload.getDepartId());
 
-    public Teacher(TeacherDto teacherDto) {
-        this.id = teacherDto.getId();
-        this.workerId = teacherDto.getWorkerId();
-        this.name = teacherDto.getName();
-        this.profession = teacherDto.getProfession();
-        this.depart = teacherDto.getDepart();
-        this.sex = teacherDto.getSex();
-        this.jobTitle = teacherDto.getJobTitle();
-        this.email = teacherDto.getEmail();
+        return teacher;
     }
 }

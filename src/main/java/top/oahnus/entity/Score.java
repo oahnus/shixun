@@ -1,7 +1,7 @@
 package top.oahnus.entity;
 
 import lombok.Data;
-import top.oahnus.dto.ScoreDto;
+import top.oahnus.payload.ScoreDto;
 
 /**
  * Created by oahnus on 2017/4/25
@@ -9,7 +9,7 @@ import top.oahnus.dto.ScoreDto;
  */
 @Data
 public class Score {
-    private String id;
+    private Long id;
     private Student student = new Student();
     private CourseSelection courseSelection = new CourseSelection();
     private Float teacherScore;

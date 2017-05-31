@@ -8,15 +8,15 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import top.oahnus.Constants;
 import top.oahnus.enums.ServerState;
-import top.oahnus.dto.ResponseData;
+import top.oahnus.payload.ResponseData;
 import top.oahnus.entity.Company;
 import top.oahnus.entity.Student;
 import top.oahnus.entity.Teacher;
 import top.oahnus.enums.AuthType;
 import top.oahnus.exception.ReadDataFailedException;
-import top.oahnus.service.CompanyService;
-import top.oahnus.service.StudentService;
-import top.oahnus.service.TeacherService;
+import top.oahnus.repository.CompanyRepository;
+import top.oahnus.repository.StudentRepository;
+import top.oahnus.repository.TeacherRepository;
 import top.oahnus.util.ExcelReaderUtil;
 
 import java.io.File;
@@ -33,13 +33,11 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private CompanyService companyService;
-
+    private CompanyRepository companyRepository;
     @Autowired
-    private TeacherService teacherService;
-
+    private TeacherRepository teacherRepository;
     @Autowired
-    private StudentService studentService;
+    private StudentRepository studentRepository;
 
     /**
      * 从Excel批量插入公司信息
@@ -56,7 +54,8 @@ public class AdminController {
 
         if(companies == null) throw new ReadDataFailedException("无法从文件中获取公司信息");
 
-        List<Company> companyList = companyService.insertCompanies(companies);
+        System.out.println(companies);
+        List<Company> companyList = companyRepository.save(companies);
 
         return new ResponseData<>(ServerState.SUCCESS, companyList, "");
     }
@@ -76,7 +75,7 @@ public class AdminController {
 
         if (teachers == null) throw new ReadDataFailedException("无法从文件中获取教师信息");
 
-        List<Teacher> teacherList = teacherService.insertTeachers(teachers);
+        List<Teacher> teacherList = teacherRepository.save(teachers);
 
         return new ResponseData<>(ServerState.SUCCESS, teacherList, "");
     }
@@ -96,7 +95,7 @@ public class AdminController {
 
         if (students == null) throw new ReadDataFailedException("无法从文件中获取学生信息");
 
-        List<Student> studentList = studentService.insertStudents(students);
+        List<Student> studentList = studentRepository.save(students);
 
         return new ResponseData<>(ServerState.SUCCESS, studentList, "");
     }

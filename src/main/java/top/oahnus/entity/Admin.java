@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 public class Admin {
-    private String id;
+    private Long id;
     private String username;
     private String nickname;
 }

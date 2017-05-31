@@ -1,7 +1,7 @@
 package top.oahnus.entity;
 
 import lombok.Data;
-import top.oahnus.dto.CourseSelectionDto;
+import top.oahnus.payload.CourseSelectionDto;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Data
 public class CourseSelection {
-    private String id;
+    private Long id;
     private Course course = new Course();
     private Student student = new Student();
     private Date createTime;

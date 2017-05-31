@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import top.oahnus.enums.ServerState;
-import top.oahnus.dto.ResponseData;
-import top.oahnus.dto.TokenDto;
-import top.oahnus.dto.UserAuthDto;
-import top.oahnus.dto.UserDto;
+import top.oahnus.payload.ResponseData;
+import top.oahnus.payload.TokenDto;
+import top.oahnus.payload.UserAuthPayload;
+import top.oahnus.payload.UserPayload;
 import top.oahnus.entity.UserAuth;
 import top.oahnus.service.TokenService;
 import top.oahnus.service.UserAuthService;
@@ -34,12 +34,12 @@ public class AuthController {
 
     /**
      * 根据用户的username和auth type生成token，保存在redis中
-     * @param userAuthDto userAuthDto
+     * @param userAuthPayload userAuthPayload
      * @return Token
      */
     @PostMapping("/auth")
-    public Map login(@Validated @RequestBody UserAuthDto userAuthDto){
-        UserAuth userAuth = userAuthService.getUserAuth(userAuthDto);
+    public Map login(@Validated @RequestBody UserAuthPayload userAuthPayload){
+        UserAuth userAuth = userAuthService.getUserAuth(userAuthPayload);
         String token = tokenService.setToken(userAuth.getUsername(), userAuth.getType());
         Map map = new HashMap();
         map.put("tokenDto", new TokenDto(token));
@@ -49,8 +49,8 @@ public class AuthController {
 
     // TODO 根据用户留下的邮箱发送验证邮件来修改密码
     @PostMapping("/user/reset")
-    public ResponseData<Integer> resetPassword(@Validated @RequestBody UserDto userDto) {
-        Integer count = userAuthService.resetPassword(userDto);
+    public ResponseData<Integer> resetPassword(@Validated @RequestBody UserPayload userPayload) {
+        Integer count = userAuthService.resetPassword(userPayload);
         return new ResponseData<>(ServerState.SUCCESS, count, "success");
     }
 }

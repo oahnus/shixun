@@ -1,7 +1,7 @@
 package top.oahnus.entity;
 
 import lombok.Data;
-import top.oahnus.dto.TaskResultDto;
+import top.oahnus.payload.TaskResultDto;
 
 import java.util.Date;
 
@@ -11,8 +11,8 @@ import java.util.Date;
  */
 @Data
 public class TaskResult {
-    private String id;
-    private String taskId;
+    private Long id;
+    private Long taskId;
     private Student student = new Student();
     // 任务成果文件的URL
     private String content;

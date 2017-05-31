@@ -10,5 +10,5 @@ import java.util.List;
  * 15:22.
  */
 @Data
-public class User {
+public abstract class User {
 }

@@ -10,14 +10,10 @@ auth:
     package: top.oahnus.controller.administrator
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/shixun_17_02_26?useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/shixun?useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://127.0.0.1:3306/shixun_17_02_26?useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-#    username: root
-#    password: F1203005_5120309188_LuHao
-#    driver-class-name: org.mariadb.jdbc.Driver
   redis:
     host: localhost
     port: 6379
@@ -31,12 +27,10 @@ spring:
       hibernate:
         dialect:
           org.hibernate.dialect.MySQL5Dialect
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: top.oahnus.entity
-  configuration:
-    map-underscore-to-camel-case: true
-    use-column-label: true
+        format-sql: true
+    show-sql: true
+    database: mysql
+    database-platform: MYSQL
 
 logging:
   level: info
