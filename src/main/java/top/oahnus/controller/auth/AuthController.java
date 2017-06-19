@@ -1,5 +1,6 @@
 package top.oahnus.controller.auth;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,6 +38,7 @@ public class AuthController {
      * @param userAuthPayload userAuthPayload
      * @return Token
      */
+    @ApiOperation(value="登录验证接口")
     @PostMapping("/auth")
     public Map login(@Validated @RequestBody UserAuthPayload userAuthPayload){
         UserAuth userAuth = userAuthService.getUserAuth(userAuthPayload);
@@ -48,6 +50,7 @@ public class AuthController {
     }
 
     // TODO 根据用户留下的邮箱发送验证邮件来修改密码
+    @ApiOperation(value="修改用户密码")
     @PostMapping("/user/reset")
     public ResponseData<Integer> resetPassword(@Validated @RequestBody UserPayload userPayload) {
         Integer count = userAuthService.resetPassword(userPayload);

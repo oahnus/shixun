@@ -1,5 +1,6 @@
 package top.oahnus.controller.administrator;
 
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,7 @@ public class AdminController {
     /**
      * 从Excel批量插入公司信息
      */
+    @ApiOperation(value="管理员批量导入公司信息")
     @PostMapping("/companies")
     public ResponseData<List<Company>> insertCompanyByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException {
         String tempPath = mhsr.getSession().getServletContext().getRealPath("/WEB-INF/temp/");
@@ -63,6 +65,7 @@ public class AdminController {
     /**
      * 从Excel批量插入教师信息
      */
+    @ApiOperation(value="管理员批量导入教师信息")
     @PostMapping("/teachers")
     public ResponseData<List<Teacher>> insertTeacherByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException{
         String tempPath = mhsr.getSession().getServletContext().getRealPath("/WEB-INF/temp/");
@@ -83,6 +86,7 @@ public class AdminController {
     /**
      * 从Excel批量插入学生信息
      */
+    @ApiOperation(value="管理员批量导入学生信息")
     @PostMapping("/students")
     public ResponseData<List<Student>> insertStudentByAdminUploadExcel(MultipartHttpServletRequest mhsr) throws IOException {
         String tempPath = mhsr.getSession().getServletContext().getRealPath("/WEB-INF/temp/");
