@@ -2,6 +2,7 @@ package top.oahnus.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import top.oahnus.entity.CourseTask;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * 16:09.
  */
 @Mapper
+@Repository
 public interface CourseTaskMapper extends BaseMapper {
     List<CourseTask> selectCourseTaskByCourseId(@Param("courseId")String courseId);
     CourseTask selectCourseTaskById(@Param("courseTaskId")String courseTaskId);

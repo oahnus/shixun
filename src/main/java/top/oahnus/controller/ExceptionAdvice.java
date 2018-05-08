@@ -1,6 +1,6 @@
 package top.oahnus.controller;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,7 +19,7 @@ import java.io.StringWriter;
  * 22:12
  */
 @RestControllerAdvice
-@Log4j2
+@Slf4j
 public class ExceptionAdvice {
 
     @ExceptionHandler(Exception.class)
@@ -27,7 +27,7 @@ public class ExceptionAdvice {
         try (StringWriter stringWriter = new StringWriter();
              PrintWriter printWriter = new PrintWriter(stringWriter)) {
             e.printStackTrace(printWriter);
-            log.error("ERROR: {}", stringWriter.toString());
+            System.out.println("ERROR: {}" + stringWriter.toString());
         } catch (IOException ioEx) {
             ioEx.printStackTrace();
         }

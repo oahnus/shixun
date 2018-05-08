@@ -11,7 +11,7 @@ import top.oahnus.util.FileUploadDownloadUtil;
 @Component
 public class ClearFileSchedule {
 
-    @Scheduled(cron = "0 0 */1 * * ?")
+    @Scheduled(cron = "0 0 0 * * *")
     public void clearFiles() {
         System.out.println(System.getProperty("user.dir"));
 //        FileUploadDownloadUtil.removeRubbishUplaodFile("")

@@ -2,6 +2,7 @@ package top.oahnus.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import top.oahnus.entity.Course;
 import top.oahnus.enums.CourseState;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * 22:53.
  */
 @Mapper
+@Repository
 public interface CourseMapper extends BaseMapper {
     List<Course> selectAllCourse(@Param("state")Integer state, @Param("offset") Integer offset, @Param("limit")Integer limit);
     List<Course> selectCourseByProfessionsLikeProfession(@Param("state")Integer state, @Param("profession")String profession, @Param("offset")Integer offset, @Param("limit")Integer limit);

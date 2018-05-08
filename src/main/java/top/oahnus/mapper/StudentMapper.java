@@ -2,6 +2,7 @@ package top.oahnus.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import top.oahnus.entity.Student;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * 22:08.
  */
 @Mapper
+@Repository
 public interface StudentMapper extends BaseMapper{
     Student selectStudentByStudentNum(@Param("studentNum")String studentNum);
     List<Student> selectStudentByProfession(@Param("profession")String profession, @Param("offset")Integer offset, @Param("limit")Integer limit);

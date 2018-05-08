@@ -2,6 +2,7 @@ package top.oahnus.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import top.oahnus.entity.Review;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
  * 13:56.
  */
 @Mapper
+@Repository
 public interface ReviewMapper extends BaseMapper {
     List<Review> selectReviewByParam(@Param("courseId") String courseId,
                                      @Param("fromUsername") String fromUsername,

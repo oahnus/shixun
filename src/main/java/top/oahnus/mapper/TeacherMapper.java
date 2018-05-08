@@ -2,6 +2,7 @@ package top.oahnus.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import top.oahnus.entity.Teacher;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * 0:41.
  */
 @Mapper
+@Repository
 public interface TeacherMapper extends BaseMapper{
     Teacher selectTeacherByWorkerId(@Param("worker_id")String workerId);
     List<Teacher> selectTeacherByProfession(@Param("profession")String profession, @Param("offset")Integer offset, @Param("limit")Integer limit);

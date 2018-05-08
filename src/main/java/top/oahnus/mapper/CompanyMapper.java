@@ -2,6 +2,7 @@ package top.oahnus.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import top.oahnus.entity.Company;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * 1:07
  */
 @Mapper
+@Repository
 public interface CompanyMapper extends BaseMapper{
     List<Company> selectAllCompany(@Param("offset")Integer offset, @Param("limit")Integer limit);
     Company selectCompanyByName(@Param("name") String name);

@@ -2,6 +2,7 @@ package top.oahnus.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import top.oahnus.entity.CourseSelection;
 
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.List;
  * 13:13.
  */
 @Mapper
+@Repository
 public interface CourseSelectionMapper extends BaseMapper {
     List<CourseSelection> selectCourseSelectionByStudentId(@Param("studentId")String studentId,
                                                            @Param("courseState")Integer state,

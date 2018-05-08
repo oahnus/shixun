@@ -1,6 +1,7 @@
 package top.oahnus.mapper;
 
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 import top.oahnus.entity.UserAuth;
 
 /**
@@ -8,6 +9,7 @@ import top.oahnus.entity.UserAuth;
  * 22:53
  */
 @Mapper
+@Repository
 public interface UserAuthMapper {
 
 //    @Results({

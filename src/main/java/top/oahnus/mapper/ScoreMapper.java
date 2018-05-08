@@ -2,6 +2,7 @@ package top.oahnus.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import top.oahnus.entity.Score;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * 13:35.
  */
 @Mapper
+@Repository
 public interface ScoreMapper extends BaseMapper {
     List<Score> selectScoreByStudentId(@Param("studentId")String studentId, @Param("offset")Integer offset,@Param("limit")Integer limit);
     List<Score> selectScoreByCourseId(@Param("courseId")String courseId, @Param("offset")Integer offset,@Param("limit")Integer limit);
