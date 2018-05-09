@@ -108,8 +108,11 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.1</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper</artifactId>
+            <version>3.4.1</version>
+        </dependency>
         <!-- 序列化 -->
         <dependency>
             <groupId>com.dyuproject.protostuff</groupId>
@@ -120,6 +123,12 @@
             <groupId>com.dyuproject.protostuff</groupId>
             <artifactId>protostuff-core</artifactId>
             <version>1.0.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.6</version>
         </dependency>
 
         <!--解析Excel-->

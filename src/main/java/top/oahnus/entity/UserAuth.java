@@ -3,6 +3,11 @@ package top.oahnus.entity;
 import lombok.Data;
 import top.oahnus.enums.AuthType;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,12 +16,15 @@ import java.util.List;
  */
 @Data
 public class UserAuth {
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String username;
     private String password;
     // AuthType 角色类型
-    private AuthType type;
+    private Integer roleId;
+    @Transient
+    private String roleName;
     // 登陆用户的信息
-    private User user;
-    private List<UserMenu> userMenus;
+    private Date createTime;
 }

@@ -4,22 +4,37 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace = "top.oahnus.mapper.UserAuthMapper">
     <resultMap id = "userAuthMap" type= "top.oahnus.entity.UserAuth">
-        <result property = "id" column = "id"/>
+        <result property = "id" column = "id" javaType="Long"/>
         <result property = "username" column = "username"/>
-        <result property = "type" column = "type" typeHandler="top.oahnus.handler.AuthTypeHandler"/>
+        <result property = "password" column = "password"/>
+        <result property = "roleId" column = "role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property = "createTime" column = "create_time"/>
+        <!--<result property = "type" column = "type" typeHandler="top.oahnus.handler.AuthTypeHandler"/>-->
     </resultMap>
-    <select id = "login" resultMap = "userAuthMap">
-        SELECT id,username,type
-        FROM user_auth
-        WHERE username = #{username}
-        AND password = #{password}
-        AND type = #{type}
+    <!--<select id = "login" resultMap = "userAuthMap">-->
+        <!--SELECT id,username-->
+        <!--FROM user_auth-->
+        <!--WHERE username = #{username}-->
+        <!--AND password = #{password}-->
+    <!--</select>-->
+
+    <!--<update id="resetPassword">-->
+        <!--UPDATE user_auth SET password = #{newPassword}-->
+        <!--WHERE username = #{username}-->
+        <!--AND password = #{oldPassword}-->
+    <!--</update>-->
+
+    <select id="selectById" parameterType="Long" resultMap="userAuthMap">
+        SELECT * from user_auth WHERE id = #{_parameter}
     </select>
 
-    <update id="resetPassword">
-        UPDATE user_auth SET password = #{newPassword}
+    <select id="selectFirstByUsername" resultMap="userAuthMap" >
+        SELECT ua.*, ur.name as role_name
+        FROM user_auth ua
+            LEFT JOIN user_role ur
+                ON ua.role_id = ur.id
         WHERE username = #{username}
-        AND password = #{oldPassword}
-        AND type = #{type}
-    </update>
+        LIMIT 1
+    </select>
 </mapper>
