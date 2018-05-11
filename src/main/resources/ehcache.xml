@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache dynamicConfig="false" monitoring="off" updateCheck="false"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+
+    <!-- 定义缓存策略
+        eternal="false"                 // 元素是否永恒,如果是就永不过期(必须设置)
+        maxEntriesLocalHeap="1000"      // 堆内存中最大缓存对象数,0没有限制(必须设置)
+        overflowToDisk="false"          // 当缓存达到maxElementsInMemory值是,是否允许溢出到磁盘(必须设置)
+        diskPersistent="false"          // 磁盘缓存在VM重新启动时是否保持(默认为false)
+        timeToIdleSeconds="0"           // 导致元素过期的访问间隔(秒为单位). 当eternal为false时，这个属性才有效，0表示可以永远空闲,默认为0
+        timeToLiveSeconds="600"         // 元素在缓存里存在的时间(秒为单位). 0 表示永远存在不过期
+        memoryStoreEvictionPolicy="LFU" // 当达到maxElementsInMemory时,如何强制进行驱逐默认使用"最近使用(LRU)"策略,其它还有先入先出FIFO,最少使用LFU,较少使用LRU
+   -->
+    <!--
+  设定具体的命名缓存的数据过期策略
+  cache元素的属性：
+      name：缓存名称
+      maxElementsInMemory：内存中最大缓存对象数
+
+      maxElementsOnDisk：硬盘中最大缓存对象数，若是0表示无穷大
+
+      eternal：true表示对象永不过期，此时会忽略timeToIdleSeconds和timeToLiveSeconds属性，默认为false
+
+      overflowToDisk：true表示当内存缓存的对象数目达到了maxElementsInMemory界限后，会把溢出的对象写到硬盘缓存中。
+                      注意：如果缓存的对象要写入到硬盘中的话，则该对象必须实现了Serializable接口才行。
+
+      diskSpoolBufferSizeMB：磁盘缓存区大小，默认为30MB。每个Cache都应该有自己的一个缓存区。
+
+      diskPersistent：是否缓存虚拟机重启期数据。
+
+      clearOnFlush：内存数量最大时是否清除。
+
+      diskExpiryThreadIntervalSeconds：磁盘失效线程运行时间间隔，默认为120秒
+
+      timeToIdleSeconds： 设定允许对象处于空闲状态的最长时间，以秒为单位。
+                          当对象自从最近一次被访问后，如果处于空闲状态的时间超过了timeToIdleSeconds属性值，这个对象就会过期，
+                          EHCache将把它从缓存中清空。只有当eternal属性为false，该属性才有效。如果该属性值为0，则表示对象可以无限期地处于空闲状态
+
+      timeToLiveSeconds：设定对象允许存在于缓存中的最长时间，以秒为单位。
+                          当对象自从被存放到缓存中后，如果处于缓存中的时间超过了 timeToLiveSeconds属性值，这个对象就会过期，
+                          EHCache将把它从缓存中清除。只有当eternal属性为false，该属性才有效。如果该属性值为0，则表示对象可以无限期地存在于缓存中。
+                          timeToLiveSeconds必须大于timeToIdleSeconds属性，才有意义
+
+      memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。
+                          可选策略有：LRU（最近最少使用，默认策略）、
+                          FIFO（先进先出）、
+                          LFU（最少访问次数）。
+      -->
+    <defaultCache
+            maxEntriesLocalHeap="10"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="3600"/>
+    <!--
+    defaultCache 不会为文件里的cache提供默认配置，
+    而是为通过`cacheManager.addCache`动态添加的cache提供默认配置。。。
+
+    The timeToIdleSeconds will be default value and not inherit from "defaultCache".
+     The "defaultCache" is a bit misnomer/misleading,
+      in the sense that it does not provide "defaults" for every cache,
+       but its just a way of specifying config for caches that can/are added dynamically
+       - using cacheManager.addCache(String cacheName).
+    -->
+
+    <!--微信 access_token  1h-->
+    <cache
+            name="day"
+            timeToIdleSeconds="0"
+            maxEntriesLocalHeap="10"
+            timeToLiveSeconds="86400"
+    />
+
+</ehcache>

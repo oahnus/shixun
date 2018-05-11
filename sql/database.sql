@@ -22,16 +22,28 @@ DROP TABLE IF EXISTS `company`;
 CREATE TABLE `company` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '公司ID',
   `name` varchar(100) NOT NULL COMMENT '公司名称',
-  `contact_id` BIGINT NOT NULL COMMENT '公司联系人id',
   `address` varchar(255) COMMENT '公司地址',
   `telephone` VARCHAR(255) COMMENT '公司联系电话',
   `email` varchar(255) DEFAULT NULL COMMENT '邮箱',
   auth_id BIGINT NOT NULL,
   create_time DATETIME NOT NULL,
   update_time DATETIME NOT NULL,
+  del_flag BIT(1) NOT NULL  DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8 COMMENT='公司表';
+
+DROP TABLE IF EXISTS company_contact;
+CREATE TABLE company_contact(
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  name VARCHAR(100) NOT NULL ,
+  telephone VARCHAR(100) NOT NULL ,
+  email VARCHAR(255) NOT NULL ,
+  company_id BIGINT NOT NULL ,
+  create_time DATETIME NOT NULL ,
+  update_time DATETIME NOT NULL ,
+  del_flag BIT(1) NOT NULL DEFAULT 0
+)ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 
 DROP TABLE IF EXISTS admin;
 CREATE TABLE admin(
@@ -40,7 +52,8 @@ CREATE TABLE admin(
   telephone VARCHAR(50) NOT NULL ,
   email VARCHAR(255) NULL,
   auth_id BIGINT NOT NULL,
-  create_time DATETIME NOT NULL
+  create_time DATETIME NOT NULL,
+  del_flag bit(1) NOT NULL DEFAULT 0
 )ENGINE = InnoDB AUTO_INCREMENT = 1 CHARSET = utf8;
 
 DROP TABLE IF EXISTS user_auth;
@@ -48,9 +61,10 @@ CREATE TABLE user_auth (
   id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(80) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  role_id INT NOT NULL DEFAULT 4 COMMENT '用户角色id 4 student, 3 teacher, 2 company, 1 admin',
+  role TINYINT NOT NULL DEFAULT 4 COMMENT '用户角色id 4 student, 3 teacher, 2 company, 1 admin',
   create_time DATETIME NOT NULL ,
-  UNIQUE KEY idx_username(username)
+  del_flag BIT(1) NOT NULL DEFAULT 0,
+  UNIQUE KEY idx_username(username, role)
 )ENGINE = InnoDB AUTO_INCREMENT = 1 CHARSET = utf8 COMMENT '登录权限表';
 
 DROP TABLE IF EXISTS user_role;
@@ -89,13 +103,14 @@ CREATE TABLE `student` (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '学生id',
   `stu_number` varchar(100) NOT NULL COMMENT '学生学号',
   `name` varchar(100) NOT NULL COMMENT '学生姓名',
-  `sex` BIT(2) DEFAULT 1 COMMENT '学生性别 0 未知 1 男 2 女',
+  `sex` TINYINT DEFAULT 1 COMMENT '学生性别 0 未知 1 男 2 女',
   `profession_id` BIGINT NOT NULL COMMENT '学生专业',
   `depart_id` BIGINT NOT NULL COMMENT '学生学院',
   `email` varchar(255) DEFAULT NULL COMMENT '邮箱地址',
   auth_id BIGINT NOT NULL ,
   create_time DATETIME NOT NULL,
   update_time DATETIME NOT NULL,
+  del_flag BIT(1) NOT NULL DEFAULT 0 COMMENT '删除标记位',
   UNIQUE KEY `idx_stu_number` (`stu_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='学生表';
 
@@ -107,14 +122,15 @@ CREATE TABLE `teacher` (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '教师ID',
   `worker_id` varchar(100) NOT NULL COMMENT '教师工号',
   `name` varchar(100) NOT NULL COMMENT '教师姓名',
-  `sex` BIT(2) DEFAULT 1 COMMENT '学生性别 0 未知 1 男 2 女',
+  `sex` TINYINT DEFAULT 1 COMMENT '学生性别 0 未知 1 男 2 女',
   `job_title` varchar(100) NOT NULL COMMENT '教师职称',
   `profession_id` BIGINT NOT NULL COMMENT '专业',
   `depart_id` BIGINT NOT NULL COMMENT '学院',
   `email` varchar(255) DEFAULT NULL COMMENT '邮箱地址',
-  `teacher_id` varchar(255) DEFAULT NULL,
+  auth_id BIGINT NOT NULL ,
   create_time DATETIME NOT NULL,
   update_time DATETIME NOT NULL,
+  del_flag BIT(1) NOT NULL DEFAULT 0 COMMENT '删除标记位',
   UNIQUE KEY `idx_worker_id` (`worker_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='教师表';
 
@@ -130,6 +146,7 @@ CREATE TABLE `user_menu` (
   `href` varchar(255) NOT NULL COMMENT '权限菜单跳转路径',
   `parent_id` varchar(40) NOT NULL COMMENT '父级菜单ID,顶级菜单为0',
   `role_id` INT NOT NULL COMMENT '菜单所属的角色类型',
+  del_flag BIT(1) NOT NULL DEFAULT 0 COMMENT '删除标记位',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -142,7 +159,7 @@ CREATE TABLE `course` (
   `name` varchar(255) NOT NULL COMMENT '课程名称',
   `teacher_id` BIGINT NOT NULL COMMENT '授课教师id',
   `company_id` BIGINT NOT NULL COMMENT '授课公司id',
-#   `profession_ids` varchar(255) DEFAULT '' COMMENT '课程所属的专业id,多个专业以;间隔',
+  `profession_ids` varchar(255) DEFAULT '' COMMENT '课程所属的专业id,多个专业以;间隔',
   `memo` varchar(255) DEFAULT NULL COMMENT '课程描述',
   `start_time` DATETIME NULL DEFAULT NULL COMMENT '开课时间',
   `end_time` DATETIME NULL DEFAULT NULL COMMENT '结课时间',
@@ -150,6 +167,7 @@ CREATE TABLE `course` (
   `state` tinyint(4) NOT NULL DEFAULT '3' COMMENT '开课状态,0 开放选课中,1 关闭选课,2 开课中,3 已结课',
   create_time DATETIME NOT NULL ,
   update_time DATETIME NOT NULL ,
+  del_flag BIT(1) NOT NULL DEFAULT 0 COMMENT '删除标记位',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='课程表';
 
@@ -158,6 +176,7 @@ CREATE TABLE course_profession(
   id BIGINT NOT NULL PRIMARY KEY ,
   course_id BIGINT NOT NULL ,
   profession_id BIGINT NOT NULL,
+  del_flag BIT(1) NOT NULL DEFAULT 0 COMMENT '删除标记位',
   KEY idx_course_pro (course_id, profession_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -171,6 +190,7 @@ CREATE TABLE `course_selection` (
   `student_id` BIGINT NOT NULL COMMENT '学生id',
   `create_time` DATETIME NOT NULL COMMENT '选课时间',
   `update_time` DATETIME not NULL COMMENT '修改时间',
+  del_flag BIT(1) NOT NULL DEFAULT 0 COMMENT '删除标记位',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_c_id_s_id` (`course_id`,`student_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='学生选课表';
@@ -190,6 +210,7 @@ CREATE TABLE `course_task` (
   `memo` varchar(255) DEFAULT NULL COMMENT '任务描述',
   create_time DATETIME NOT NULL,
   update_time DATETIME NOT NULL,
+  del_flag BIT(1) NOT NULL DEFAULT 0 COMMENT '删除标记位',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='课程任务表';
 
@@ -205,7 +226,7 @@ CREATE TABLE `score` (
   `company_score` DECIMAL DEFAULT '0' COMMENT '公司评分',
   create_time DATETIME NOT NULL,
   update_time DATETIME NOT NULL,
-
+  del_flag BIT(1) NOT NULL DEFAULT 0 COMMENT '删除标记位',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_cs_s` (`course_selection_id`,`student_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='学生分数表';
@@ -224,6 +245,7 @@ CREATE TABLE `task_result` (
   `memo` varchar(255) DEFAULT NULL COMMENT '任务成果描述(备注)',
   create_time DATETIME NOT NULL,
   update_time DATETIME NOT NULL,
+  del_flag BIT(1) NOT NULL DEFAULT 0 COMMENT '删除标记位',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_task_id_student_id` (`task_id`,`student_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务成果表';

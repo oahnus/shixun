@@ -2,7 +2,6 @@ package top.oahnus.schedule;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import top.oahnus.util.FileUploadDownloadUtil;
 
 /**
  * Created by oahnus on 2017/5/12
