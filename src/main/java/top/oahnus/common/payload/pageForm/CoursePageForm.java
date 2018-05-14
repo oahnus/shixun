@@ -13,15 +13,10 @@ import java.util.List;
  */
 @Data
 public class CoursePageForm {
+    private PageForm page;
     private String name;
-    private Long professionId;
-    private CourseState state;
     private Long teacherId;
     private Long companyId;
-    @NotNull
-    @Min(0)
-    private Integer page = 0;
-    @NotNull
-    @Min(5)
-    private Integer size = 10;
+    private Long professionId;
+    private CourseState state;
 }

@@ -65,7 +65,7 @@ CREATE TABLE user_auth (
   create_time DATETIME NOT NULL ,
   del_flag BIT(1) NOT NULL DEFAULT 0,
   UNIQUE KEY idx_username(username, role)
-)ENGINE = InnoDB AUTO_INCREMENT = 1 CHARSET = utf8 COMMENT '登录权限表';
+)ENGINE = InnoDB AUTO_INCREMENT = 10000 CHARSET = utf8 COMMENT '登录权限表';
 
 DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role (
@@ -208,6 +208,7 @@ CREATE TABLE `course_task` (
   `end_time` DATETIME not NULL  COMMENT '任务结束时间',
   `deadline` DATETIME not NULL  COMMENT '任务成果截止时间',
   `memo` varchar(255) DEFAULT NULL COMMENT '任务描述',
+  create_user_id BIGINT NOT NULL COMMENT 'create user auth id',
   create_time DATETIME NOT NULL,
   update_time DATETIME NOT NULL,
   del_flag BIT(1) NOT NULL DEFAULT 0 COMMENT '删除标记位',

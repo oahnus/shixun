@@ -1,6 +1,8 @@
 package top.oahnus.domain;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,6 +25,8 @@ public class Company extends UserInfo{
 
     private String address;
     private String telephone;
+    @NotEmpty(message = "email not empty")
+    @Email(message = "invalid email format")
     private String email;
     private Long authId;
     private Date createTime;

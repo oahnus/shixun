@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.oahnus.domain.Company;
 import top.oahnus.domain.Student;
 import top.oahnus.domain.Teacher;
@@ -184,7 +185,8 @@ public class ExcelImportService {
         return student;
     }
 
-    private void saveStudentList(List<Student> studentList) {
+    @Transactional(rollbackFor = Exception.class)
+    public void saveStudentList(List<Student> studentList) {
         List<String> stuNumbers = studentList.stream()
                 .map(Student::getStuNumber)
                 .distinct()
@@ -250,7 +252,8 @@ public class ExcelImportService {
         return company;
     }
 
-    private void saveCompanyList(List<Company> companyList) {
+    @Transactional(rollbackFor = Exception.class)
+    public void saveCompanyList(List<Company> companyList) {
         List<String> emails = companyList.stream()
                 .map(Company::getEmail)
                 .distinct()
@@ -323,7 +326,8 @@ public class ExcelImportService {
         return teacher;
     }
 
-    private void saveTeacherList(List<Teacher> teacherList) {
+    @Transactional(rollbackFor = Exception.class)
+    public void saveTeacherList(List<Teacher> teacherList) {
         List<String> workerIds = teacherList.stream()
                 .map(Teacher::getWorkerId)
                 .distinct()

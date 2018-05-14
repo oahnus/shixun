@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import top.oahnus.Constants;
+import top.oahnus.common.annotations.NeedAdmin;
 import top.oahnus.common.annotations.NoAuthNeed;
 import top.oahnus.domain.UserAuth;
 import top.oahnus.enums.RoleEnum;
@@ -46,7 +47,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
             HandlerMethod method = (HandlerMethod) handler;
             String packageName = method.getBean().getClass().getPackage().getName();
             NoAuthNeed noAuthNeed = method.getMethodAnnotation(NoAuthNeed.class);
-
+            NeedAdmin needAdmin = method.getMethodAnnotation(NeedAdmin.class);
             if (noAuthNeed != null) {
                 return true;
             }
@@ -63,7 +64,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
             if (auth == null) {
                 throw new NoAuthException("AUTH FAILED");
             }
-            if (adminPackage.equals(packageName)) {
+            if (adminPackage.equals(packageName) || needAdmin != null) {
                 if (!auth.getRole().equals(RoleEnum.ADMIN)) {
                     throw new NoAuthException("AUTH FAILED");
                 }

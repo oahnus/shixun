@@ -1,86 +1,58 @@
-//package top.oahnus.controller.core;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.validation.BindingResult;
-//import org.springframework.validation.annotation.Validated;
-//import org.springframework.web.bind.annotation.*;
-//import top.oahnus.enums.ServerState;
-//import top.oahnus.payload.Page;
-//import top.oahnus.payload.ResponseData;
-//import top.oahnus.payload.StudentDto;
-//import top.oahnus.domain.Student;
-//import top.oahnus.service.StudentService;
-//
-//import java.util.List;
-//
-///**
-// * Created by oahnus on 2017/2/26.
-// * 21:00
-// */
-//@RestController
-//@CrossOrigin
-//@RequestMapping("/students")
-//public class StudentController {
-//    @Autowired
-//    private StudentService studentService;
-//
-//    @GetMapping("/{studentId}")
-//    public ResponseData<Student> selectStudentById(@PathVariable("studentId")String studentId) {
-//        Student student = studentService.selectStudentById(studentId);
-//        return new ResponseData<>(ServerState.SUCCESS, student, "success");
-//    }
-//
-//    /**
-//     * 单条插入学生信息
-//     */
-//    @PostMapping
-//    public ResponseData<Student> insertNewStudent(@Validated @RequestBody StudentDto studentDto,
-//                                                  BindingResult result) {
-//        if (result.hasErrors()) {
-//            return new ResponseData<>(ServerState.REQUEST_PARAMETER_ERROR, result.getFieldError().getDefaultMessage());
-//        }
-//        Student student = studentService.insertOneStudent(studentDto);
-//        return new ResponseData<>(ServerState.SUCCESS, student, "success");
-//    }
-//
-//    /**
-//     * 分页获取学生
-//     */
-//    // todo 根据课程获取选择该门课程的所有学生
-//    @GetMapping
-//    public ResponseData<Page> selectStudentsByDepart(@RequestParam(value = "depart",required = false)String depart,
-//                                                     @RequestParam(value = "profession",required = false)String profession,
-//                                                     @RequestParam(value = "courseId", required = false)String courseId,
-//                                                     @RequestParam("page")Integer page,
-//                                                     @RequestParam("limit") Integer limit){
-//        Page<List<Student>> p = null;
-//        if (depart != null) {
-//            p = studentService.selectStudentByDepart(depart, page, limit);
-//        } else if (profession != null) {
-//            p = studentService.selectStudentByProfession(profession, page, limit);
-//        } else if (courseId != null) {
-//            p = studentService.fetchStudentByCourseId(courseId, page, limit);
-//        } else {
-//            p = studentService.selectAllStudent(page, limit);
-//        }
-//        return new ResponseData<>(ServerState.SUCCESS, p, "success");
-//    }
-//
-//    /**
-//     * 更新单条学生记录
-//     */
-//    @PutMapping
-//    public ResponseData<Student> updateStudent(@Validated @RequestBody StudentDto studentDto) {
-//        Student stu = studentService.updateStudent(studentDto);
-//        return new ResponseData<>(ServerState.SUCCESS, stu, "success");
-//    }
-//
-//    /**
-//     * 根据学生id删除单条学生数据
-//     */
-//    @DeleteMapping("/{studentId}")
-//    public ResponseData<String> deleteStudent(@PathVariable String studentId) {
-//        studentService.deleteStudentById(studentId);
-//        return new ResponseData<>(ServerState.SUCCESS, "SUCCESS", "success");
-//    }
-//}
+package top.oahnus.controller.core;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import top.oahnus.common.annotations.NeedAdmin;
+import top.oahnus.common.dto.ResultData;
+import top.oahnus.common.interfaces.HttpMixin;
+import top.oahnus.common.payload.pageForm.StudentPageForm;
+import top.oahnus.enums.ServerState;
+import top.oahnus.domain.Student;
+import top.oahnus.repository.StudentRepo;
+import top.oahnus.service.StudentService;
+
+import javax.validation.Valid;
+import java.util.List;
+
+/**
+ * Created by oahnus on 2017/2/26.
+ * 21:00
+ */
+@RestController
+@CrossOrigin
+@RequestMapping("/students")
+public class StudentController implements HttpMixin {
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private StudentRepo studentRepo;
+
+    @PostMapping("/page")
+    public ResultData page(@RequestBody StudentPageForm form) {
+        Page<Student> page = studentRepo.findByForm(form);
+        return new ResultData().data("page", page);
+    }
+
+    @NeedAdmin
+    @PostMapping
+    public ResultData save(@RequestBody @Valid Student student) {
+        studentService.save(student);
+        return new ResultData();
+    }
+
+    @PutMapping
+    public ResultData update(@RequestBody @Valid Student student) {
+        studentService.update(student);
+        return new ResultData();
+    }
+
+    @NeedAdmin
+    @DeleteMapping("/{id}")
+    public ResultData deleteStudent(@PathVariable("id") Long studentId) {
+        studentService.delete(studentId);
+        return new ResultData();
+    }
+}

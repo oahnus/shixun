@@ -1,7 +1,6 @@
 package top.oahnus.domain;
 
 import lombok.Data;
-import org.apache.ibatis.annotations.One;
 import top.oahnus.enums.CourseState;
 
 import javax.persistence.*;
@@ -12,18 +11,17 @@ import java.util.Date;
  * 课程
  */
 @Data
+@Entity(name = "course")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    private Long teacherId;
-    private Long companyId;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
 

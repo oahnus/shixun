@@ -13,7 +13,6 @@ import top.oahnus.exception.NoAuthException;
 import top.oahnus.repository.*;
 import top.oahnus.util.MD5Util;
 
-import javax.security.auth.message.AuthException;
 import javax.servlet.http.Cookie;
 import java.util.UUID;
 
@@ -67,7 +66,7 @@ public class AuthService implements HttpMixin {
                 userInfo = admin;
                 break;
             case COMPANY:
-                Company company = companyRepo.findFirstByAuthId(authId);
+                Company company = companyRepo.findFirstByAuthIdAndDelFlagFalse(authId);
                 company.setToken(token);
                 userInfo = company;
                 break;
