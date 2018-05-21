@@ -11,6 +11,7 @@ import top.oahnus.domain.Company;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by oahnus on 2018/5/10
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 @Repository
 public interface CompanyRepo extends JpaRepository<Company, Long>, JpaSpecificationExecutor<Company> {
     Company findFirstByAuthIdAndDelFlagFalse(Long authId);
-    Company findFirstByNameAndDelFlagFalse(String name);
+    List<Company> findByNameAndDelFlagFalse(String name);
 
     default Page<Company> findByForm(CompanyPageForm form) {
         Specification<Company> specification = (root, criteriaQuery, criteriaBuilder) -> {

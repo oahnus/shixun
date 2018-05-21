@@ -2,6 +2,7 @@ package top.oahnus.controller.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.oahnus.common.annotations.NeedAdmin;
 import top.oahnus.common.dto.ResultData;
@@ -34,13 +35,13 @@ public class TeacherController implements HttpMixin {
 
     @NeedAdmin
     @PostMapping
-    public ResultData save(@RequestBody @Valid Teacher teacher) {
+    public ResultData save(@RequestBody @Validated Teacher teacher) {
         teacherService.save(teacher);
         return new ResultData();
     }
 
     @PutMapping
-    public ResultData update(@RequestBody @Valid Teacher teacher) {
+    public ResultData update(@RequestBody @Validated Teacher teacher) {
         teacherService.update(teacher);
         return new ResultData();
     }

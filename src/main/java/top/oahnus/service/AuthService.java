@@ -40,7 +40,7 @@ public class AuthService implements HttpMixin {
 
     public UserInfo login(AuthPayload payload) {
         String username = payload.getUsername();
-        String password = payload.getPassword();
+        String password = MD5Util.getMD5(payload.getPassword());
         UserAuth auth = authRepo.findFirstByUsername(username);
         if (auth == null) {
             throw new NoAuthException("");

@@ -2,6 +2,7 @@ package top.oahnus.controller.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.oahnus.common.annotations.NeedAdmin;
 import top.oahnus.common.dto.ResultData;
@@ -34,6 +35,20 @@ public class CourseController implements HttpMixin {
         return new ResultData();
     }
 
+    @NeedAdmin
+    @PutMapping("/open/all")
+    public ResultData openSelectionAll() {
+        courseRepo.openAll();
+        return new ResultData();
+    }
+
+    @NeedAdmin
+    @PutMapping("/close/all")
+    public ResultData closeSelectionAll() {
+        courseRepo.closeAll();
+        return new ResultData();
+    }
+
     @PostMapping("/page")
     public ResultData listByPage(@RequestBody CoursePageForm form) {
         Page<Course> page = courseRepo.findByForm(form);
@@ -42,13 +57,13 @@ public class CourseController implements HttpMixin {
 
     @NeedAdmin
     @PostMapping
-    public ResultData save(@RequestBody @Valid Course course) {
+    public ResultData save(@RequestBody @Validated Course course) {
         courseService.save(course);
         return new ResultData();
     }
 
     @PutMapping
-    public ResultData update(@RequestBody @Valid Course course) {
+    public ResultData update(@RequestBody @Validated Course course) {
         courseService.update(course);
         return new ResultData();
     }

@@ -1,6 +1,7 @@
 package top.oahnus.controller.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.oahnus.common.dto.ResultData;
 import top.oahnus.common.interfaces.HttpMixin;
@@ -33,14 +34,14 @@ public class TaskController implements HttpMixin{
     }
 
     @PostMapping
-    public ResultData create(@RequestBody @Valid Task task) {
+    public ResultData create(@RequestBody @Validated Task task) {
         Long authId = curAuthId();
         taskService.save(task, authId);
         return new ResultData();
     }
 
     @PutMapping
-    public ResultData update(@RequestBody @Valid Task task) {
+    public ResultData update(@RequestBody @Validated Task task) {
         Long authId = curAuthId();
         taskService.update(task, authId);
         return new ResultData();

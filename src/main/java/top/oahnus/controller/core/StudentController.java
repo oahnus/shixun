@@ -38,13 +38,13 @@ public class StudentController implements HttpMixin {
 
     @NeedAdmin
     @PostMapping
-    public ResultData save(@RequestBody @Valid Student student) {
+    public ResultData save(@RequestBody @Validated Student student) {
         studentService.save(student);
         return new ResultData();
     }
 
     @PutMapping
-    public ResultData update(@RequestBody @Valid Student student) {
+    public ResultData update(@RequestBody @Validated Student student) {
         studentService.update(student);
         return new ResultData();
     }

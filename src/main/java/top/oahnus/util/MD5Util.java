@@ -27,6 +27,10 @@ public class MD5Util {
         return "";
     }
 
+    public static String getMD5Upper(String str) {
+        return getMD5(str).toUpperCase();
+    }
+
     public static void main(String[] args){
         System.out.println(getMD5("13141101"));
     }

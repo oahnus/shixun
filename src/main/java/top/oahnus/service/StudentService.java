@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.oahnus.domain.Student;
 import top.oahnus.domain.UserAuth;
 import top.oahnus.exception.DataExistedException;
+import top.oahnus.exception.NotFoundException;
 import top.oahnus.repository.StudentRepo;
 import top.oahnus.repository.UserAuthRepo;
 
@@ -36,6 +37,12 @@ public class StudentService {
     }
 
     public void update(Student student) {
+        Long studentId = student.getId();
+        Student stu = studentRepo.getOne(studentId);
+        if (stu == null) {
+            throw new NotFoundException("");
+        }
+
         String stuNumber = student.getStuNumber();
         checkExisted(stuNumber);
 

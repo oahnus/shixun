@@ -3,6 +3,7 @@ package top.oahnus.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.oahnus.common.config.RedisDao;
 import top.oahnus.common.payload.CourseForm;
 import top.oahnus.domain.Course;

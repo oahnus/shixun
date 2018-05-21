@@ -66,4 +66,14 @@ public interface CourseRepo extends JpaRepository<Course, Long>, JpaSpecificatio
         };
         return findAll(specification, form.getPage());
     }
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE course SET state = 1 WHERE del_flag = 0 AND state = 0 OR state = 2", nativeQuery = true)
+    Integer openAll();
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE course SET state = 2 WHERE del_flag = 0 AND state = 1", nativeQuery = true)
+    Integer closeAll();
 }
