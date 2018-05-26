@@ -68,7 +68,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ResultData processValidationError(MethodArgumentNotValidException e) throws Exception {
-        logError(e);
+//        logError(e);
         return new ResultData(ErrorType.INVALID_PARAM_ERROR, e.getBindingResult().getFieldError().getDefaultMessage());
     }
 

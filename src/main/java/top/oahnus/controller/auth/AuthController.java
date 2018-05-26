@@ -19,13 +19,14 @@ import javax.security.auth.message.AuthException;
  */
 @RestController
 @CrossOrigin
+@RequestMapping("/auth")
 public class AuthController implements HttpMixin {
 
     @Autowired
     private AuthService authService;
 
     @NoAuthNeed
-    @PostMapping("/auth")
+    @PostMapping("/login")
     public ResultData login(@Validated @RequestBody AuthPayload payload){
         UserInfo userInfo = authService.login(payload);
         return new ResultData().data("userInfo", userInfo);

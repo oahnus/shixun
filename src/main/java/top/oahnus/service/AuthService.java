@@ -14,6 +14,7 @@ import top.oahnus.repository.*;
 import top.oahnus.util.MD5Util;
 
 import javax.servlet.http.Cookie;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -35,6 +36,8 @@ public class AuthService implements HttpMixin {
     private TeacherRepo teacherRepo;
     @Autowired
     private StudentRepo studentRepo;
+    @Autowired
+    private MenuService menuService;
 
     private final String TOKEN_PREFIX = "token:";
 
@@ -61,29 +64,26 @@ public class AuthService implements HttpMixin {
         UserInfo userInfo;
         switch (role) {
             case ADMIN:
-                Admin admin = adminRepo.findFirstByAuthId(authId);
-                admin.setToken(token);
-                userInfo = admin;
+                userInfo = adminRepo.findFirstByAuthId(authId);
                 break;
             case COMPANY:
-                Company company = companyRepo.findFirstByAuthIdAndDelFlagFalse(authId);
-                company.setToken(token);
-                userInfo = company;
+                userInfo = companyRepo.findFirstByAuthIdAndDelFlagFalse(authId);
                 break;
             case TEACHER:
-                Teacher teacher = teacherRepo.findFirstByAuthId(authId);
-                teacher.setToken(token);
-                userInfo = teacher;
+                userInfo = teacherRepo.findFirstByAuthId(authId);
                 break;
             case STUDENT:
-                Student student = studentRepo.findFirstByAuthId(authId);
-                student.setToken(token);
-                userInfo = student;
+                userInfo = studentRepo.findFirstByAuthId(authId);
                 break;
             default:
                 throw new NoAuthException("");
         }
+        userInfo.setToken(token);
         setCookie(token);
+
+        // get menu
+        List<UserMenu> menuList = menuService.getRoleMenuList(role);
+        userInfo.setMenuList(menuList);
         return userInfo;
     }
 
@@ -105,7 +105,7 @@ public class AuthService implements HttpMixin {
     }
 
     private void setCookie(String token) {
-        Cookie cookie = new Cookie("token", token);
+        Cookie cookie = new Cookie("shixun_token", token);
         response().addCookie(cookie);
     }
 }

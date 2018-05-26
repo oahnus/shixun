@@ -1,5 +1,6 @@
 package top.oahnus.common.payload.pageForm;
 
+import lombok.Data;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Sort;
  * Created by oahnus on 2018/5/13
  * 19:49.
  */
+@Data
 public class PageForm implements Pageable {
 
     private static final long serialVersionUID = 1232825278693716871L;
@@ -16,6 +18,8 @@ public class PageForm implements Pageable {
     private int size = 10;
 
     private Sort sort;
+
+    public PageForm () {}
 
     public PageForm(int page, int size) {
         this.page = page;

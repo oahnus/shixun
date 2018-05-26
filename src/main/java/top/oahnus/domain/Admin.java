@@ -1,5 +1,6 @@
 package top.oahnus.domain;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Date;
  */
 @Data
 @Entity(name = "admin")
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY)
 public class Admin extends UserInfo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +23,4 @@ public class Admin extends UserInfo{
     private String email;
     private Date createTime;
     private Long authId;
-
-    @Transient
-    private String token;
 }

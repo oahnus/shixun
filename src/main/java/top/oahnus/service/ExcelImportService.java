@@ -1,6 +1,8 @@
 package top.oahnus.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
@@ -11,12 +13,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import top.oahnus.domain.Company;
 import top.oahnus.domain.Student;
 import top.oahnus.domain.Teacher;
 import top.oahnus.domain.UserAuth;
 import top.oahnus.enums.RoleEnum;
 import top.oahnus.enums.SexEnum;
+import top.oahnus.exception.BadRequestParamException;
 import top.oahnus.exception.DataFormatException;
 import top.oahnus.exception.ExcelFormatException;
 import top.oahnus.repository.CompanyRepo;
@@ -31,6 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
+@Slf4j
 public class ExcelImportService {
     private final String EXCEL_2003_EXTENSION = ".xls";
     private final String EXCEL_2007_EXTENSION = ".xlsx";
@@ -71,6 +76,29 @@ public class ExcelImportService {
     private CompanyRepo companyRepo;
     @Autowired
     private StudentRepo studentRepo;
+
+    public void importData(MultipartFile multipartFile, RoleEnum role) {
+
+        try {
+            File tempFile = File.createTempFile("temp", "d");
+            FileUtils.copyToFile(multipartFile.getInputStream(), tempFile);
+            switch (role) {
+                case TEACHER:
+                    readTeacherFromExcel(tempFile);
+                    break;
+                case STUDENT:
+                    readStudentFromExcel(tempFile);
+                    break;
+                case COMPANY:
+                    readCompanyFromExcel(tempFile);
+                    break;
+                default:
+                    throw new BadRequestParamException("");
+            }
+        } catch (IOException e) {
+            log.error("EXCEL文件读取失败");
+        }
+    }
 
     @SuppressWarnings({"unckecked", "unchecked"})
     private <T> T getCellValue(Cell cell, Class cls) {
