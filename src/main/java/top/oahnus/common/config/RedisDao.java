@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by oahnus on 2017/10/3
@@ -65,6 +66,6 @@ public class RedisDao {
             //超时缓存
             timeout = 60 * 60;  //一个小时
         }
-        redisTemplate.opsForValue().set(key, new String(bytes), timeout);
+        redisTemplate.opsForValue().set(key, new String(bytes), timeout, TimeUnit.SECONDS);
     }
 }

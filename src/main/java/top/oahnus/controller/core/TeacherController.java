@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import top.oahnus.common.annotations.NeedAdmin;
 import top.oahnus.common.dto.ResultData;
 import top.oahnus.common.interfaces.HttpMixin;
+import top.oahnus.common.payload.TeacherPayload;
 import top.oahnus.common.payload.pageForm.TeacherPageForm;
 import top.oahnus.domain.Teacher;
 import top.oahnus.repository.TeacherRepo;
@@ -35,14 +36,14 @@ public class TeacherController implements HttpMixin {
 
     @NeedAdmin
     @PostMapping
-    public ResultData save(@RequestBody @Validated Teacher teacher) {
-        teacherService.save(teacher);
+    public ResultData save(@RequestBody @Validated TeacherPayload payload) {
+        teacherService.save(payload);
         return new ResultData();
     }
 
     @PutMapping
-    public ResultData update(@RequestBody @Validated Teacher teacher) {
-        teacherService.update(teacher);
+    public ResultData update(@RequestBody @Validated TeacherPayload payload) {
+        teacherService.update(payload);
         return new ResultData();
     }
     @NeedAdmin

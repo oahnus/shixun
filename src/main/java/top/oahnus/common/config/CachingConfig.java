@@ -6,16 +6,13 @@
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //
-///**
-// * Created by youzipi on 17/4/24.
-// */
 //@Configuration
 //@EnableCaching
 //public class CachingConfig {
 //
 //    @Bean
 //    public CacheManager cacheManager() {
-//        net.sf.ehcache.CacheManager cacheManager = net.sf.ehcache.CacheManager.create();
+//        org.ehcache.CacheManager cacheManager = org.ehcache.CacheManager
 //        EhCacheCacheManager ehCacheManager = new EhCacheCacheManager();
 //        ehCacheManager.setCacheManager(cacheManager);
 //        return ehCacheManager;

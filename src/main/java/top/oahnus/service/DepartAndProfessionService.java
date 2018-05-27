@@ -9,7 +9,10 @@ import top.oahnus.repository.DepartmentRepo;
 import top.oahnus.repository.ProfessionRepo;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by oahnus on 2018/5/10
@@ -37,12 +40,23 @@ public class DepartAndProfessionService {
 
     }
 
-    @Cacheable("day")
+    public List<Department> findAllDepartWithProfession() {
+        List<Department> departList = findAllDepart();
+        List<Profession> professionList = findAllProfession();
+        Map<Long, List<Profession>> proMap = professionList
+                .stream()
+                .collect(Collectors.groupingBy(Profession::getDepartId));
+
+        departList.forEach(depart -> depart.setProfessions(proMap.get(depart.getId())));
+        return departList;
+    }
+
+//    @Cacheable("day")
     public List<Department> findAllDepart() {
         return departmentRepo.findByDelFlagFalse();
     }
 
-    @Cacheable("day")
+//    @Cacheable("day")
     public List<Profession> findAllProfession() {
         return professionRepo.findByDelFlagFalse();
     }

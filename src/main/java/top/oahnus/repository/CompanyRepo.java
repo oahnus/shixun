@@ -28,13 +28,16 @@ public interface CompanyRepo extends JpaRepository<Company, Long>, JpaSpecificat
             String name = form.getName();
             String address = form.getAddress();
             if (StringUtils.isNotBlank(name)) {
-                predicates.add(criteriaBuilder.like(root.get("name"), name));
+                predicates.add(criteriaBuilder.or(
+                        criteriaBuilder.like(root.get("name"), "%" + name + "%"),
+                        criteriaBuilder.like(root.get("address"), "%" + name + "%")
+                ));
             }
-            if (StringUtils.isNotBlank(address)) {
-                predicates.add(criteriaBuilder.like(root.get("address"), address));
-            }
+//            if (StringUtils.isNotBlank(address)) {
+//                predicates.add(criteriaBuilder.like(root.get("address"), "%" + address + "%"));
+//            }
 
-//            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
             predicates.add(criteriaBuilder.equal(root.get("delFlag"), false));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));

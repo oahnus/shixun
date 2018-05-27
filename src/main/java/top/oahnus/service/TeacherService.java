@@ -3,6 +3,7 @@ package top.oahnus.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.oahnus.common.payload.TeacherPayload;
 import top.oahnus.domain.Teacher;
 import top.oahnus.domain.UserAuth;
 import top.oahnus.exception.DataExistedException;
@@ -26,7 +27,8 @@ public class TeacherService {
     private UserAuthRepo authRepo;
 
     @Transactional
-    public void save(Teacher teacher) {
+    public void save(TeacherPayload payload) {
+        Teacher teacher = payload.toTeacher();
         String workerId = teacher.getWorkerId();
 
         checkExisted(workerId);
@@ -35,10 +37,14 @@ public class TeacherService {
         auth = UserAuth.buildByWorkerId(workerId);
         auth = authRepo.save(auth);
         teacher.setAuthId(auth.getId());
+
+        teacher.setCreateTime(new Date());
+        teacher.setUpdateTime(new Date());
         teacherRepo.save(teacher);
     }
 
-    public void update(Teacher teacher) {
+    public void update(TeacherPayload payload) {
+        Teacher teacher = payload.toTeacher();
         String workerId = teacher.getWorkerId();
         checkExisted(workerId);
 
@@ -56,7 +62,7 @@ public class TeacherService {
     private void checkExisted(String workerId) {
         UserAuth auth = authRepo.findFirstByUsername(workerId);
         if (auth != null) {
-            throw new DataExistedException("");
+            throw new DataExistedException("workerId has existed");
         }
     }
 }

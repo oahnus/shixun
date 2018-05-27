@@ -29,11 +29,14 @@ public interface TeacherRepo extends JpaRepository<Teacher, Long>, JpaSpecificat
             Long professionId = form.getProfessionId();
 
             if (StringUtils.isNotBlank(name)) {
-                predicates.add(criteriaBuilder.like(root.get("name"), name));
+                predicates.add(criteriaBuilder.or(
+                        criteriaBuilder.like(root.get("name"), "%" + name + "%"),
+                        criteriaBuilder.like(root.get("workerId"), "" + workerId + "%")
+                ));
             }
-            if (StringUtils.isNotBlank(workerId)) {
-                predicates.add(criteriaBuilder.equal(root.get("workerId"), workerId));
-            }
+//            if (StringUtils.isNotBlank(workerId)) {
+//                predicates.add(criteriaBuilder.equal(root.get("workerId"), workerId));
+//            }
             if (departId != null) {
                 predicates.add(criteriaBuilder.equal(root.get("department.id"), departId));
             }
